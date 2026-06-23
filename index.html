@@ -13,8 +13,8 @@ body{background:var(--bg);font-family:'Jost',sans-serif;font-weight:400;font-siz
 /* ── LIGHTBOX ── */
 .lb{position:fixed;inset:0;background:rgba(0,0,0,0.93);z-index:1000;display:none;align-items:center;justify-content:center;flex-direction:column}
 .lb.open{display:flex}
-.lb-inner{position:relative;width:100%;max-width:580px;display:flex;align-items:center;justify-content:center;padding:0 52px}
-.lb img{max-width:100%;max-height:68vh;border-radius:12px;object-fit:contain}
+.lb-inner{position:relative;width:100%;display:flex;align-items:center;justify-content:center;padding:0 44px}
+.lb img{max-width:100%;max-height:72vh;border-radius:8px;object-fit:contain;width:100%}
 .lb-nav{position:absolute;top:50%;transform:translateY(-50%);background:rgba(255,255,255,0.15);border:none;color:#fff;width:38px;height:38px;border-radius:50%;cursor:pointer;font-size:20px;display:flex;align-items:center;justify-content:center;backdrop-filter:blur(4px);transition:background .15s}
 .lb-nav:hover{background:rgba(255,255,255,0.28)}
 .lb-prev{left:4px}.lb-next{right:4px}
@@ -43,10 +43,11 @@ body{background:var(--bg);font-family:'Jost',sans-serif;font-weight:400;font-siz
 .lang-opt{padding:9px 14px;font-size:12px;color:var(--text2);cursor:pointer;font-family:'Jost',sans-serif;white-space:nowrap;transition:background .1s}
 .lang-opt:hover{background:var(--bg)}
 .lang-opt.active{color:var(--navy);font-weight:500}
-.admin-btn{display:flex;align-items:center;gap:4px;padding:5px 10px;border:1px solid rgba(255,255,255,0.25);border-radius:6px;cursor:pointer;background:rgba(255,255,255,0.1);color:rgba(255,255,255,0.75);font-size:11px;font-family:'Jost',sans-serif;font-weight:500;letter-spacing:.06em;transition:background .15s}
+.admin-btn{display:flex;align-items:center;justify-content:center;width:30px;height:30px;border:1px solid rgba(255,255,255,0.25);border-radius:6px;cursor:pointer;background:rgba(255,255,255,0.1);color:rgba(255,255,255,0.75);transition:background .15s;flex:none}
 .admin-btn:hover{background:rgba(255,255,255,0.2)}
+.admin-btn svg{width:15px;height:15px;stroke:currentColor;fill:none;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}
 .admin-btn svg{width:13px;height:13px;stroke:currentColor;fill:none;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}
-.logo-img{height:48px;object-fit:contain;margin-bottom:5px}
+.logo-img{height:32px;object-fit:contain;display:block;}
 .header-sub{font-size:10px;font-weight:300;color:rgba(255,255,255,0.45);letter-spacing:.14em;text-transform:uppercase;margin-bottom:14px;text-align:center}
 
 /* ── STICKY NAV ── */
@@ -266,7 +267,6 @@ body{background:var(--bg);font-family:'Jost',sans-serif;font-weight:400;font-siz
           </div>
           <button class="admin-btn" onclick="openAdmin()">
             <svg viewBox="0 0 16 16"><circle cx="8" cy="6" r="2.5"/><path d="M2 14c0-3 2.7-5.5 6-5.5s6 2.5 6 5.5"/></svg>
-            Admin
           </button>
         </div>
       </div>
@@ -461,8 +461,11 @@ function renderTabs(){
     inner.innerHTML=renderTabContent(tab,lbOffset);
     section.appendChild(inner);
     container.appendChild(section);
-    // attach lb handlers
-    section.querySelectorAll('[data-lbidx]').forEach(el=>{ el.addEventListener('click',()=>openLb(parseInt(el.dataset.lbidx))); });
+    // attach lb handlers via delegation (works for img-wrap + gc-wrap)
+    section.addEventListener('click', e => {
+      const el = e.target.closest('[data-lbidx]');
+      if(el) openLb(parseInt(el.dataset.lbidx));
+    });
   });
 }
 
@@ -501,13 +504,13 @@ function renderTabContent(tab,lbOffset){
         const idx=card.img?imgIdx++:null;
         const flavours=(card.variants||[]).map(v=>t(v.name)).join(' · ');
         const price=card.variants&&card.variants[0]?card.variants[0].price:'';
-        gridItems.push(`<div class="gc">${card.img?`<img class="gc-img" src="${card.img}" alt="" loading="lazy" data-lbidx="${idx}">`:'<div style="aspect-ratio:1;background:#ece8e1"></div>'}<div class="gc-body"><div class="gc-name">${t(card.label)}</div><div class="gc-desc">${flavours}</div><div class="gc-price">${price}</div></div></div>`);
+        gridItems.push(`<div class="gc"><div class="gc-wrap" ${card.img?`data-lbidx="${idx}"`:''}>${card.img?`<img class="gc-img" src="${card.img}" alt="" loading="lazy"><span class=\"zoom-icon\"><svg viewBox=\"0 0 16 16\"><circle cx=\"6\" cy=\"6\" r=\"4\"/><line x1=\"9\" y1=\"9\" x2=\"14\" y2=\"14\"/></svg></span>`:'<div style="aspect-ratio:1;background:#ece8e1"></div>'}</div><div class="gc-body"><div class="gc-name">${t(card.label)}</div><div class="gc-desc">${flavours}</div><div class="gc-price">${price}</div></div></div>`);
         return;
       }
       (card.dishes||[]).forEach(d=>{
         const idx=d.img?imgIdx++:null;
         const badges=(d.spicy?`<img src="https://drevicioyster.com/wp-content/uploads/2026/06/icon-spicy.png" class="badge-icon" title="Épicé">`:'')+(d.vegan?`<img src="https://drevicioyster.com/wp-content/uploads/2026/06/icon-vegan.png" class="badge-icon" title="Vegan">`:'');
-        gridItems.push(`<div class="gc">${d.img?`<img class="gc-img" src="${d.img}" alt="" loading="lazy" data-lbidx="${idx}">`:'<div style="aspect-ratio:1;background:#ece8e1"></div>'}<div class="gc-body"><div class="gc-name">${t(d.name)}${badges?` <span class="dish-badges" style="display:inline-flex">${badges}</span>`:''}</div><div class="gc-desc">${t(d.desc)}</div><div class="gc-price">${d.price}</div></div></div>`);
+        gridItems.push(`<div class="gc"><div class="gc-wrap" ${d.img?`data-lbidx="${idx}"`:''}>${d.img?`<img class="gc-img" src="${d.img}" alt="" loading="lazy"><span class=\"zoom-icon\"><svg viewBox=\"0 0 16 16\"><circle cx=\"6\" cy=\"6\" r=\"4\"/><line x1=\"9\" y1=\"9\" x2=\"14\" y2=\"14\"/></svg></span>`:'<div style="aspect-ratio:1;background:#ece8e1"></div>'}</div><div class="gc-body"><div class="gc-name">${t(d.name)}${badges?` <span class="dish-badges" style="display:inline-flex">${badges}</span>`:''}</div><div class="gc-desc">${t(d.desc)}</div><div class="gc-price">${d.price}</div></div></div>`);
       });
     });
     if(gridItems.length) html+=`<div class="dish-grid">${gridItems.join('')}</div>`;
@@ -529,12 +532,12 @@ function renderTabContent(tab,lbOffset){
             <div class="dish-desc">${flavours}</div>
             <div class="dish-price">${price}</div>
           </div>
-          ${card.img?`<img class="dish-img" src="${card.img}" alt="" loading="lazy" data-lbidx="${idx}">`:''}</div>`;
+          ${card.img?`<span class="img-wrap" data-lbidx="${idx}" style="cursor:pointer"><img class="dish-img" src="${card.img}" alt="" loading="lazy"><span class=\"zoom-icon\"><svg viewBox=\"0 0 16 16\"><circle cx=\"6\" cy=\"6\" r=\"4\"/><line x1=\"9\" y1=\"9\" x2=\"14\" y2=\"14\"/></svg></span></span>`:''}</div>`;
       } else {
         (card.dishes||[]).forEach((d,di)=>{
           const idx=d.img?imgIdx++:null;
           const badges=(d.spicy?`<img src="https://drevicioyster.com/wp-content/uploads/2026/06/icon-spicy.png" class="badge-icon" title="Épicé">`:'')+(d.vegan?`<img src="https://drevicioyster.com/wp-content/uploads/2026/06/icon-vegan.png" class="badge-icon" title="Vegan">`:'');
-          html+=`<div class="dish-row"${di===0?' style="padding-top:0"':''}><div class="dish-text"><div class="dish-name-row"><span class="dish-name">${t(d.name)}</span>${badges?`<span class="dish-badges">${badges}</span>`:''}</div><div class="dish-desc">${t(d.desc)}</div><div class="dish-price">${d.price}</div></div>${d.img?`<img class="dish-img" src="${d.img}" alt="" loading="lazy" data-lbidx="${idx}">`:''}</div>`;
+          html+=`<div class="dish-row"${di===0?' style="padding-top:0"':''}><div class="dish-text"><div class="dish-name-row"><span class="dish-name">${t(d.name)}</span>${badges?`<span class="dish-badges">${badges}</span>`:''}</div><div class="dish-desc">${t(d.desc)}</div><div class="dish-price">${d.price}</div></div>${d.img?`<span class="img-wrap" data-lbidx="${idx}" style="cursor:pointer"><img class="dish-img" src="${d.img}" alt="" loading="lazy"><span class=\"zoom-icon\"><svg viewBox=\"0 0 16 16\"><circle cx=\"6\" cy=\"6\" r=\"4\"/><line x1=\"9\" y1=\"9\" x2=\"14\" y2=\"14\"/></svg></span></span>`:''}</div>`;
         });
       }
       html+=`</div></div>`;
@@ -653,7 +656,10 @@ function renderAdminGlobal(){
   if(!dishCount) h+=`<div style="font-size:12px;color:var(--text3);font-family:Jost,sans-serif;padding:8px">Aucun plat avec image dans le menu.</div>`;
   h+=`</div>`;
 
-  h+=`<button class="asave" onclick="renderAll();showToast('Sauvegardé !')">Appliquer</button>`;
+  h+=`<div style="display:flex;gap:8px;margin-top:6px">
+    <button class="asave" style="flex:1;background:rgba(16,40,94,0.12);color:var(--navy)" onclick="renderAll();showToast('Aperçu mis à jour')">👁 Aperçu</button>
+    <button class="asave" style="flex:1" onclick="renderAll();publishToGitHub()">🚀 Publier</button>
+  </div>`;
   return h;
 }
 
@@ -719,7 +725,10 @@ function renderAdminTab(ti){
   });
 
   h+=`<div class="admin-section"><button class="aadd" onclick="addCard(${ti})">+ Nouvelle carte dans cette tab</button></div>`;
-  h+=`<button class="asave" onclick="renderAll();showToast('Modifications appliquées !')">Appliquer</button>`;
+  h+=`<div style="display:flex;gap:8px;margin-top:6px">
+    <button class="asave" style="flex:1;background:rgba(16,40,94,0.12);color:var(--navy)" onclick="renderAll();showToast('Aperçu mis à jour')">👁 Aperçu</button>
+    <button class="asave" style="flex:1" onclick="renderAll();publishToGitHub()">🚀 Publier</button>
+  </div>`;
   return h;
 }
 
