@@ -17,7 +17,7 @@
   "specials": [
     {
       "id": "jour",
-      "active": false,
+      "active": true,
       "label": {
         "fr": "Menu du jour",
         "en": "Today's menu"
@@ -27,14 +27,14 @@
         "en": "Today's menu"
       },
       "desc": {
-        "fr": "",
+        "fr": "Champignons",
         "en": ""
       },
-      "price": ""
+      "price": "34€"
     },
     {
       "id": "midi",
-      "active": false,
+      "active": true,
       "label": {
         "fr": "Menu midi",
         "en": "Lunch menu"
@@ -44,10 +44,10 @@
         "en": "Lunch menu"
       },
       "desc": {
-        "fr": "",
+        "fr": "Mayonnaise",
         "en": ""
       },
-      "price": ""
+      "price": "14€"
     },
     {
       "id": "soir",
