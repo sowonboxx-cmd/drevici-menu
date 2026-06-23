@@ -511,20 +511,34 @@
             "fr": "Vins Rouges",
             "en": "New section"
           },
-          "dishes": [
+          "dishes": []
+        },
+        {
+          "label": {
+            "fr": "Les spiritueux artisanaux",
+            "en": "New section"
+          },
+          "type": "bevs",
+          "items": [
             {
               "name": {
-                "fr": "Côte du Rhône",
-                "en": "New dish"
+                "fr": "Liqueur de Citron ou de Menthe",
+                "en": "New drink"
               },
+              "price": "8€",
               "desc": {
-                "fr": "25cl / 50cl",
-                "en": ""
+                "fr": "4cl"
+              }
+            },
+            {
+              "name": {
+                "fr": "Gin, Rhum, Esprit Malt",
+                "en": "New drink"
               },
-              "price": "5€ / 17€",
-              "img": "",
-              "spicy": false,
-              "vegan": false
+              "price": "9€",
+              "desc": {
+                "fr": "4 cl"
+              }
             }
           ]
         }
