@@ -1,0 +1,753 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Drevici Oyster — Menu</title>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;0,700;1,400&family=Jost:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+:root{--navy:#10285E;--gold:#C6A24A;--bg:#F4F0EA;--white:#fff;--border:rgba(0,0,0,0.08);--text:#1a1a1a;--text2:#666;--text3:#aaa;--r:10px;--rs:6px}
+body{background:var(--bg);font-family:'Jost',sans-serif;font-weight:400;font-size:14px}
+
+/* ── LIGHTBOX ── */
+.lb{position:fixed;inset:0;background:rgba(0,0,0,0.93);z-index:1000;display:none;align-items:center;justify-content:center;flex-direction:column}
+.lb.open{display:flex}
+.lb-inner{position:relative;width:100%;max-width:580px;display:flex;align-items:center;justify-content:center;padding:0 52px}
+.lb img{max-width:100%;max-height:68vh;border-radius:12px;object-fit:contain}
+.lb-nav{position:absolute;top:50%;transform:translateY(-50%);background:rgba(255,255,255,0.15);border:none;color:#fff;width:38px;height:38px;border-radius:50%;cursor:pointer;font-size:20px;display:flex;align-items:center;justify-content:center;backdrop-filter:blur(4px);transition:background .15s}
+.lb-nav:hover{background:rgba(255,255,255,0.28)}
+.lb-prev{left:4px}.lb-next{right:4px}
+.lb-footer{margin-top:14px;text-align:center}
+.lb-dish-name{font-family:'Cormorant Garamond',serif;font-size:19px;color:#fff;font-weight:600;margin-bottom:4px}
+.lb-count{font-size:11px;color:rgba(255,255,255,0.45);letter-spacing:.12em;font-family:'Jost',sans-serif}
+.lb-close{position:absolute;top:14px;right:16px;background:rgba(255,255,255,0.12);border:none;color:#fff;font-size:18px;cursor:pointer;line-height:1;width:32px;height:32px;border-radius:50%;display:flex;align-items:center;justify-content:center}
+
+/* ── LAYOUT ── */
+.page{background:var(--bg);min-height:100vh;padding-bottom:100px}
+.container{max-width:680px;margin:0 auto;padding:0 16px}
+
+/* ── HEADER ── */
+.header{background:var(--navy);padding:14px 0 0}
+.header .container{display:flex;flex-direction:column;align-items:center}
+.header-top{width:100%;display:flex;justify-content:space-between;align-items:center;margin-bottom:10px}
+.header-top-left{display:flex;align-items:center;gap:6px}
+.header-top-right{display:flex;align-items:center;gap:6px}
+.ig-btn{display:flex;align-items:center;justify-content:center;width:30px;height:30px;border:1px solid rgba(255,255,255,0.25);border-radius:6px;background:rgba(255,255,255,0.1);cursor:pointer;text-decoration:none;transition:background .15s}
+.ig-btn:hover{background:rgba(255,255,255,0.2)}
+.ig-btn svg{width:15px;height:15px;stroke:#fff;fill:none;stroke-width:1.6;stroke-linecap:round;stroke-linejoin:round}
+.lang-wrap{position:relative}
+.lang-sel{display:flex;align-items:center;gap:3px;padding:5px 10px;border:1px solid rgba(255,255,255,0.25);border-radius:6px;cursor:pointer;background:rgba(255,255,255,0.1);color:rgba(255,255,255,0.85);font-size:11px;font-family:'Jost',sans-serif;font-weight:500;letter-spacing:.06em;user-select:none}
+.lang-dd{position:absolute;right:0;top:calc(100% + 6px);background:#fff;border:1px solid rgba(0,0,0,0.1);border-radius:8px;overflow:hidden;z-index:400;display:none;min-width:140px;box-shadow:0 4px 20px rgba(0,0,0,0.15)}
+.lang-dd.open{display:block}
+.lang-opt{padding:9px 14px;font-size:12px;color:var(--text2);cursor:pointer;font-family:'Jost',sans-serif;white-space:nowrap;transition:background .1s}
+.lang-opt:hover{background:var(--bg)}
+.lang-opt.active{color:var(--navy);font-weight:500}
+.admin-btn{display:flex;align-items:center;gap:4px;padding:5px 10px;border:1px solid rgba(255,255,255,0.25);border-radius:6px;cursor:pointer;background:rgba(255,255,255,0.1);color:rgba(255,255,255,0.75);font-size:11px;font-family:'Jost',sans-serif;font-weight:500;letter-spacing:.06em;transition:background .15s}
+.admin-btn:hover{background:rgba(255,255,255,0.2)}
+.admin-btn svg{width:13px;height:13px;stroke:currentColor;fill:none;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}
+.logo-img{height:48px;object-fit:contain;margin-bottom:5px}
+.header-sub{font-size:10px;font-weight:300;color:rgba(255,255,255,0.45);letter-spacing:.14em;text-transform:uppercase;margin-bottom:14px;text-align:center}
+
+/* ── STICKY NAV ── */
+.sticky-nav{position:sticky;top:0;z-index:99}
+.nav-bar{background:var(--navy);overflow-x:auto;scrollbar-width:none;display:flex;border-bottom:1px solid rgba(255,255,255,0.1)}
+.nav-bar::-webkit-scrollbar{display:none}
+.nav-bar-inner{display:flex;max-width:680px;margin:0 auto;padding:0 16px;min-width:max-content}
+.nav-tab{flex:none;padding:11px 14px;font-size:11px;font-weight:500;font-family:'Jost',sans-serif;letter-spacing:.08em;text-transform:uppercase;color:rgba(255,255,255,0.4);cursor:pointer;border-bottom:2px solid transparent;white-space:nowrap;transition:all .2s}
+.nav-tab.active{color:#fff;border-bottom-color:var(--gold)}
+.view-bar{background:#fff;border-bottom:1px solid var(--border)}
+.view-bar-inner{max-width:680px;margin:0 auto;padding:9px 16px;display:flex;align-items:center;justify-content:space-between}
+.view-tab-label{font-size:10px;font-weight:500;letter-spacing:.12em;text-transform:uppercase;color:var(--text3);font-family:'Jost',sans-serif}
+.view-btns{display:flex;gap:4px}
+.view-btn{width:30px;height:30px;border:1px solid var(--border);border-radius:6px;cursor:pointer;background:#fff;color:var(--text3);display:flex;align-items:center;justify-content:center;transition:all .15s}
+.view-btn svg{width:15px;height:15px;stroke:currentColor;fill:none;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}
+.view-btn.active{background:var(--navy);border-color:var(--navy);color:#fff}
+.view-btn.active svg{stroke:#fff}
+
+/* ── CONTENT ── */
+.tab-content{display:none;padding:18px 0}
+.tab-content.active{display:block}
+.cards-stack{display:flex;flex-direction:column;gap:12px}
+
+/* ── INTRO CARD ── */
+.intro-card{background:#fff;border-radius:var(--r);border:1px solid var(--border);padding:18px 20px}
+.intro-card-label{font-size:10px;font-weight:500;letter-spacing:.14em;text-transform:uppercase;color:var(--text3);font-family:'Jost',sans-serif;margin-bottom:8px}
+.intro-card-text{font-family:'Cormorant Garamond',serif;font-size:17px;font-style:italic;color:var(--text);line-height:1.6}
+
+/* ── FEATURED ── */
+.featured-card{background:#fff;border-radius:var(--r);border:1px solid var(--border);padding:16px}
+.featured-label{font-size:10px;font-weight:500;letter-spacing:.14em;text-transform:uppercase;color:var(--text3);font-family:'Jost',sans-serif;margin-bottom:12px}
+.featured-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:8px}
+.featured-item{border-radius:8px;overflow:hidden;border:1px solid var(--border)}
+.featured-item-img{width:100%;aspect-ratio:1;object-fit:cover;display:block;background:#ece8e1}
+.featured-item-body{padding:8px 10px 10px}
+.featured-item-name{font-family:'Cormorant Garamond',serif;font-size:14px;font-weight:600;color:var(--navy);line-height:1.2}
+.featured-item-price{font-size:11px;font-weight:500;color:var(--gold);margin-top:3px}
+
+/* ── CARD ── */
+.card{background:#fff;border-radius:var(--r);border:1px solid var(--border)}
+.card-hdr{padding:14px 16px 0;display:flex;align-items:center;justify-content:space-between}
+.card-label{font-size:10px;font-weight:500;letter-spacing:.14em;text-transform:uppercase;color:var(--text3);font-family:'Jost',sans-serif}
+.card-body{padding:14px 16px 16px}
+
+/* ── DISH LIST ── */
+.dish-row{display:flex;gap:12px;align-items:flex-start;padding:12px 0;border-bottom:1px solid rgba(0,0,0,0.05)}
+.dish-row:first-child{padding-top:0}
+.dish-row:last-child{border-bottom:none;padding-bottom:0}
+.dish-text{flex:1;min-width:0}
+.dish-name-row{display:flex;align-items:center;gap:6px;flex-wrap:wrap}
+.dish-name{font-family:'Cormorant Garamond',serif;font-size:16px;font-weight:600;color:var(--navy);line-height:1.2}
+.dish-badges{display:flex;gap:4px;align-items:center}
+.badge-icon{width:18px;height:18px;object-fit:contain;display:inline-block}
+.dish-desc{font-size:12px;font-weight:300;color:var(--text2);line-height:1.55;margin-top:2px;display:-webkit-box;-webkit-line-clamp:3;-webkit-box-orient:vertical;overflow:hidden}
+.dish-price{font-size:12px;font-weight:500;color:var(--gold);margin-top:6px}
+.dish-img{width:80px;height:80px;border-radius:8px;object-fit:cover;flex:none;background:#ece8e1;cursor:pointer;transition:opacity .15s}
+.dish-img:hover{opacity:.82}
+
+/* ── GRID ── */
+.dish-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:10px}
+.gc{background:#fff;border-radius:var(--r);border:1px solid var(--border);overflow:hidden}
+.gc-img{width:100%;aspect-ratio:1;object-fit:cover;display:block;background:#ece8e1;cursor:pointer;transition:opacity .15s}
+.gc-img:hover{opacity:.82}
+.gc-body{padding:10px 12px 12px}
+.gc-name{font-family:'Cormorant Garamond',serif;font-size:15px;font-weight:600;color:var(--navy);margin-bottom:2px;line-height:1.2}
+.gc-desc{font-size:11px;font-weight:300;color:var(--text2);line-height:1.4;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+.gc-price{font-size:12px;font-weight:500;color:var(--gold);margin-top:5px}
+
+/* ── VARIANTS / BEV ── */
+.variant-row{display:flex;justify-content:space-between;align-items:center;padding:8px 0;border-bottom:1px solid rgba(0,0,0,0.05)}
+.variant-row:last-child{border-bottom:none;padding-bottom:0}
+.variant-name{font-family:'Cormorant Garamond',serif;font-size:15px;font-weight:400;color:var(--text)}
+.variant-price{font-size:12px;font-weight:500;color:var(--gold)}
+.bev-row{display:flex;justify-content:space-between;align-items:center;padding:10px 0;border-bottom:1px solid rgba(0,0,0,0.05)}
+.bev-row:last-child{border-bottom:none;padding-bottom:0}
+.bev-name{font-family:'Cormorant Garamond',serif;font-size:16px;font-weight:400;color:var(--text)}
+.bev-price{font-size:12px;font-weight:500;color:var(--gold)}
+.tag{display:inline-block;font-size:10px;padding:2px 7px;border-radius:20px;border:1px solid rgba(198,162,74,0.35);color:var(--gold);margin-left:6px;vertical-align:middle;font-family:'Jost',sans-serif;letter-spacing:.04em}
+
+/* ── SPECIALS BANNER (menu du jour/midi/soir) ── */
+.special-banner{background:var(--navy);border-radius:var(--r);padding:16px 18px;margin-bottom:4px}
+.special-banner-label{font-size:10px;letter-spacing:.14em;text-transform:uppercase;color:rgba(255,255,255,0.45);font-family:'Jost',sans-serif;margin-bottom:4px}
+.special-banner-title{font-family:'Cormorant Garamond',serif;font-size:20px;font-weight:700;color:#fff;margin-bottom:6px}
+.special-banner-text{font-size:12px;font-weight:300;color:rgba(255,255,255,0.65);line-height:1.6}
+.special-banner-price{font-size:15px;font-weight:500;color:var(--gold);margin-top:8px}
+
+/* ── STICKY RESERVE ── */
+.sticky-reserve{position:sticky;bottom:0;z-index:100;padding:10px 0 14px;background:linear-gradient(to top,var(--bg) 70%,transparent)}
+.sticky-reserve .container{display:block}
+.reserve-btn{display:block;width:100%;padding:15px;background:var(--navy);color:#fff;border:none;border-radius:10px;font-size:14px;font-weight:500;font-family:'Jost',sans-serif;letter-spacing:.06em;cursor:pointer;text-align:center;text-decoration:none}
+
+/* ── ADMIN ── */
+.admin-overlay{position:fixed;inset:0;background:rgba(0,0,0,0.45);z-index:500;display:none}
+.admin-overlay.open{display:block}
+.admin-panel{position:fixed;top:0;right:0;bottom:0;width:min(440px,100vw);background:#fff;z-index:501;transform:translateX(100%);transition:transform .3s cubic-bezier(.4,0,.2,1);display:flex;flex-direction:column}
+.admin-panel.open{transform:translateX(0)}
+.admin-hdr{padding:16px 18px;border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;background:#fff;z-index:2}
+.admin-hdr-title{font-family:'Cormorant Garamond',serif;font-size:20px;font-weight:700;color:var(--navy)}
+.admin-hdr-right{display:flex;gap:6px;align-items:center}
+.admin-tab-dd{padding:5px 10px;border:1px solid var(--border);border-radius:6px;font-size:12px;font-family:'Jost',sans-serif;color:var(--text);background:#fff;cursor:pointer;outline:none;max-width:160px}
+.admin-close{background:none;border:1px solid var(--border);border-radius:6px;padding:5px 9px;cursor:pointer;font-size:17px;color:var(--text2);line-height:1}
+.admin-body{flex:1;overflow-y:auto;padding:16px}
+.admin-section{margin-bottom:20px}
+.admin-sect-title{font-size:10px;font-weight:500;letter-spacing:.14em;text-transform:uppercase;color:var(--text3);font-family:'Jost',sans-serif;margin-bottom:10px;padding-bottom:8px;border-bottom:1px solid var(--border)}
+.af{margin-bottom:9px}
+.al{font-size:11px;font-weight:500;color:var(--text2);font-family:'Jost',sans-serif;margin-bottom:3px;display:block;letter-spacing:.04em}
+.ai{width:100%;padding:7px 10px;border:1px solid var(--border);border-radius:var(--rs);font-size:13px;font-family:'Jost',sans-serif;color:var(--text);background:#fff;outline:none;transition:border-color .15s}
+.ai:focus{border-color:var(--navy)}
+.ai-row{display:flex;gap:6px}
+.ai-sm{width:80px!important;flex:none!important}
+.ai-check{display:flex;align-items:center;gap:6px;cursor:pointer;font-size:12px;font-family:'Jost',sans-serif;color:var(--text2)}
+.ai-check input{cursor:pointer;accent-color:var(--navy)}
+.admin-card{background:var(--bg);border-radius:var(--rs);padding:10px 12px;margin-bottom:8px;border:1px solid var(--border)}
+.admin-card-hdr{display:flex;align-items:center;justify-content:space-between;margin-bottom:8px}
+.admin-card-num{font-size:11px;color:var(--text3);font-family:'Jost',sans-serif}
+.adel{background:none;border:none;color:var(--text3);cursor:pointer;font-size:17px;line-height:1;padding:2px 4px;border-radius:4px}
+.adel:hover{color:#c0392b;background:#fef0ee}
+.apin{background:none;border:none;cursor:pointer;font-size:16px;line-height:1;padding:2px 4px;border-radius:4px;color:var(--text3)}
+.apin.pinned{color:var(--gold)}
+.apin:hover{background:rgba(198,162,74,0.1)}
+.aadd{width:100%;padding:9px;border:1.5px dashed var(--border);border-radius:var(--rs);background:none;color:var(--text3);font-size:12px;font-family:'Jost',sans-serif;cursor:pointer;transition:all .15s;margin-top:4px}
+.aadd:hover{border-color:var(--navy);color:var(--navy)}
+.asave{width:100%;padding:12px;background:var(--navy);color:#fff;border:none;border-radius:50px;font-size:13px;font-weight:500;font-family:'Jost',sans-serif;cursor:pointer;margin-top:6px;letter-spacing:.04em}
+.adanger{width:100%;padding:10px;background:none;color:#c0392b;border:1px solid #f5c6c2;border-radius:50px;font-size:12px;font-family:'Jost',sans-serif;cursor:pointer;margin-top:6px}
+.admin-toggle{display:flex;align-items:center;gap:8px;padding:8px 10px;background:var(--bg);border-radius:var(--rs);border:1px solid var(--border);margin-bottom:8px;cursor:pointer;transition:border-color .15s}
+.admin-toggle:hover{border-color:var(--navy)}
+.admin-toggle input[type=checkbox]{accent-color:var(--navy);cursor:pointer}
+.admin-toggle label{font-size:12px;font-family:'Jost',sans-serif;color:var(--text);cursor:pointer;flex:1}
+.admin-badge{display:inline-block;font-size:9px;padding:2px 6px;border-radius:20px;background:#e8f0fd;color:var(--navy);font-family:'Jost',sans-serif;margin-left:6px;vertical-align:middle;letter-spacing:.04em}
+.badge-group{display:flex;gap:6px;margin-top:6px}
+.badge-check{display:flex;align-items:center;gap:4px;font-size:11px;font-family:'Jost',sans-serif;color:var(--text2);cursor:pointer}
+.badge-check img{width:16px;height:16px;object-fit:contain}
+.badge-check input{accent-color:var(--navy);cursor:pointer}
+
+/* ── CONFIRM MODAL ── */
+.confirm-modal{position:fixed;inset:0;background:rgba(0,0,0,0.4);z-index:600;display:none;align-items:center;justify-content:center;padding:20px}
+.confirm-modal.open{display:flex}
+.confirm-box{background:#fff;border-radius:12px;padding:24px;max-width:320px;width:100%;text-align:center}
+.confirm-title{font-family:'Cormorant Garamond',serif;font-size:20px;font-weight:700;color:var(--navy);margin-bottom:8px}
+.confirm-text{font-size:13px;color:var(--text2);font-family:'Jost',sans-serif;line-height:1.5;margin-bottom:20px}
+.confirm-btns{display:flex;gap:8px}
+.confirm-cancel{flex:1;padding:11px;border:1px solid var(--border);border-radius:50px;background:#fff;font-size:13px;font-family:'Jost',sans-serif;cursor:pointer;color:var(--text2)}
+.confirm-ok{flex:1;padding:11px;border:none;border-radius:50px;background:#c0392b;color:#fff;font-size:13px;font-family:'Jost',sans-serif;cursor:pointer;font-weight:500}
+
+/* ── TOAST ── */
+#toast{position:fixed;bottom:90px;left:50%;transform:translateX(-50%);background:var(--navy);color:#fff;padding:9px 18px;border-radius:50px;font-size:12px;font-family:'Jost',sans-serif;z-index:9999;opacity:0;transition:opacity .3s;pointer-events:none;white-space:nowrap}
+</style>
+</head>
+<body>
+
+<div id="toast"></div>
+
+<!-- LIGHTBOX -->
+<div class="lb" id="lb">
+  <button class="lb-close" onclick="closeLb()">✕</button>
+  <div class="lb-inner">
+    <button class="lb-nav lb-prev" onclick="lbStep(-1)">&#8249;</button>
+    <img id="lbImg" src="" alt=""/>
+    <button class="lb-nav lb-next" onclick="lbStep(1)">&#8250;</button>
+  </div>
+  <div class="lb-footer">
+    <div class="lb-dish-name" id="lbName"></div>
+    <div class="lb-count" id="lbCount"></div>
+  </div>
+</div>
+
+<!-- CONFIRM MODAL -->
+<div class="confirm-modal" id="confirmModal">
+  <div class="confirm-box">
+    <div class="confirm-title">Confirmer la suppression</div>
+    <div class="confirm-text" id="confirmText">Cette action est irréversible.</div>
+    <div class="confirm-btns">
+      <button class="confirm-cancel" onclick="closeConfirm()">Annuler</button>
+      <button class="confirm-ok" id="confirmOk">Supprimer</button>
+    </div>
+  </div>
+</div>
+
+<!-- ADMIN -->
+<div class="admin-overlay" id="adminOverlay" onclick="closeAdmin()"></div>
+<aside class="admin-panel" id="adminPanel">
+  <div class="admin-hdr">
+    <span class="admin-hdr-title">Back-office <span class="admin-badge">Admin</span></span>
+    <div class="admin-hdr-right">
+      <select class="admin-tab-dd" id="adminTabDd" onchange="adminGoTab(this.value)"></select>
+      <button class="admin-close" onclick="closeAdmin()">✕</button>
+    </div>
+  </div>
+  <div class="admin-body" id="adminBody"></div>
+</aside>
+
+<!-- PAGE -->
+<div class="page" id="app">
+  <div class="header">
+    <div class="container">
+      <div class="header-top">
+        <div class="header-top-left">
+          <a class="ig-btn" href="https://www.instagram.com/drevicioysterbar/" target="_blank" aria-label="Instagram">
+            <svg viewBox="0 0 24 24"><rect x="2" y="2" width="20" height="20" rx="5" ry="5"/><path d="M16 11.37A4 4 0 1112.63 8 4 4 0 0116 11.37z"/><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"/></svg>
+          </a>
+        </div>
+        <img class="logo-img" src="https://drevicioyster.com/wp-content/uploads/2026/06/Drevici-Oyster-white-HD.png" alt="Drevici Oyster" onerror="this.style.display='none'"/>
+        <div class="header-top-right">
+          <div class="lang-wrap">
+            <div class="lang-sel" onclick="toggleDD()">
+              <span id="langCur">FR</span>
+              <svg width="10" height="7" viewBox="0 0 10 7" fill="none" stroke="currentColor" stroke-width="1.5"><polyline points="1,1 5,6 9,1"/></svg>
+            </div>
+            <div class="lang-dd" id="langDD">
+              <div class="lang-opt active" data-lang="fr" onclick="setLang('fr')">FR — Français</div>
+              <div class="lang-opt" data-lang="en" onclick="setLang('en')">EN — English</div>
+              <div class="lang-opt" data-lang="es" onclick="setLang('es')">ES — Español</div>
+              <div class="lang-opt" data-lang="it" onclick="setLang('it')">IT — Italiano</div>
+              <div class="lang-opt" data-lang="kr" onclick="setLang('kr')">KR — 한국어</div>
+              <div class="lang-opt" data-lang="jp" onclick="setLang('jp')">JP — 日本語</div>
+            </div>
+          </div>
+          <button class="admin-btn" onclick="openAdmin()">
+            <svg viewBox="0 0 16 16"><circle cx="8" cy="6" r="2.5"/><path d="M2 14c0-3 2.7-5.5 6-5.5s6 2.5 6 5.5"/></svg>
+            Admin
+          </button>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <div class="sticky-nav">
+    <div class="nav-bar">
+      <div class="nav-bar-inner" id="nav"></div>
+    </div>
+    <div class="view-bar">
+      <div class="view-bar-inner">
+        <span class="view-tab-label" id="viewLabel"></span>
+        <div class="view-btns">
+          <button class="view-btn active" id="btnList" onclick="setView('list')" aria-label="Liste">
+            <svg viewBox="0 0 16 16"><line x1="2" y1="4" x2="14" y2="4"/><line x1="2" y1="8" x2="14" y2="8"/><line x1="2" y1="12" x2="14" y2="12"/></svg>
+          </button>
+          <button class="view-btn" id="btnGrid" onclick="setView('grid')" aria-label="Grille">
+            <svg viewBox="0 0 16 16"><rect x="2" y="2" width="5" height="5" rx="1"/><rect x="9" y="2" width="5" height="5" rx="1"/><rect x="2" y="9" width="5" height="5" rx="1"/><rect x="9" y="9" width="5" height="5" rx="1"/></svg>
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div id="tabsContainer"></div>
+
+  <div class="sticky-reserve">
+    <div class="container">
+      <a class="reserve-btn" id="reserveMain" href="https://LIEN_A_DEFINIR">Réserver une table</a>
+    </div>
+  </div>
+</div>
+
+<script>
+// ═══════════════════════════════════════════
+// DATA
+// ═══════════════════════════════════════════
+let DATA = {
+  hero: { fr:'Fruits de mer · Bretagne · Paris', en:'Seafood · Brittany · Paris', es:'Mariscos · Bretaña · París', it:'Frutti di mare · Bretagna · Parigi', kr:'해산물 · 브르타뉴 · 파리', jp:'シーフード · ブルターニュ · パリ' },
+  intro: { active:false, text:{fr:'Bienvenue chez Drevici Oyster, un bar à huîtres breton au cœur de Paris.',en:'Welcome to Drevici Oyster, a Breton oyster bar in the heart of Paris.'} },
+  specials: [
+    { id:'jour', active:false, label:{fr:'Menu du jour',en:'Today\'s menu'}, title:{fr:'Menu du Jour',en:'Today\'s menu'}, desc:{fr:'',en:''}, price:''},
+    { id:'midi', active:false, label:{fr:'Menu midi',en:'Lunch menu'}, title:{fr:'Menu Midi',en:'Lunch menu'}, desc:{fr:'',en:''}, price:''},
+    { id:'soir', active:false, label:{fr:'Menu soir',en:'Evening menu'}, title:{fr:'Menu Soir',en:'Evening menu'}, desc:{fr:'',en:''}, price:''}
+  ],
+  pinnedDishes: [], // array of dish refs {tabId, cardIdx, dishIdx}
+  tabs: [
+    {
+      id:'huitres', isHome:true,
+      label:{fr:'Huîtres',en:'Oysters',es:'Ostras',it:'Ostriche',kr:'굴',jp:'牡蠣'},
+      cards:[{
+        label:{fr:'À la carte',en:'À la carte',es:'A la carta',it:'Alla carta',kr:'단품',jp:'アラカルト'},
+        dishes:[
+          {name:{fr:'Huîtres nature n°4',en:'Natural oysters n°4',es:'Ostras naturales n°4',it:'Ostriche naturali n°4',kr:'자연산 굴 n°4',jp:'天然牡蠣 n°4'},desc:{fr:'Fraîches, iodées, servies sur lit de glace avec pain de seigle et beurre salé',en:'Fresh, briny, on ice with rye bread and salted butter',es:'Frescas sobre hielo con pan de centeno',it:'Fresche su ghiaccio con pane di segale',kr:'신선한 굴, 얼음 위에 호밀빵과 가염버터',jp:'氷の上、ライ麦パンと有塩バター'},price:'Les 6 — 12€ · Les 12 — 22€',img:'https://drevicioyster.com/wp-content/uploads/2026/05/Artboard-%E2%80%93-3-1000x1000.webp',spicy:false,vegan:false},
+          {name:{fr:'Huîtres gratinées',en:'Gratin oysters',es:'Ostras gratinadas',it:'Ostriche gratinate',kr:'그라탱 굴',jp:'グラタン牡蠣'},desc:{fr:'Gratinées au four, beurre herbé, chapelure croustillante, servies chaudes',en:'Oven-gratinated, herb butter, crunchy breadcrumbs, hot',es:'Gratinadas al horno, mantequilla de hierbas',it:'Gratinate al forno, burro alle erbe',kr:'오븐 그라탱, 허브 버터, 바삭한 빵가루',jp:'オーブングラタン、ハーブバター'},price:'Les 3 — 9€ · Les 6 — 17€',img:'https://drevicioyster.com/wp-content/uploads/2026/05/gratines-1.webp',spicy:false,vegan:false}
+        ]
+      }]
+    },
+    {
+      id:'mer',
+      label:{fr:'Fruits de mer',en:'Seafood',es:'Mariscos',it:'Frutti di mare',kr:'해산물',jp:'シーフード'},
+      cards:[{
+        label:{fr:'À partager',en:'To share',es:'Para compartir',it:'Da condividere',kr:'공유',jp:'シェア'},
+        dishes:[
+          {name:{fr:'Planche de charcuterie',en:'Charcuterie board',es:'Tabla de embutidos',it:'Tagliere di salumi',kr:'샤퀴테리 플레이트',jp:'シャルキュトリーボード'},desc:{fr:'Sélection de charcuteries artisanales, cornichons, pain grillé et condiments maison',en:'Artisan cured meats, gherkins, toast and house condiments',es:'Embutidos artesanales, pepinillos y pan tostado',it:'Salumi artigianali, cetrioli e pane tostato',kr:'수제 샤퀴테리 모듬, 코르니숑, 구운 빵',jp:'自家製シャルキュトリー、ピクルス、トースト'},price:'19€',img:'https://drevicioyster.com/wp-content/uploads/2026/05/charcute-x.webp',spicy:false,vegan:false},
+          {name:{fr:'6 gambas de Madagascar',en:'6 Madagascar prawns',es:'6 gambas de Madagascar',it:'6 gamberi del Madagascar',kr:'마다가스카르 왕새우 6마리',jp:'マダガスカル海老 6尾'},desc:{fr:'Gambas sauvages grillées à la plancha, beurre de corail, citron vert et fleur de sel',en:'Wild prawns grilled on plancha, coral butter, lime and fleur de sel',es:'Gambas salvajes a la plancha, mantequilla coral, lima',it:'Gamberi selvatici alla piastra, burro di corallo, lime',kr:'야생 왕새우 플란차 구이, 코럴 버터, 라임',jp:'天然海老の鉄板焼き、コーラルバター'},price:'12€',img:'https://drevicioyster.com/wp-content/uploads/2026/05/gambas-1000x1000.webp',spicy:true,vegan:false}
+        ]
+      }]
+    },
+    {
+      id:'tartinades',
+      label:{fr:'Tartinades',en:'Spreads',es:'Untables',it:'Paté',kr:'스프레드',jp:'スプレッド'},
+      cards:[
+        {
+          label:{fr:'À tartiner',en:'To spread',es:'Para untar',it:'Da spalmare',kr:'스프레드',jp:'スプレッド'},
+          dishes:[
+            {name:{fr:'Tartare d\'algues (Begood Alg)',en:'Seaweed tartare (Begood Alg)',es:'Tartar de algas (Begood Alg)',it:'Tartare di alghe (Begood Alg)',kr:'해조류 타르타르 (Begood Alg)',jp:'海藻タルタル (Begood Alg)'},desc:{fr:'Pomme et miel · Poivrons grillés et paprika · Caviar de nori · Soleil',en:'Apple & honey · Roasted pepper & paprika · Nori caviar · Sun',es:'Manzana y miel · Pimientos y páprika · Caviar nori · Sol',it:'Mela e miele · Peperoni e paprika · Caviale nori · Sole',kr:'사과와 꿀 · 구운 피망과 파프리카 · 노리 캐비아 · 썬',jp:'りんごと蜂蜜 · 焼きパプリカ · 海苔キャビア · サン'},price:'9€',img:'https://drevicioyster.com/wp-content/uploads/2026/06/ALG02-1000x1000.webp',spicy:false,vegan:true}
+          ]
+        },
+        {
+          label:{fr:'Rillettes (Groix & Nature)',en:'Rillettes (Groix & Nature)',es:'Rillettes (Groix & Nature)',it:'Rillettes (Groix & Nature)',kr:'리예트 (Groix & Nature)',jp:'リエット (Groix & Nature)'},
+          type:'variants',
+          img:'https://drevicioyster.com/wp-content/uploads/2026/06/rillettes-2.webp',
+          variants:[
+            {name:{fr:'Sardine',en:'Sardine',es:'Sardina',it:'Sardina',kr:'정어리',jp:'イワシ'},price:'9€'},
+            {name:{fr:'Saint-Jacques',en:'Scallop',es:'Vieira',it:'Capasanta',kr:'가리비',jp:'ホタテ'},price:'9€'},
+            {name:{fr:'Homard bleu',en:'Blue lobster',es:'Bogavante azul',it:'Astice blu',kr:'블루 랍스터',jp:'ブルーロブスター'},price:'9€'},
+            {name:{fr:'Truite',en:'Trout',es:'Trucha',it:'Trota',kr:'송어',jp:'トラウト'},price:'9€'},
+            {name:{fr:'Maquereau',en:'Mackerel',es:'Caballa',it:'Sgombro',kr:'고등어',jp:'サバ'},price:'9€'},
+            {name:{fr:'Ormeaux',en:'Abalone',es:'Orejo de mar',it:'Orecchie di mare',kr:'전복',jp:'アワビ'},price:'9€'},
+            {name:{fr:'Daurade',en:'Sea bream',es:'Dorada',it:'Orata',kr:'도미',jp:'タイ'},price:'9€'}
+          ]
+        }
+      ]
+    },
+    {
+      id:'boissons',
+      label:{fr:'Boissons',en:'Drinks',es:'Bebidas',it:'Bevande',kr:'음료',jp:'飲み物'},
+      cards:[
+        {label:{fr:'Vins blancs',en:'White wines',es:'Vinos blancos',it:'Vini bianchi',kr:'화이트 와인',jp:'白ワイン'},type:'bevs',items:[{name:'Muscadet Sèvre et Maine',price:'7€'},{name:'Chablis 1er cru',price:'12€'},{name:'Picpoul de Pinet',price:'8€'}]},
+        {label:{fr:'Bulles',en:'Sparkling',es:'Espumosos',it:'Bollicine',kr:'스파클링',jp:'スパークリング'},type:'bevs',items:[{name:{fr:'Champagne brut',en:'Champagne brut',es:'Champán brut',it:'Champagne brut',kr:'샴페인 브뤼',jp:'シャンパーニュ'},price:'14€'},{name:{fr:'Crémant d\'Alsace',en:'Crémant d\'Alsace',es:'Crémant de Alsacia',it:'Crémant d\'Alsazia',kr:'크레망 달자스',jp:'クレマン ダルザス'},price:'9€'}]},
+        {label:{fr:'Softs',en:'Soft drinks',es:'Sin alcohol',it:'Analcolici',kr:'논알코올',jp:'ノンアルコール'},type:'bevs',items:[{name:{fr:'Eau minérale',en:'Mineral water',es:'Agua mineral',it:'Acqua minerale',kr:'미네랄 워터',jp:'ミネラルウォーター'},price:'3€'},{name:{fr:'Café / Espresso',en:'Coffee',es:'Café',it:'Caffè',kr:'커피',jp:'コーヒー'},price:'2€'}]}
+      ]
+    }
+  ]
+};
+
+let lang='fr', view='list', currentTabId='huitres';
+let lbImages=[], lbIdx=0;
+let confirmCallback=null;
+
+// ═══════════════════════════════════════════
+// UTILS
+// ═══════════════════════════════════════════
+function t(obj){ if(!obj) return ''; if(typeof obj==='string') return obj; return obj[lang]||obj.fr||''; }
+
+function showToast(msg){
+  const el=document.getElementById('toast');
+  el.textContent=msg; el.style.opacity='1';
+  clearTimeout(el._t); el._t=setTimeout(()=>el.style.opacity='0',2200);
+}
+
+function confirm(msg,cb){
+  document.getElementById('confirmText').textContent=msg;
+  document.getElementById('confirmOk').onclick=()=>{closeConfirm();cb();};
+  document.getElementById('confirmModal').classList.add('open');
+}
+function closeConfirm(){ document.getElementById('confirmModal').classList.remove('open'); }
+
+// ═══════════════════════════════════════════
+// LIGHTBOX
+// ═══════════════════════════════════════════
+function collectLbImages(){
+  lbImages=[];
+  DATA.tabs.forEach(tab=>{
+    tab.cards.forEach(card=>{
+      if(card.dishes) card.dishes.forEach(d=>{ if(d.img) lbImages.push({src:d.img,name:t(d.name)}); });
+      if(card.img && !card.dishes) lbImages.push({src:card.img,name:t(card.label)});
+    });
+  });
+}
+function openLb(idx){ collectLbImages(); lbIdx=idx; renderLbSlide(); document.getElementById('lb').classList.add('open'); document.body.style.overflow='hidden'; }
+function closeLb(){ document.getElementById('lb').classList.remove('open'); document.body.style.overflow=''; }
+function lbStep(d){ lbIdx=(lbIdx+d+lbImages.length)%lbImages.length; renderLbSlide(); }
+function renderLbSlide(){ document.getElementById('lbImg').src=lbImages[lbIdx].src; document.getElementById('lbName').textContent=lbImages[lbIdx].name; document.getElementById('lbCount').textContent=(lbIdx+1)+' / '+lbImages.length; }
+document.getElementById('lb').addEventListener('click',e=>{ if(e.target===e.currentTarget) closeLb(); });
+document.addEventListener('keydown',e=>{ const lb=document.getElementById('lb'); if(!lb.classList.contains('open'))return; if(e.key==='Escape')closeLb(); if(e.key==='ArrowLeft')lbStep(-1); if(e.key==='ArrowRight')lbStep(1); });
+
+// ═══════════════════════════════════════════
+// RENDER
+// ═══════════════════════════════════════════
+function renderAll(){ collectLbImages(); renderNav(); renderTabs(); renderViewBar();  }
+
+function renderNav(){
+  const nav=document.getElementById('nav'); nav.innerHTML='';
+  DATA.tabs.forEach(tab=>{
+    const el=document.createElement('div');
+    el.className='nav-tab'+(tab.id===currentTabId?' active':'');
+    el.textContent=t(tab.label);
+    el.addEventListener('click',()=>{ currentTabId=tab.id; renderAll(); });
+    nav.appendChild(el);
+  });
+}
+
+function renderViewBar(){
+  const tab=DATA.tabs.find(tb=>tb.id===currentTabId);
+  document.getElementById('viewLabel').textContent=tab?t(tab.label):'';
+  document.getElementById('btnList').classList.toggle('active',view==='list');
+  document.getElementById('btnGrid').classList.toggle('active',view==='grid');
+}
+
+function setView(v){ view=v; renderAll(); }
+
+function renderTabs(){
+  const container=document.getElementById('tabsContainer'); container.innerHTML='';
+  collectLbImages();
+  let lbCounter=0;
+  DATA.tabs.forEach(tab=>{
+    const section=document.createElement('div');
+    section.className='tab-content'+(tab.id===currentTabId?' active':'');
+    section.id='tab-'+tab.id;
+    const inner=document.createElement('div');
+    inner.className='container';
+    // compute lbOffset
+    let lbOffset=0;
+    for(let i=0;i<DATA.tabs.length;i++){
+      if(DATA.tabs[i].id===tab.id) break;
+      DATA.tabs[i].cards.forEach(c=>{ if(c.dishes) c.dishes.forEach(d=>{ if(d.img) lbOffset++; }); if(c.img&&!c.dishes) lbOffset++; });
+    }
+    inner.innerHTML=renderTabContent(tab,lbOffset);
+    section.appendChild(inner);
+    container.appendChild(section);
+    // attach lb handlers
+    section.querySelectorAll('[data-lbidx]').forEach(el=>{ el.addEventListener('click',()=>openLb(parseInt(el.dataset.lbidx))); });
+  });
+}
+
+function renderTabContent(tab,lbOffset){
+  let imgIdx=lbOffset;
+  let html='<div class="cards-stack">';
+
+  // HOME: specials + intro + featured
+  if(tab.isHome){
+    // active specials
+    DATA.specials.forEach(sp=>{
+      if(sp.active && (t(sp.desc)||sp.price)){
+        html+=`<div class="special-banner"><div class="special-banner-label">${t(sp.label)}</div><div class="special-banner-title">${t(sp.title)}</div><div class="special-banner-text">${t(sp.desc)}</div>${sp.price?`<div class="special-banner-price">${sp.price}</div>`:''}</div>`;
+      }
+    });
+    // intro
+    if(DATA.intro.active && t(DATA.intro.text)){
+      html+=`<div class="intro-card"><div class="intro-card-label">Le restaurant</div><div class="intro-card-text">${t(DATA.intro.text)}</div></div>`;
+    }
+    // featured / pinned
+    const pins=DATA.pinnedDishes||[];
+    const pinDishes=pins.map(p=>{ const tb=DATA.tabs.find(tb=>tb.id===p.tabId); if(!tb)return null; const card=tb.cards[p.cardIdx]; if(!card||!card.dishes)return null; return card.dishes[p.dishIdx]; }).filter(Boolean);
+    if(pinDishes.length>0){
+      html+=`<div class="featured-card"><div class="featured-label">⭐ Nos incontournables</div><div class="featured-grid">`;
+      pinDishes.slice(0,4).forEach(d=>{ html+=`<div class="featured-item">${d.img?`<img class="featured-item-img" src="${d.img}" alt="" loading="lazy">`:'<div class="featured-item-img"></div>'}<div class="featured-item-body"><div class="featured-item-name">${t(d.name)}</div><div class="featured-item-price">${d.price}</div></div></div>`; });
+      html+=`</div></div>`;
+    }
+  }
+
+  if(view==='grid' && !['boissons'].includes(tab.id)){
+    // Collect all grid items across cards into one unified 2-col grid
+    let gridItems=[];
+    tab.cards.forEach(card=>{
+      if(card.type==='bevs') return;
+      if(card.type==='variants'){
+        const idx=card.img?imgIdx++:null;
+        const flavours=(card.variants||[]).map(v=>t(v.name)).join(' · ');
+        const price=card.variants&&card.variants[0]?card.variants[0].price:'';
+        gridItems.push(`<div class="gc">${card.img?`<img class="gc-img" src="${card.img}" alt="" loading="lazy" data-lbidx="${idx}">`:'<div style="aspect-ratio:1;background:#ece8e1"></div>'}<div class="gc-body"><div class="gc-name">${t(card.label)}</div><div class="gc-desc">${flavours}</div><div class="gc-price">${price}</div></div></div>`);
+        return;
+      }
+      (card.dishes||[]).forEach(d=>{
+        const idx=d.img?imgIdx++:null;
+        const badges=(d.spicy?`<img src="https://drevicioyster.com/wp-content/uploads/2026/06/icon-spicy.png" class="badge-icon" title="Épicé">`:'')+(d.vegan?`<img src="https://drevicioyster.com/wp-content/uploads/2026/06/icon-vegan.png" class="badge-icon" title="Vegan">`:'');
+        gridItems.push(`<div class="gc">${d.img?`<img class="gc-img" src="${d.img}" alt="" loading="lazy" data-lbidx="${idx}">`:'<div style="aspect-ratio:1;background:#ece8e1"></div>'}<div class="gc-body"><div class="gc-name">${t(d.name)}${badges?` <span class="dish-badges" style="display:inline-flex">${badges}</span>`:''}</div><div class="gc-desc">${t(d.desc)}</div><div class="gc-price">${d.price}</div></div></div>`);
+      });
+    });
+    if(gridItems.length) html+=`<div class="dish-grid">${gridItems.join('')}</div>`;
+  } else {
+    // list
+    tab.cards.forEach(card=>{
+      html+=`<div class="card"><div class="card-hdr"><span class="card-label">${t(card.label)}</span></div><div class="card-body">`;
+
+      if(card.type==='bevs'){
+        (card.items||[]).forEach(item=>{ html+=`<div class="bev-row"><span class="bev-name">${t(item.name)}</span><span class="bev-price">${item.price}</span></div>`; });
+      } else if(card.type==='variants'){
+        // Render as dish row: name in navy + all flavours as description
+        const flavours=(card.variants||[]).map(v=>t(v.name)).join(' · ');
+        const price=card.variants&&card.variants[0]?card.variants[0].price:'';
+        const idx=card.img?imgIdx++:null;
+        html+=`<div class="dish-row" style="padding-top:0">
+          <div class="dish-text">
+            <div class="dish-name-row"><span class="dish-name">${t(card.label)}</span></div>
+            <div class="dish-desc">${flavours}</div>
+            <div class="dish-price">${price}</div>
+          </div>
+          ${card.img?`<img class="dish-img" src="${card.img}" alt="" loading="lazy" data-lbidx="${idx}">`:''}</div>`;
+      } else {
+        (card.dishes||[]).forEach((d,di)=>{
+          const idx=d.img?imgIdx++:null;
+          const badges=(d.spicy?`<img src="https://drevicioyster.com/wp-content/uploads/2026/06/icon-spicy.png" class="badge-icon" title="Épicé">`:'')+(d.vegan?`<img src="https://drevicioyster.com/wp-content/uploads/2026/06/icon-vegan.png" class="badge-icon" title="Vegan">`:'');
+          html+=`<div class="dish-row"${di===0?' style="padding-top:0"':''}><div class="dish-text"><div class="dish-name-row"><span class="dish-name">${t(d.name)}</span>${badges?`<span class="dish-badges">${badges}</span>`:''}</div><div class="dish-desc">${t(d.desc)}</div><div class="dish-price">${d.price}</div></div>${d.img?`<img class="dish-img" src="${d.img}" alt="" loading="lazy" data-lbidx="${idx}">`:''}</div>`;
+        });
+      }
+      html+=`</div></div>`;
+    });
+  }
+
+  html+='</div>';
+  return html;
+}
+
+// ═══════════════════════════════════════════
+// LANG
+// ═══════════════════════════════════════════
+const reserveMap={fr:'Réserver une table',en:'Book a table',es:'Reservar mesa',it:'Prenota un tavolo',kr:'테이블 예약',jp:'テーブルを予約'};
+function toggleDD(){ document.getElementById('langDD').classList.toggle('open'); }
+document.addEventListener('click',e=>{ if(!e.target.closest('.lang-wrap')) document.getElementById('langDD').classList.remove('open'); });
+function setLang(l){ lang=l; document.getElementById('langCur').textContent=l.toUpperCase(); document.querySelectorAll('.lang-opt').forEach(o=>o.classList.toggle('active',o.dataset.lang===l)); document.getElementById('langDD').classList.remove('open'); document.getElementById('reserveMain').textContent=reserveMap[l]||reserveMap.fr; renderAll(); }
+
+// ═══════════════════════════════════════════
+// ADMIN
+// ═══════════════════════════════════════════
+let adminCurrentTab='__global';
+
+function openAdmin(){ document.getElementById('adminOverlay').classList.add('open'); document.getElementById('adminPanel').classList.add('open'); renderAdminTabDd(); renderAdminSection(adminCurrentTab); }
+function closeAdmin(){ document.getElementById('adminOverlay').classList.remove('open'); document.getElementById('adminPanel').classList.remove('open'); }
+
+function renderAdminTabDd(){
+  const dd=document.getElementById('adminTabDd');
+  dd.innerHTML='<option value="__global">⚙️ Global & Accueil</option>'
+    +DATA.tabs.map(tb=>`<option value="${tb.id}"${tb.id===adminCurrentTab?' selected':''}>${t(tb.label)}</option>`).join('')
+    +'<option value="__addtab">+ Nouvelle tab</option>';
+  dd.value=adminCurrentTab;
+}
+
+function adminGoTab(val){
+  if(val==='__addtab'){ addNewTab(); return; }
+  adminCurrentTab=val;
+  renderAdminSection(val);
+}
+
+function renderAdminSection(tid){
+  const body=document.getElementById('adminBody');
+  if(tid==='__global'){
+    body.innerHTML=renderAdminGlobal();
+  } else {
+    const ti=DATA.tabs.findIndex(tb=>tb.id===tid);
+    if(ti<0){body.innerHTML='';return;}
+    body.innerHTML=renderAdminTab(ti);
+  }
+  // bind inputs
+  body.querySelectorAll('.ai[data-bind]').forEach(input=>input.addEventListener('input',()=>applyBind(input)));
+  body.querySelectorAll('.ai[data-bind]').forEach(input=>input.addEventListener('change',()=>applyBind(input)));
+}
+
+function applyBind(input){
+  const path=input.dataset.bind.split('.');
+  let obj=DATA;
+  for(let i=0;i<path.length-1;i++) obj=obj[path[i]];
+  const key=path[path.length-1];
+  if(input.type==='checkbox') obj[key]=input.checked; else obj[key]=input.value;
+  renderAll();
+}
+
+function deepSet(obj,path,val){
+  const parts=path.split('.');
+  for(let i=0;i<parts.length-1;i++) obj=obj[parts[i]];
+  obj[parts[parts.length-1]]=val;
+}
+
+function renderAdminGlobal(){
+  let h='';
+  // Hero
+  h+=`<div class="admin-section"><div class="admin-sect-title">En-tête</div>
+    <div class="af"><label class="al">Sous-titre FR</label><input class="ai" data-bind="hero.fr" value="${DATA.hero.fr||''}"></div>
+    <div class="af"><label class="al">Sous-titre EN</label><input class="ai" data-bind="hero.en" value="${DATA.hero.en||''}"></div>
+  </div>`;
+
+  // Intro
+  h+=`<div class="admin-section"><div class="admin-sect-title">Présentation (page d'accueil)</div>
+    <label class="admin-toggle"><input type="checkbox" ${DATA.intro.active?'checked':''} onchange="DATA.intro.active=this.checked;renderAll();renderAdminSection('__global')"><label>Activer le bloc présentation</label></label>
+    <div class="af"><label class="al">Texte FR</label><input class="ai" data-bind="intro.text.fr" value="${DATA.intro.text.fr||''}"></div>
+    <div class="af"><label class="al">Texte EN</label><input class="ai" data-bind="intro.text.en" value="${DATA.intro.text.en||''}"></div>
+  </div>`;
+
+  // Specials
+  h+=`<div class="admin-section"><div class="admin-sect-title">Menus spéciaux</div>`;
+  DATA.specials.forEach((sp,si)=>{
+    h+=`<div class="admin-card">
+      <div class="admin-card-hdr"><span class="admin-card-num">${t(sp.label)}</span></div>
+      <label class="admin-toggle"><input type="checkbox" ${sp.active?'checked':''} onchange="DATA.specials[${si}].active=this.checked;renderAll()"><label>Activer</label></label>
+      <div class="af"><label class="al">Titre FR</label><input class="ai" value="${sp.title.fr||''}" oninput="DATA.specials[${si}].title.fr=this.value;renderAll()"></div>
+      <div class="af"><label class="al">Description FR</label><input class="ai" value="${sp.desc.fr||''}" oninput="DATA.specials[${si}].desc.fr=this.value;renderAll()"></div>
+      <div class="af"><label class="al">Prix</label><input class="ai ai-sm" value="${sp.price||''}" oninput="DATA.specials[${si}].price=this.value;renderAll()"></div>
+    </div>`;
+  });
+  h+=`</div>`;
+
+  // Pinned / featured
+  h+=`<div class="admin-section"><div class="admin-sect-title">Plats à la une (max 4)</div>`;
+  let dishCount=0;
+  DATA.tabs.forEach((tab,ti)=>{
+    tab.cards.forEach((card,ci)=>{
+      if(!card.dishes) return;
+      card.dishes.forEach((d,di)=>{
+        dishCount++;
+        const pinKey=JSON.stringify({tabId:tab.id,cardIdx:ci,dishIdx:di});
+        const isPinned=(DATA.pinnedDishes||[]).some(p=>p.tabId===tab.id&&p.cardIdx===ci&&p.dishIdx===di);
+        h+=`<div class="admin-card" style="display:flex;align-items:center;gap:8px;background:${isPinned?'#fdf8ec':'var(--bg)'}">
+          ${d.img?`<img src="${d.img}" style="width:40px;height:40px;border-radius:6px;object-fit:cover;flex:none" loading="lazy">`:'<div style="width:40px;height:40px;border-radius:6px;background:#ddd;flex:none"></div>'}
+          <div style="flex:1;min-width:0"><div style="font-family:Cormorant Garamond,serif;font-size:14px;font-weight:600;color:var(--navy)">${t(d.name)}</div><div style="font-size:11px;color:var(--text3)">${t(tab.label)}</div></div>
+          <button class="apin${isPinned?' pinned':''}" onclick="togglePin('${tab.id}',${ci},${di})" title="${isPinned?'Retirer':'Épingler'}">${isPinned?'📌':'📍'}</button>
+        </div>`;
+      });
+    });
+  });
+  if(!dishCount) h+=`<div style="font-size:12px;color:var(--text3);font-family:Jost,sans-serif;padding:8px">Aucun plat avec image dans le menu.</div>`;
+  h+=`</div>`;
+
+  h+=`<button class="asave" onclick="renderAll();showToast('Sauvegardé !')">Appliquer</button>`;
+  return h;
+}
+
+function togglePin(tabId,ci,di){
+  const pins=DATA.pinnedDishes||[];
+  const idx=pins.findIndex(p=>p.tabId===tabId&&p.cardIdx===ci&&p.dishIdx===di);
+  if(idx>=0){ pins.splice(idx,1); }
+  else if(pins.length<4){ pins.push({tabId,cardIdx:ci,dishIdx:di}); }
+  else { showToast('Maximum 4 plats à la une'); return; }
+  DATA.pinnedDishes=pins;
+  renderAll();
+  renderAdminSection('__global');
+}
+
+function renderAdminTab(ti){
+  const tab=DATA.tabs[ti];
+  let h='';
+
+  // Tab label
+  h+=`<div class="admin-section"><div class="admin-sect-title">Nom de l'onglet</div>
+    <div class="af"><label class="al">FR</label><input class="ai" value="${tab.label.fr||''}" oninput="DATA.tabs[${ti}].label.fr=this.value;renderAll()"></div>
+    <div class="af"><label class="al">EN</label><input class="ai" value="${tab.label.en||''}" oninput="DATA.tabs[${ti}].label.en=this.value;renderAll()"></div>
+    <button class="adanger" onclick="confirm('Supprimer la tab « ${tab.label.fr} » et tout son contenu ?',()=>delTab(${ti}))">Supprimer cette tab</button>
+  </div>`;
+
+  // Cards
+  tab.cards.forEach((card,ci)=>{
+    h+=`<div class="admin-section"><div class="admin-sect-title">Carte — ${t(card.label)}</div>`;
+    h+=`<div class="admin-card"><div class="af"><label class="al">Titre carte FR</label><input class="ai" value="${card.label.fr||''}" oninput="DATA.tabs[${ti}].cards[${ci}].label.fr=this.value;renderAll()"></div>`;
+
+    if(card.type==='bevs'){
+      (card.items||[]).forEach((item,ii)=>{
+        h+=`<div class="admin-card" style="background:#fff;margin-top:4px"><div class="admin-card-hdr"><span class="admin-card-num">Boisson ${ii+1}</span><button class="adel" onclick="confirm('Supprimer cette boisson ?',()=>delBev(${ti},${ci},${ii}))">×</button></div>
+          <div class="ai-row"><input class="ai" placeholder="Nom" value="${t(item.name)||''}" oninput="if(typeof DATA.tabs[${ti}].cards[${ci}].items[${ii}].name==='object'){DATA.tabs[${ti}].cards[${ci}].items[${ii}].name.fr=this.value}else{DATA.tabs[${ti}].cards[${ci}].items[${ii}].name=this.value};renderAll()"><input class="ai ai-sm" placeholder="Prix" value="${item.price||''}" oninput="DATA.tabs[${ti}].cards[${ci}].items[${ii}].price=this.value;renderAll()"></div>
+        </div>`;
+      });
+      h+=`<button class="aadd" onclick="addBev(${ti},${ci})">+ Boisson</button>`;
+    } else if(card.type==='variants'){
+      h+=`<div class="af"><label class="al">Image URL</label><input class="ai" value="${card.img||''}" oninput="DATA.tabs[${ti}].cards[${ci}].img=this.value;renderAll()"></div>`;
+      (card.variants||[]).forEach((v,vi)=>{
+        h+=`<div class="ai-row" style="margin-top:4px"><input class="ai" value="${t(v.name)||''}" oninput="if(typeof DATA.tabs[${ti}].cards[${ci}].variants[${vi}].name==='object'){DATA.tabs[${ti}].cards[${ci}].variants[${vi}].name.fr=this.value}else{DATA.tabs[${ti}].cards[${ci}].variants[${vi}].name=this.value};renderAll()"><input class="ai ai-sm" value="${v.price||''}" oninput="DATA.tabs[${ti}].cards[${ci}].variants[${vi}].price=this.value;renderAll()"><button class="adel" onclick="confirm('Supprimer cette variante ?',()=>delVariant(${ti},${ci},${vi}))">×</button></div>`;
+      });
+      h+=`<button class="aadd" onclick="addVariant(${ti},${ci})">+ Variante</button>`;
+    } else {
+      (card.dishes||[]).forEach((d,di)=>{
+        h+=`<div class="admin-card" style="background:#fff;margin-top:6px">
+          <div class="admin-card-hdr"><span class="admin-card-num">Plat ${di+1}</span><button class="adel" onclick="confirm('Supprimer « ${d.name.fr||'ce plat'} » ?',()=>delDish(${ti},${ci},${di}))">×</button></div>
+          <div class="af"><label class="al">Nom FR</label><input class="ai" value="${d.name.fr||''}" oninput="DATA.tabs[${ti}].cards[${ci}].dishes[${di}].name.fr=this.value;renderAll()"></div>
+          <div class="af"><label class="al">Nom EN</label><input class="ai" value="${d.name.en||''}" oninput="DATA.tabs[${ti}].cards[${ci}].dishes[${di}].name.en=this.value;renderAll()"></div>
+          <div class="af"><label class="al">Description FR</label><input class="ai" value="${d.desc.fr||''}" oninput="DATA.tabs[${ti}].cards[${ci}].dishes[${di}].desc.fr=this.value;renderAll()"></div>
+          <div class="af"><label class="al">Prix</label><input class="ai ai-sm" value="${d.price||''}" oninput="DATA.tabs[${ti}].cards[${ci}].dishes[${di}].price=this.value;renderAll()"></div>
+          <div class="af"><label class="al">Image URL</label><input class="ai" value="${d.img||''}" oninput="DATA.tabs[${ti}].cards[${ci}].dishes[${di}].img=this.value;renderAll()"></div>
+          <div class="badge-group">
+            <label class="badge-check"><input type="checkbox" ${d.spicy?'checked':''} onchange="DATA.tabs[${ti}].cards[${ci}].dishes[${di}].spicy=this.checked;renderAll()"><img src="https://drevicioyster.com/wp-content/uploads/2026/06/icon-spicy.png" class="badge-icon"> Épicé</label>
+            <label class="badge-check"><input type="checkbox" ${d.vegan?'checked':''} onchange="DATA.tabs[${ti}].cards[${ci}].dishes[${di}].vegan=this.checked;renderAll()"><img src="https://drevicioyster.com/wp-content/uploads/2026/06/icon-vegan.png" class="badge-icon"> Vegan</label>
+          </div>
+        </div>`;
+      });
+      h+=`<button class="aadd" onclick="addDish(${ti},${ci})">+ Plat</button>`;
+    }
+
+    h+=`</div></div>`;
+  });
+
+  h+=`<div class="admin-section"><button class="aadd" onclick="addCard(${ti})">+ Nouvelle carte dans cette tab</button></div>`;
+  h+=`<button class="asave" onclick="renderAll();showToast('Modifications appliquées !')">Appliquer</button>`;
+  return h;
+}
+
+// ── ADMIN MUTATIONS ──
+function delTab(ti){ DATA.tabs.splice(ti,1); if(DATA.tabs.length>0)adminCurrentTab=DATA.tabs[0].id; else adminCurrentTab='__global'; renderAll(); renderAdminTabDd(); renderAdminSection(adminCurrentTab); showToast('Tab supprimée'); }
+function delDish(ti,ci,di){ DATA.tabs[ti].cards[ci].dishes.splice(di,1); renderAll(); renderAdminSection(DATA.tabs[ti].id); }
+function delVariant(ti,ci,vi){ DATA.tabs[ti].cards[ci].variants.splice(vi,1); renderAll(); renderAdminSection(DATA.tabs[ti].id); }
+function delBev(ti,ci,ii){ DATA.tabs[ti].cards[ci].items.splice(ii,1); renderAll(); renderAdminSection(DATA.tabs[ti].id); }
+function addDish(ti,ci){ DATA.tabs[ti].cards[ci].dishes.push({name:{fr:'Nouveau plat',en:'New dish'},desc:{fr:'',en:''},price:'',img:'',spicy:false,vegan:false}); renderAll(); renderAdminSection(DATA.tabs[ti].id); }
+function addVariant(ti,ci){ DATA.tabs[ti].cards[ci].variants.push({name:{fr:'Nouvelle variante',en:'New item'},price:'9€'}); renderAll(); renderAdminSection(DATA.tabs[ti].id); }
+function addBev(ti,ci){ DATA.tabs[ti].cards[ci].items.push({name:{fr:'Nouvelle boisson',en:'New drink'},price:''}); renderAll(); renderAdminSection(DATA.tabs[ti].id); }
+function addCard(ti){ DATA.tabs[ti].cards.push({label:{fr:'Nouvelle carte',en:'New section'},dishes:[]}); renderAll(); renderAdminSection(DATA.tabs[ti].id); }
+function addNewTab(){
+  const id='tab_'+Date.now();
+  DATA.tabs.push({id,label:{fr:'Nouvelle tab',en:'New tab'},cards:[{label:{fr:'À la carte',en:'À la carte'},dishes:[]}]});
+  adminCurrentTab=id;
+  currentTabId=id;
+  renderAll();
+  renderAdminTabDd();
+  document.getElementById('adminTabDd').value=id;
+  renderAdminSection(id);
+  showToast('Tab créée !');
+}
+
+// ═══════════════════════════════════════════
+// INIT
+// ═══════════════════════════════════════════
+renderAll();
+</script>
+</body>
+</html>
