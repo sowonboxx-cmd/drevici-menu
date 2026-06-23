@@ -13,8 +13,10 @@ body{background:var(--bg);font-family:'Jost',sans-serif;font-weight:400;font-siz
 /* ── LIGHTBOX ── */
 .lb{position:fixed;inset:0;background:rgba(0,0,0,0.93);z-index:1000;display:none;align-items:center;justify-content:center;flex-direction:column}
 .lb.open{display:flex}
-.lb-inner{position:relative;width:100%;display:flex;align-items:center;justify-content:center;padding:0 44px}
-.lb img{max-width:100%;max-height:72vh;border-radius:8px;object-fit:contain;width:100%}
+.lb-inner{position:relative;width:100%;max-width:800px;padding:0 16px}
+.lb img{width:100%;max-height:60vh;border-radius:10px;object-fit:cover;display:block}
+.lb-nav{position:absolute;top:50%;transform:translateY(-50%);background:rgba(0,0,0,0.35);border:none;color:#fff;width:36px;height:36px;border-radius:50%;cursor:pointer;font-size:20px;display:flex;align-items:center;justify-content:center;backdrop-filter:blur(4px);transition:background .15s;z-index:2}
+.lb-nav:hover{background:rgba(0,0,0,0.6)}
 .lb-nav{position:absolute;top:50%;transform:translateY(-50%);background:rgba(255,255,255,0.15);border:none;color:#fff;width:38px;height:38px;border-radius:50%;cursor:pointer;font-size:20px;display:flex;align-items:center;justify-content:center;backdrop-filter:blur(4px);transition:background .15s}
 .lb-nav:hover{background:rgba(255,255,255,0.28)}
 .lb-prev{left:4px}.lb-next{right:4px}
@@ -48,6 +50,9 @@ body{background:var(--bg);font-family:'Jost',sans-serif;font-weight:400;font-siz
 .admin-btn svg{width:15px;height:15px;stroke:currentColor;fill:none;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}
 .admin-btn svg{width:13px;height:13px;stroke:currentColor;fill:none;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}
 .logo-img{height:32px;object-fit:contain;display:block;}
+.header-top{position:relative}
+.logo-centered{position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);pointer-events:none}
+@media(min-width:480px){.logo-img{height:42px}}
 .header-sub{font-size:10px;font-weight:300;color:rgba(255,255,255,0.45);letter-spacing:.14em;text-transform:uppercase;margin-bottom:14px;text-align:center}
 
 /* ── STICKY NAV ── */
@@ -194,6 +199,13 @@ body{background:var(--bg);font-family:'Jost',sans-serif;font-weight:400;font-siz
 
 /* ── TOAST ── */
 #toast{position:fixed;bottom:90px;left:50%;transform:translateX(-50%);background:var(--navy);color:#fff;padding:9px 18px;border-radius:50px;font-size:12px;font-family:'Jost',sans-serif;z-index:9999;opacity:0;transition:opacity .3s;pointer-events:none;white-space:nowrap}
+.img-wrap{position:relative;display:inline-block;flex:none;cursor:pointer}
+.img-wrap .zoom-ic{position:absolute;top:4px;right:4px;width:22px;height:22px;pointer-events:none;opacity:0;transition:opacity .15s}
+.img-wrap:hover .zoom-ic,.img-wrap.touch .zoom-ic{opacity:1}
+.gc-wrap{position:relative;cursor:pointer;display:block}
+.gc-wrap .zoom-ic{position:absolute;top:6px;right:6px;width:24px;height:24px;pointer-events:none;opacity:0;transition:opacity .15s}
+.gc-wrap:hover .zoom-ic,.gc-wrap.touch .zoom-ic{opacity:1}
+@media(max-width:768px){.img-wrap .zoom-ic,.gc-wrap .zoom-ic{opacity:1}}
 </style>
 </head>
 <body>
@@ -210,6 +222,7 @@ body{background:var(--bg);font-family:'Jost',sans-serif;font-weight:400;font-siz
   </div>
   <div class="lb-footer">
     <div class="lb-dish-name" id="lbName"></div>
+    <div class="lb-dish-desc" id="lbDesc" style="font-size:13px;color:rgba(255,255,255,0.55);font-family:Jost,sans-serif;font-weight:300;margin-top:4px;max-width:520px;margin-left:auto;margin-right:auto;line-height:1.5"></div>
     <div class="lb-count" id="lbCount"></div>
   </div>
 </div>
@@ -233,6 +246,14 @@ body{background:var(--bg);font-family:'Jost',sans-serif;font-weight:400;font-siz
     <span class="admin-hdr-title">Back-office <span class="admin-badge">Admin</span></span>
     <div class="admin-hdr-right">
       <select class="admin-tab-dd" id="adminTabDd" onchange="adminGoTab(this.value)"></select>
+      <select class="admin-tab-dd" id="adminLangDd" onchange="setAdminLang(this.value)" title="Langue d'édition" style="width:60px">
+        <option value="fr">FR</option>
+        <option value="en">EN</option>
+        <option value="es">ES</option>
+        <option value="it">IT</option>
+        <option value="kr">KR</option>
+        <option value="jp">JP</option>
+      </select>
       <button class="admin-close" onclick="closeAdmin()">✕</button>
     </div>
   </div>
@@ -249,7 +270,7 @@ body{background:var(--bg);font-family:'Jost',sans-serif;font-weight:400;font-siz
             <svg viewBox="0 0 24 24"><rect x="2" y="2" width="20" height="20" rx="5" ry="5"/><path d="M16 11.37A4 4 0 1112.63 8 4 4 0 0116 11.37z"/><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"/></svg>
           </a>
         </div>
-        <img class="logo-img" src="https://drevicioyster.com/wp-content/uploads/2026/06/Drevici-Oyster-white-HD.png" alt="Drevici Oyster" onerror="this.style.display='none'"/>
+        <div class="logo-centered"><img class="logo-img" src="https://drevicioyster.com/wp-content/uploads/2026/06/Drevici-Oyster-white-HD.png" alt="Drevici Oyster" onerror="this.style.display='none'"/></div>
         <div class="header-top-right">
           <div class="lang-wrap">
             <div class="lang-sel" onclick="toggleDD()">
@@ -405,15 +426,21 @@ function collectLbImages(){
   lbImages=[];
   DATA.tabs.forEach(tab=>{
     tab.cards.forEach(card=>{
-      if(card.dishes) card.dishes.forEach(d=>{ if(d.img) lbImages.push({src:d.img,name:t(d.name)}); });
-      if(card.img && !card.dishes) lbImages.push({src:card.img,name:t(card.label)});
+      if(card.dishes) card.dishes.forEach(d=>{ if(d.img) lbImages.push({src:d.img,name:t(d.name),desc:t(d.desc)||''}); });
+      if(card.img && !card.dishes) lbImages.push({src:card.img,name:t(card.label),desc:''});
     });
   });
 }
 function openLb(idx){ collectLbImages(); lbIdx=idx; renderLbSlide(); document.getElementById('lb').classList.add('open'); document.body.style.overflow='hidden'; }
 function closeLb(){ document.getElementById('lb').classList.remove('open'); document.body.style.overflow=''; }
 function lbStep(d){ lbIdx=(lbIdx+d+lbImages.length)%lbImages.length; renderLbSlide(); }
-function renderLbSlide(){ document.getElementById('lbImg').src=lbImages[lbIdx].src; document.getElementById('lbName').textContent=lbImages[lbIdx].name; document.getElementById('lbCount').textContent=(lbIdx+1)+' / '+lbImages.length; }
+function renderLbSlide(){
+  const item=lbImages[lbIdx];
+  document.getElementById('lbImg').src=item.src;
+  document.getElementById('lbName').textContent=item.name;
+  document.getElementById('lbDesc').textContent=item.desc||'';
+  document.getElementById('lbCount').textContent=(lbIdx+1)+' / '+lbImages.length;
+}
 document.getElementById('lb').addEventListener('click',e=>{ if(e.target===e.currentTarget) closeLb(); });
 document.addEventListener('keydown',e=>{ const lb=document.getElementById('lb'); if(!lb.classList.contains('open'))return; if(e.key==='Escape')closeLb(); if(e.key==='ArrowLeft')lbStep(-1); if(e.key==='ArrowRight')lbStep(1); });
 
@@ -504,13 +531,13 @@ function renderTabContent(tab,lbOffset){
         const idx=card.img?imgIdx++:null;
         const flavours=(card.variants||[]).map(v=>t(v.name)).join(' · ');
         const price=card.variants&&card.variants[0]?card.variants[0].price:'';
-        gridItems.push(`<div class="gc"><div class="gc-wrap" ${card.img?`data-lbidx="${idx}"`:''}>${card.img?`<img class="gc-img" src="${card.img}" alt="" loading="lazy"><span class=\"zoom-icon\"><svg viewBox=\"0 0 16 16\"><circle cx=\"6\" cy=\"6\" r=\"4\"/><line x1=\"9\" y1=\"9\" x2=\"14\" y2=\"14\"/></svg></span>`:'<div style="aspect-ratio:1;background:#ece8e1"></div>'}</div><div class="gc-body"><div class="gc-name">${t(card.label)}</div><div class="gc-desc">${flavours}</div><div class="gc-price">${price}</div></div></div>`);
+        gridItems.push(`<div class="gc"><div class="gc-wrap" ${card.img?`data-lbidx="${idx}"`:''}>${card.img?`<img class="gc-img" src="${card.img}" alt="" loading="lazy"><img class="zoom-ic" src="https://drevicioyster.com/wp-content/uploads/2026/06/icon-zoom.png" alt="">`:'<div style="aspect-ratio:1;background:#ece8e1"></div>'}</div><div class="gc-body"><div class="gc-name">${t(card.label)}</div><div class="gc-desc">${flavours}</div><div class="gc-price">${price}</div></div></div>`);
         return;
       }
       (card.dishes||[]).forEach(d=>{
         const idx=d.img?imgIdx++:null;
         const badges=(d.spicy?`<img src="https://drevicioyster.com/wp-content/uploads/2026/06/icon-spicy.png" class="badge-icon" title="Épicé">`:'')+(d.vegan?`<img src="https://drevicioyster.com/wp-content/uploads/2026/06/icon-vegan.png" class="badge-icon" title="Vegan">`:'');
-        gridItems.push(`<div class="gc"><div class="gc-wrap" ${d.img?`data-lbidx="${idx}"`:''}>${d.img?`<img class="gc-img" src="${d.img}" alt="" loading="lazy"><span class=\"zoom-icon\"><svg viewBox=\"0 0 16 16\"><circle cx=\"6\" cy=\"6\" r=\"4\"/><line x1=\"9\" y1=\"9\" x2=\"14\" y2=\"14\"/></svg></span>`:'<div style="aspect-ratio:1;background:#ece8e1"></div>'}</div><div class="gc-body"><div class="gc-name">${t(d.name)}${badges?` <span class="dish-badges" style="display:inline-flex">${badges}</span>`:''}</div><div class="gc-desc">${t(d.desc)}</div><div class="gc-price">${d.price}</div></div></div>`);
+        gridItems.push(`<div class="gc"><div class="gc-wrap" ${d.img?`data-lbidx="${idx}"`:''}>${d.img?`<img class="gc-img" src="${d.img}" alt="" loading="lazy"><img class="zoom-ic" src="https://drevicioyster.com/wp-content/uploads/2026/06/icon-zoom.png" alt="">`:'<div style="aspect-ratio:1;background:#ece8e1"></div>'}</div><div class="gc-body"><div class="gc-name">${t(d.name)}${badges?` <span class="dish-badges" style="display:inline-flex">${badges}</span>`:''}</div><div class="gc-desc">${t(d.desc)}</div><div class="gc-price">${d.price}</div></div></div>`);
       });
     });
     if(gridItems.length) html+=`<div class="dish-grid">${gridItems.join('')}</div>`;
@@ -532,12 +559,12 @@ function renderTabContent(tab,lbOffset){
             <div class="dish-desc">${flavours}</div>
             <div class="dish-price">${price}</div>
           </div>
-          ${card.img?`<span class="img-wrap" data-lbidx="${idx}" style="cursor:pointer"><img class="dish-img" src="${card.img}" alt="" loading="lazy"><span class=\"zoom-icon\"><svg viewBox=\"0 0 16 16\"><circle cx=\"6\" cy=\"6\" r=\"4\"/><line x1=\"9\" y1=\"9\" x2=\"14\" y2=\"14\"/></svg></span></span>`:''}</div>`;
+          ${card.img?`<span class="img-wrap" data-lbidx="${idx}"><img class="dish-img" src="${card.img}" alt="" loading="lazy"><img class="zoom-ic" src="https://drevicioyster.com/wp-content/uploads/2026/06/icon-zoom.png" alt=""></span>`:''}</div>`;
       } else {
         (card.dishes||[]).forEach((d,di)=>{
           const idx=d.img?imgIdx++:null;
           const badges=(d.spicy?`<img src="https://drevicioyster.com/wp-content/uploads/2026/06/icon-spicy.png" class="badge-icon" title="Épicé">`:'')+(d.vegan?`<img src="https://drevicioyster.com/wp-content/uploads/2026/06/icon-vegan.png" class="badge-icon" title="Vegan">`:'');
-          html+=`<div class="dish-row"${di===0?' style="padding-top:0"':''}><div class="dish-text"><div class="dish-name-row"><span class="dish-name">${t(d.name)}</span>${badges?`<span class="dish-badges">${badges}</span>`:''}</div><div class="dish-desc">${t(d.desc)}</div><div class="dish-price">${d.price}</div></div>${d.img?`<span class="img-wrap" data-lbidx="${idx}" style="cursor:pointer"><img class="dish-img" src="${d.img}" alt="" loading="lazy"><span class=\"zoom-icon\"><svg viewBox=\"0 0 16 16\"><circle cx=\"6\" cy=\"6\" r=\"4\"/><line x1=\"9\" y1=\"9\" x2=\"14\" y2=\"14\"/></svg></span></span>`:''}</div>`;
+          html+=`<div class="dish-row"${di===0?' style="padding-top:0"':''}><div class="dish-text"><div class="dish-name-row"><span class="dish-name">${t(d.name)}</span>${badges?`<span class="dish-badges">${badges}</span>`:''}</div><div class="dish-desc">${t(d.desc)}</div><div class="dish-price">${d.price}</div></div>${d.img?`<span class="img-wrap" data-lbidx="${idx}"><img class="dish-img" src="${d.img}" alt="" loading="lazy"><img class="zoom-ic" src="https://drevicioyster.com/wp-content/uploads/2026/06/icon-zoom.png" alt=""></span>`:''}</div>`;
         });
       }
       html+=`</div></div>`;
@@ -560,6 +587,7 @@ function setLang(l){ lang=l; document.getElementById('langCur').textContent=l.to
 // ADMIN
 // ═══════════════════════════════════════════
 let adminCurrentTab='__global';
+let adminLang='fr'; // language being edited in admin
 
 function openAdmin(){ document.getElementById('adminOverlay').classList.add('open'); document.getElementById('adminPanel').classList.add('open'); renderAdminTabDd(); renderAdminSection(adminCurrentTab); }
 function closeAdmin(){ document.getElementById('adminOverlay').classList.remove('open'); document.getElementById('adminPanel').classList.remove('open'); }
@@ -607,19 +635,33 @@ function deepSet(obj,path,val){
   obj[parts[parts.length-1]]=val;
 }
 
+function setAdminLang(l){
+  adminLang=l;
+  document.getElementById('adminLangDd').value=l;
+  renderAdminSection(adminCurrentTab);
+}
+
+// Helper: render a bilingual input field
+// Shows FR value as placeholder when editing another lang
+function biInput(label, frVal, targetVal, onInputCode){
+  const isFr = adminLang==='fr';
+  const placeholder = isFr ? '' : (frVal||'');
+  const value = targetVal||'';
+  const langLabel = adminLang.toUpperCase();
+  return `<div class="af"><label class="al">${label}${isFr?'':` <span style="color:var(--text3);font-weight:400">(${langLabel})</span>`}</label><input class="ai" value="${value.replace(/"/g,'&quot;')}" placeholder="${placeholder.replace(/"/g,'&quot;')}" oninput="${onInputCode}"></div>`;
+}
+
 function renderAdminGlobal(){
   let h='';
   // Hero
   h+=`<div class="admin-section"><div class="admin-sect-title">En-tête</div>
-    <div class="af"><label class="al">Sous-titre FR</label><input class="ai" data-bind="hero.fr" value="${DATA.hero.fr||''}"></div>
-    <div class="af"><label class="al">Sous-titre EN</label><input class="ai" data-bind="hero.en" value="${DATA.hero.en||''}"></div>
+    `+biInput('Sous-titre', DATA.hero.fr||'', DATA.hero[adminLang]||'', `DATA.hero[adminLang]=this.value;renderAll()`)+`
   </div>`;
 
   // Intro
   h+=`<div class="admin-section"><div class="admin-sect-title">Présentation (page d'accueil)</div>
     <label class="admin-toggle"><input type="checkbox" ${DATA.intro.active?'checked':''} onchange="DATA.intro.active=this.checked;renderAll();renderAdminSection('__global')"><label>Activer le bloc présentation</label></label>
-    <div class="af"><label class="al">Texte FR</label><input class="ai" data-bind="intro.text.fr" value="${DATA.intro.text.fr||''}"></div>
-    <div class="af"><label class="al">Texte EN</label><input class="ai" data-bind="intro.text.en" value="${DATA.intro.text.en||''}"></div>
+    `+biInput('Texte de présentation', DATA.intro.text.fr||'', DATA.intro.text[adminLang]||'', `DATA.intro.text[adminLang]=this.value;renderAll()`)+`
   </div>`;
 
   // Specials
@@ -679,37 +721,39 @@ function renderAdminTab(ti){
   let h='';
 
   // Tab label
-  h+=`<div class="admin-section"><div class="admin-sect-title">Nom de l'onglet</div>
-    <div class="af"><label class="al">FR</label><input class="ai" value="${tab.label.fr||''}" oninput="DATA.tabs[${ti}].label.fr=this.value;renderAll()"></div>
-    <div class="af"><label class="al">EN</label><input class="ai" value="${tab.label.en||''}" oninput="DATA.tabs[${ti}].label.en=this.value;renderAll()"></div>
-    <button class="adanger" onclick="askConfirm('Supprimer la tab « ${tab.label.fr} » et tout son contenu ?',()=>delTab(${ti}))">Supprimer cette tab</button>
+  h+=`<div class="admin-section"><div class="admin-sect-title">Nom de l'onglet</div>`;
+  h+=biInput("Nom de l'onglet", tab.label.fr||'', tab.label[adminLang]||'', `DATA.tabs[${ti}].label[adminLang]=this.value;renderAll()`);
+  h+=`<button class="adanger" onclick="askConfirm('Supprimer la tab « ${tab.label.fr} » et tout son contenu ?',()=>delTab(${ti}))">Supprimer cette tab</button>
   </div>`;
 
   // Cards
   tab.cards.forEach((card,ci)=>{
     h+=`<div class="admin-section"><div class="admin-sect-title">Carte — ${t(card.label)}</div>`;
-    h+=`<div class="admin-card"><div class="af"><label class="al">Titre carte FR</label><input class="ai" value="${card.label.fr||''}" oninput="DATA.tabs[${ti}].cards[${ci}].label.fr=this.value;renderAll()"></div>`;
+    h+=`<div class="admin-card">`;
+    h+=biInput('Titre de section', card.label.fr||'', card.label[adminLang]||'', `DATA.tabs[${ti}].cards[${ci}].label[adminLang]=this.value;renderAll()`);
+    h+=``;
 
     if(card.type==='bevs'){
       (card.items||[]).forEach((item,ii)=>{
         h+=`<div class="admin-card" style="background:#fff;margin-top:4px"><div class="admin-card-hdr"><span class="admin-card-num">Boisson ${ii+1}</span><button class="adel" onclick="askConfirm('Supprimer cette boisson ?',()=>delBev(${ti},${ci},${ii}))">×</button></div>
-          <div class="ai-row"><input class="ai" placeholder="Nom" value="${t(item.name)||''}" oninput="if(typeof DATA.tabs[${ti}].cards[${ci}].items[${ii}].name==='object'){DATA.tabs[${ti}].cards[${ci}].items[${ii}].name.fr=this.value}else{DATA.tabs[${ti}].cards[${ci}].items[${ii}].name=this.value};renderAll()"><input class="ai ai-sm" placeholder="Prix" value="${item.price||''}" oninput="DATA.tabs[${ti}].cards[${ci}].items[${ii}].price=this.value;renderAll()"></div>
+          <div class="ai-row"><input class="ai" placeholder="${adminLang!=='fr'&&typeof item.name==='object'?item.name.fr||'Nom':'Nom'}" value="${typeof item.name==='object'?(item.name[adminLang]||''): item.name||''}" oninput="if(typeof DATA.tabs[${ti}].cards[${ci}].items[${ii}].name!=='object'){DATA.tabs[${ti}].cards[${ci}].items[${ii}].name={fr:DATA.tabs[${ti}].cards[${ci}].items[${ii}].name};}DATA.tabs[${ti}].cards[${ci}].items[${ii}].name[adminLang]=this.value;renderAll()"><input class="ai ai-sm" placeholder="Prix" value="${item.price||''}" oninput="DATA.tabs[${ti}].cards[${ci}].items[${ii}].price=this.value;renderAll()"></div>
         </div>`;
       });
       h+=`<button class="aadd" onclick="addBev(${ti},${ci})">+ Boisson</button>`;
     } else if(card.type==='variants'){
       h+=`<div class="af"><label class="al">Image URL</label><input class="ai" value="${card.img||''}" oninput="DATA.tabs[${ti}].cards[${ci}].img=this.value;renderAll()"></div>`;
       (card.variants||[]).forEach((v,vi)=>{
-        h+=`<div class="ai-row" style="margin-top:4px"><input class="ai" value="${t(v.name)||''}" oninput="if(typeof DATA.tabs[${ti}].cards[${ci}].variants[${vi}].name==='object'){DATA.tabs[${ti}].cards[${ci}].variants[${vi}].name.fr=this.value}else{DATA.tabs[${ti}].cards[${ci}].variants[${vi}].name=this.value};renderAll()"><input class="ai ai-sm" value="${v.price||''}" oninput="DATA.tabs[${ti}].cards[${ci}].variants[${vi}].price=this.value;renderAll()"><button class="adel" onclick="askConfirm('Supprimer cette variante ?',()=>delVariant(${ti},${ci},${vi}))">×</button></div>`;
+        const vFr=typeof v.name==='object'?v.name.fr||'':v.name||'';
+        const vVal=typeof v.name==='object'?(v.name[adminLang]||''):v.name||'';
+        h+=`<div class="ai-row" style="margin-top:4px"><input class="ai" value="${vVal}" placeholder="${adminLang!=='fr'?vFr:''}" oninput="if(typeof DATA.tabs[${ti}].cards[${ci}].variants[${vi}].name!=='object'){DATA.tabs[${ti}].cards[${ci}].variants[${vi}].name={fr:DATA.tabs[${ti}].cards[${ci}].variants[${vi}].name};}DATA.tabs[${ti}].cards[${ci}].variants[${vi}].name[adminLang]=this.value;renderAll()"><input class="ai ai-sm" value="${v.price||''}" oninput="DATA.tabs[${ti}].cards[${ci}].variants[${vi}].price=this.value;renderAll()"><button class="adel" onclick="askConfirm('Supprimer cette variante ?',()=>delVariant(${ti},${ci},${vi}))">×</button></div>`;
       });
       h+=`<button class="aadd" onclick="addVariant(${ti},${ci})">+ Variante</button>`;
     } else {
       (card.dishes||[]).forEach((d,di)=>{
         h+=`<div class="admin-card" style="background:#fff;margin-top:6px">
           <div class="admin-card-hdr"><span class="admin-card-num">Plat ${di+1}</span><button class="adel" onclick="askConfirm('Supprimer « ${d.name.fr||'ce plat'} » ?',()=>delDish(${ti},${ci},${di}))">×</button></div>
-          <div class="af"><label class="al">Nom FR</label><input class="ai" value="${d.name.fr||''}" oninput="DATA.tabs[${ti}].cards[${ci}].dishes[${di}].name.fr=this.value;renderAll()"></div>
-          <div class="af"><label class="al">Nom EN</label><input class="ai" value="${d.name.en||''}" oninput="DATA.tabs[${ti}].cards[${ci}].dishes[${di}].name.en=this.value;renderAll()"></div>
-          <div class="af"><label class="al">Description FR</label><input class="ai" value="${d.desc.fr||''}" oninput="DATA.tabs[${ti}].cards[${ci}].dishes[${di}].desc.fr=this.value;renderAll()"></div>
+          `+biInput('Nom', d.name.fr||'', d.name[adminLang]||'', `DATA.tabs[${ti}].cards[${ci}].dishes[${di}].name[adminLang]=this.value;renderAll()`)+`
+          `+biInput('Description', d.desc.fr||'', d.desc[adminLang]||'', `DATA.tabs[${ti}].cards[${ci}].dishes[${di}].desc[adminLang]=this.value;renderAll()`)+`
           <div class="af"><label class="al">Prix</label><input class="ai ai-sm" value="${d.price||''}" oninput="DATA.tabs[${ti}].cards[${ci}].dishes[${di}].price=this.value;renderAll()"></div>
           <div class="af"><label class="al">Image URL</label><input class="ai" value="${d.img||''}" oninput="DATA.tabs[${ti}].cards[${ci}].dishes[${di}].img=this.value;renderAll()"></div>
           <div class="badge-group">
