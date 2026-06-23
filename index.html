@@ -745,9 +745,87 @@ function addNewTab(){
 }
 
 // ═══════════════════════════════════════════
+// GITHUB SYNC
+// ═══════════════════════════════════════════
+const GH_USER   = 'sowonboxx-cmd';
+const GH_REPO   = 'drevici-menu';
+const GH_FILE   = 'menu.json';
+const GH_BRANCH = 'main';
+
+function getToken(){ return localStorage.getItem('drevici_gh_token')||''; }
+function saveToken(v){ if(v) localStorage.setItem('drevici_gh_token',v); else localStorage.removeItem('drevici_gh_token'); }
+
+async function loadFromGitHub(){
+  try{
+    const url=`https://raw.githubusercontent.com/${GH_USER}/${GH_REPO}/${GH_BRANCH}/${GH_FILE}?t=${Date.now()}`;
+    const r=await fetch(url);
+    if(!r.ok) return;
+    const json=await r.json();
+    if(json.tabs) DATA.tabs=json.tabs;
+    if(json.hero) DATA.hero=json.hero;
+    if(json.intro) DATA.intro=json.intro;
+    if(json.specials) DATA.specials=json.specials;
+    if(json.pinnedDishes) DATA.pinnedDishes=json.pinnedDishes;
+    console.log('Menu chargé depuis GitHub ✓');
+  }catch(e){ console.log('Mode local'); }
+}
+
+async function publishToGitHub(){
+  const token=getToken();
+  if(!token){ showToast('⚠️ Saisis d'abord ton token'); renderAdminSection('__global'); return; }
+  const btn=document.getElementById('ghPublishBtn');
+  if(btn){ btn.textContent='⏳ Publication…'; btn.disabled=true; }
+  try{
+    const apiBase=`https://api.github.com/repos/${GH_USER}/${GH_REPO}/contents/${GH_FILE}`;
+    const headers={'Authorization':'token '+token,'Content-Type':'application/json'};
+    let sha=null;
+    const existing=await fetch(apiBase,{headers});
+    if(existing.ok){ const d=await existing.json(); sha=d.sha; }
+    const content=btoa(unescape(encodeURIComponent(JSON.stringify(DATA,null,2))));
+    const body={message:'Menu update '+new Date().toLocaleString('fr'),content,branch:GH_BRANCH};
+    if(sha) body.sha=sha;
+    const res=await fetch(apiBase,{method:'PUT',headers,body:JSON.stringify(body)});
+    if(!res.ok){ const err=await res.json(); throw new Error(err.message||res.status); }
+    showToast('✅ Publié ! En ligne dans ~30 secondes');
+  }catch(e){
+    showToast('❌ '+e.message);
+    if(e.message.includes('401')||e.message.includes('credentials')){ saveToken(''); renderAdminSection('__global'); }
+  }finally{
+    if(btn){ btn.textContent='🚀 Publier sur GitHub'; btn.disabled=false; }
+  }
+}
+
+function ghSectionHtml(){
+  const token=getToken();
+  const masked=token?token.slice(0,7)+'••••••••••••••••••'+token.slice(-4):'';
+  return `<div class="admin-section">
+    <div class="admin-sect-title">🔗 Synchronisation GitHub</div>
+    ${token
+      ?`<div style="display:flex;align-items:center;gap:8px;padding:10px 12px;background:#eef6ee;border-radius:8px;border:1px solid #b8e0b8;margin-bottom:10px">
+          <div style="flex:1"><div style="font-size:12px;color:#2a7a2a;font-family:Jost,sans-serif;font-weight:500">✓ Token configuré</div><div style="font-size:11px;color:#999;font-family:monospace;margin-top:2px">${masked}</div></div>
+          <button onclick="saveToken('');renderAdminSection('__global')" style="font-size:11px;color:#c0392b;background:none;border:1px solid #f5c6c2;border-radius:6px;padding:4px 8px;cursor:pointer;font-family:Jost,sans-serif">Réinitialiser</button>
+        </div>`
+      :`<div class="af"><label class="al">Token GitHub (ghp_…)</label>
+          <div style="display:flex;gap:6px">
+            <input class="ai" id="ghTokenInput" type="password" placeholder="ghp_xxxxxxxxxxxx" style="font-family:monospace">
+            <button onclick="const v=document.getElementById('ghTokenInput').value.trim();if(v){saveToken(v);showToast('Token enregistré ✓');renderAdminSection('__global');}else{showToast('Token vide');}" style="padding:7px 12px;background:var(--navy);color:#fff;border:none;border-radius:6px;font-family:Jost,sans-serif;font-size:12px;cursor:pointer;white-space:nowrap">OK</button>
+          </div>
+          <div style="font-size:11px;color:var(--text3);font-family:Jost,sans-serif;margin-top:5px;line-height:1.5">github.com → Settings → Developer settings → Tokens (classic) → scope <strong>repo</strong></div>
+        </div>`
+    }
+    <button class="asave" id="ghPublishBtn" onclick="publishToGitHub()" ${!token?'disabled style="opacity:.5;cursor:not-allowed"':''}style="margin-top:4px">🚀 Publier sur GitHub</button>
+    <div style="font-size:11px;color:var(--text3);font-family:Jost,sans-serif;margin-top:8px;line-height:1.6">Ton menu sera en ligne sur<br><a href="https://${GH_USER}.github.io/${GH_REPO}/" target="_blank" style="color:var(--navy);font-weight:500">${GH_USER}.github.io/${GH_REPO}/</a><br>en ~30 secondes après chaque publication.</div>
+  </div>`;
+}
+
+// Patch renderAdminGlobal to prepend GH section
+const _origGlobal=renderAdminGlobal;
+renderAdminGlobal=function(){ return ghSectionHtml()+_origGlobal(); };
+
+// ═══════════════════════════════════════════
 // INIT
 // ═══════════════════════════════════════════
-renderAll();
+loadFromGitHub().then(()=>renderAll());
 </script>
 </body>
 </html>
