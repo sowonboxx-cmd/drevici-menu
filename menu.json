@@ -137,21 +137,26 @@
             },
             {
               "name": {
-                "fr": "Huîtres nature n°4",
+                "fr": "Huîtres natures n°4",
                 "en": "New dish"
               },
               "desc": {
                 "fr": "Toutes nos huîtres sont accompagnées de pain, beurre, citron et/ou vinaigre-échalotes.",
                 "en": ""
               },
-              "price": "Les 6 — 14€ · Les 12 — 26€",
+              "price": "Les ? — ?€ · Les ? — 22€",
               "img": "https://drevicioyster.com/wp-content/uploads/2026/06/huitresiuf6.webp",
               "spicy": false,
-              "vegan": false
+              "vegan": true,
+              "priceType": "dual",
+              "qty1": "",
+              "p1": "",
+              "qty2": "",
+              "p2": "22"
             },
             {
               "name": {
-                "fr": "Huîtres nature n°2",
+                "fr": "Huîtres natures n°2",
                 "en": "New dish"
               },
               "desc": {
@@ -503,27 +508,23 @@
         },
         {
           "label": {
-            "fr": "",
-            "en": "New section"
-          },
-          "dishes": []
-        },
-        {
-          "label": {
             "fr": "Vins Rouges",
             "en": "New section"
           },
-          "type": "bevs",
-          "items": [
+          "dishes": [
             {
               "name": {
                 "fr": "Côte du Rhône",
-                "en": "New drink"
+                "en": "New dish"
               },
-              "price": "5€",
               "desc": {
-                "fr": "25cl / 50cl"
-              }
+                "fr": "25cl / 50cl",
+                "en": ""
+              },
+              "price": "5€ / 17€",
+              "img": "",
+              "spicy": false,
+              "vegan": false
             }
           ]
         }
