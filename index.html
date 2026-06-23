@@ -13,10 +13,9 @@ body{background:var(--bg);font-family:'Jost',sans-serif;font-weight:400;font-siz
 /* ── LIGHTBOX ── */
 .lb{position:fixed;inset:0;background:rgba(0,0,0,0.93);z-index:1000;display:none;align-items:center;justify-content:center;flex-direction:column}
 .lb.open{display:flex}
-.lb-inner{position:relative;width:100%;max-width:800px;padding:0 16px}
-.lb img{width:100%;max-height:60vh;border-radius:10px;object-fit:cover;display:block}
-.lb-nav{position:absolute;top:50%;transform:translateY(-50%);background:rgba(0,0,0,0.35);border:none;color:#fff;width:36px;height:36px;border-radius:50%;cursor:pointer;font-size:20px;display:flex;align-items:center;justify-content:center;backdrop-filter:blur(4px);transition:background .15s;z-index:2}
-.lb-nav:hover{background:rgba(0,0,0,0.6)}
+.lb-inner{position:relative;width:100%;padding:0}
+.lb img{width:100%;height:55vh;object-fit:cover;display:block}
+
 .lb-nav{position:absolute;top:50%;transform:translateY(-50%);background:rgba(255,255,255,0.15);border:none;color:#fff;width:38px;height:38px;border-radius:50%;cursor:pointer;font-size:20px;display:flex;align-items:center;justify-content:center;backdrop-filter:blur(4px);transition:background .15s}
 .lb-nav:hover{background:rgba(255,255,255,0.28)}
 .lb-prev{left:4px}.lb-next{right:4px}
@@ -35,9 +34,7 @@ body{background:var(--bg);font-family:'Jost',sans-serif;font-weight:400;font-siz
 .header-top{width:100%;display:flex;justify-content:space-between;align-items:center;margin-bottom:10px}
 .header-top-left{display:flex;align-items:center;gap:6px}
 .header-top-right{display:flex;align-items:center;gap:6px}
-.ig-btn{display:flex;align-items:center;justify-content:center;width:30px;height:30px;border:1px solid rgba(255,255,255,0.25);border-radius:6px;background:rgba(255,255,255,0.1);cursor:pointer;text-decoration:none;transition:background .15s}
-.ig-btn:hover{background:rgba(255,255,255,0.2)}
-.ig-btn svg{width:15px;height:15px;stroke:#fff;fill:none;stroke-width:1.6;stroke-linecap:round;stroke-linejoin:round}
+
 .lang-wrap{position:relative}
 .lang-sel{display:flex;align-items:center;gap:3px;padding:5px 10px;border:1px solid rgba(255,255,255,0.25);border-radius:6px;cursor:pointer;background:rgba(255,255,255,0.1);color:rgba(255,255,255,0.85);font-size:11px;font-family:'Jost',sans-serif;font-weight:500;letter-spacing:.06em;user-select:none}
 .lang-dd{position:absolute;right:0;top:calc(100% + 6px);background:#fff;border:1px solid rgba(0,0,0,0.1);border-radius:8px;overflow:hidden;z-index:400;display:none;min-width:140px;box-shadow:0 4px 20px rgba(0,0,0,0.15)}
@@ -141,6 +138,8 @@ body{background:var(--bg);font-family:'Jost',sans-serif;font-weight:400;font-siz
 
 /* ── STICKY RESERVE ── */
 .sticky-reserve{position:sticky;bottom:0;z-index:100;padding:10px 0 14px;background:linear-gradient(to top,var(--bg) 70%,transparent)}
+.ig-text{display:block;text-align:center;font-size:10px;letter-spacing:.16em;color:var(--text3);text-decoration:none;font-family:'Jost',sans-serif;font-weight:400;margin-top:8px;transition:color .15s}
+.ig-text:hover{color:var(--navy)}
 .sticky-reserve .container{display:block}
 .reserve-btn{display:block;width:100%;padding:15px;background:var(--navy);color:#fff;border:none;border-radius:10px;font-size:14px;font-weight:500;font-family:'Jost',sans-serif;letter-spacing:.06em;cursor:pointer;text-align:center;text-decoration:none}
 
@@ -200,12 +199,16 @@ body{background:var(--bg);font-family:'Jost',sans-serif;font-weight:400;font-siz
 /* ── TOAST ── */
 #toast{position:fixed;bottom:90px;left:50%;transform:translateX(-50%);background:var(--navy);color:#fff;padding:9px 18px;border-radius:50px;font-size:12px;font-family:'Jost',sans-serif;z-index:9999;opacity:0;transition:opacity .3s;pointer-events:none;white-space:nowrap}
 .img-wrap{position:relative;display:inline-block;flex:none;cursor:pointer}
-.img-wrap .zoom-ic{position:absolute;top:4px;right:4px;width:22px;height:22px;pointer-events:none;opacity:0;transition:opacity .15s}
+.img-wrap .zoom-ic{position:absolute;top:5px;right:5px;width:24px;height:24px;pointer-events:none;opacity:0;transition:opacity .15s;background:rgba(255,255,255,0.75);border-radius:50%;padding:3px;backdrop-filter:blur(2px)}
 .img-wrap:hover .zoom-ic,.img-wrap.touch .zoom-ic{opacity:1}
 .gc-wrap{position:relative;cursor:pointer;display:block}
-.gc-wrap .zoom-ic{position:absolute;top:6px;right:6px;width:24px;height:24px;pointer-events:none;opacity:0;transition:opacity .15s}
+.gc-wrap .zoom-ic{position:absolute;top:6px;right:6px;width:26px;height:26px;pointer-events:none;opacity:0;transition:opacity .15s;background:rgba(255,255,255,0.75);border-radius:50%;padding:3px;backdrop-filter:blur(2px)}
 .gc-wrap:hover .zoom-ic,.gc-wrap.touch .zoom-ic{opacity:1}
 @media(max-width:768px){.img-wrap .zoom-ic,.gc-wrap .zoom-ic{opacity:1}}
+.drag-handle{cursor:grab;padding:4px 6px 4px 2px;color:var(--text3);font-size:16px;line-height:1;user-select:none;flex:none}
+.drag-handle:active{cursor:grabbing}
+.admin-card.dragging{opacity:.4;border:2px dashed var(--navy)}
+.admin-card.drag-over{border-top:3px solid var(--navy)}
 </style>
 </head>
 <body>
@@ -216,14 +219,18 @@ body{background:var(--bg);font-family:'Jost',sans-serif;font-weight:400;font-siz
 <div class="lb" id="lb">
   <button class="lb-close" onclick="closeLb()">✕</button>
   <div class="lb-inner">
-    <button class="lb-nav lb-prev" onclick="lbStep(-1)">&#8249;</button>
-    <img id="lbImg" src="" alt=""/>
-    <button class="lb-nav lb-next" onclick="lbStep(1)">&#8250;</button>
+    <img id="lbImg" src="" alt="" style="border-radius:0"/>
   </div>
-  <div class="lb-footer">
+  <div class="lb-card">
     <div class="lb-dish-name" id="lbName"></div>
-    <div class="lb-dish-desc" id="lbDesc" style="font-size:13px;color:rgba(255,255,255,0.55);font-family:Jost,sans-serif;font-weight:300;margin-top:4px;max-width:520px;margin-left:auto;margin-right:auto;line-height:1.5"></div>
-    <div class="lb-count" id="lbCount"></div>
+    <div class="lb-dish-desc" id="lbDesc"></div>
+    <div class="lb-bottom-row">
+      <span class="lb-count" id="lbCount"></span>
+      <div class="lb-arrows">
+        <button class="lb-arrow-btn" onclick="lbStep(-1)">&#8249;</button>
+        <button class="lb-arrow-btn" onclick="lbStep(1)">&#8250;</button>
+      </div>
+    </div>
   </div>
 </div>
 
@@ -266,12 +273,6 @@ body{background:var(--bg);font-family:'Jost',sans-serif;font-weight:400;font-siz
     <div class="container">
       <div class="header-top">
         <div class="header-top-left">
-          <a class="ig-btn" href="https://www.instagram.com/drevicioysterbar/" target="_blank" aria-label="Instagram">
-            <svg viewBox="0 0 24 24"><rect x="2" y="2" width="20" height="20" rx="5" ry="5"/><path d="M16 11.37A4 4 0 1112.63 8 4 4 0 0116 11.37z"/><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"/></svg>
-          </a>
-        </div>
-        <div class="logo-centered"><img class="logo-img" src="https://drevicioyster.com/wp-content/uploads/2026/06/Drevici-Oyster-white-HD.png" alt="Drevici Oyster" onerror="this.style.display='none'"/></div>
-        <div class="header-top-right">
           <div class="lang-wrap">
             <div class="lang-sel" onclick="toggleDD()">
               <span id="langCur">FR</span>
@@ -286,6 +287,9 @@ body{background:var(--bg);font-family:'Jost',sans-serif;font-weight:400;font-siz
               <div class="lang-opt" data-lang="jp" onclick="setLang('jp')">JP — 日本語</div>
             </div>
           </div>
+        </div>
+        <div class="logo-centered"><img class="logo-img" src="https://drevicioyster.com/wp-content/uploads/2026/06/Drevici-Oyster-white-HD.png" alt="Drevici Oyster" onerror="this.style.display='none'"/></div>
+        <div class="header-top-right">
           <button class="admin-btn" onclick="openAdmin()">
             <svg viewBox="0 0 16 16"><circle cx="8" cy="6" r="2.5"/><path d="M2 14c0-3 2.7-5.5 6-5.5s6 2.5 6 5.5"/></svg>
           </button>
@@ -319,6 +323,7 @@ body{background:var(--bg);font-family:'Jost',sans-serif;font-weight:400;font-siz
   <div class="sticky-reserve">
     <div class="container">
       <a class="reserve-btn" id="reserveMain" href="https://LIEN_A_DEFINIR">Réserver une table</a>
+      <a href="https://www.instagram.com/drevicioysterbar/" target="_blank" class="ig-text">INSTAGRAM</a>
     </div>
   </div>
 </div>
@@ -531,13 +536,13 @@ function renderTabContent(tab,lbOffset){
         const idx=card.img?imgIdx++:null;
         const flavours=(card.variants||[]).map(v=>t(v.name)).join(' · ');
         const price=card.variants&&card.variants[0]?card.variants[0].price:'';
-        gridItems.push(`<div class="gc"><div class="gc-wrap" ${card.img?`data-lbidx="${idx}"`:''}>${card.img?`<img class="gc-img" src="${card.img}" alt="" loading="lazy"><img class="zoom-ic" src="https://drevicioyster.com/wp-content/uploads/2026/06/icon-zoom.png" alt="">`:'<div style="aspect-ratio:1;background:#ece8e1"></div>'}</div><div class="gc-body"><div class="gc-name">${t(card.label)}</div><div class="gc-desc">${flavours}</div><div class="gc-price">${price}</div></div></div>`);
+        gridItems.push(`<div class="gc"><div class="gc-wrap" ${card.img?`data-lbidx="${idx}"`:''}>${card.img?`<img class="gc-img" src="${card.img}" alt="" loading="lazy"><img class="zoom-ic" src="https://drevicioyster.com/wp-content/uploads/2026/06/icon-zoom2.png" alt="">`:'<div style="aspect-ratio:1;background:#ece8e1"></div>'}</div><div class="gc-body"><div class="gc-name">${t(card.label)}</div><div class="gc-desc">${flavours}</div><div class="gc-price">${price}</div></div></div>`);
         return;
       }
       (card.dishes||[]).forEach(d=>{
         const idx=d.img?imgIdx++:null;
         const badges=(d.spicy?`<img src="https://drevicioyster.com/wp-content/uploads/2026/06/icon-spicy.png" class="badge-icon" title="Épicé">`:'')+(d.vegan?`<img src="https://drevicioyster.com/wp-content/uploads/2026/06/icon-vegan.png" class="badge-icon" title="Vegan">`:'');
-        gridItems.push(`<div class="gc"><div class="gc-wrap" ${d.img?`data-lbidx="${idx}"`:''}>${d.img?`<img class="gc-img" src="${d.img}" alt="" loading="lazy"><img class="zoom-ic" src="https://drevicioyster.com/wp-content/uploads/2026/06/icon-zoom.png" alt="">`:'<div style="aspect-ratio:1;background:#ece8e1"></div>'}</div><div class="gc-body"><div class="gc-name">${t(d.name)}${badges?` <span class="dish-badges" style="display:inline-flex">${badges}</span>`:''}</div><div class="gc-desc">${t(d.desc)}</div><div class="gc-price">${d.price}</div></div></div>`);
+        gridItems.push(`<div class="gc"><div class="gc-wrap" ${d.img?`data-lbidx="${idx}"`:''}>${d.img?`<img class="gc-img" src="${d.img}" alt="" loading="lazy"><img class="zoom-ic" src="https://drevicioyster.com/wp-content/uploads/2026/06/icon-zoom2.png" alt="">`:'<div style="aspect-ratio:1;background:#ece8e1"></div>'}</div><div class="gc-body"><div class="gc-name">${t(d.name)}${badges?` <span class="dish-badges" style="display:inline-flex">${badges}</span>`:''}</div><div class="gc-desc">${t(d.desc)}</div><div class="gc-price">${d.price}</div></div></div>`);
       });
     });
     if(gridItems.length) html+=`<div class="dish-grid">${gridItems.join('')}</div>`;
@@ -559,12 +564,12 @@ function renderTabContent(tab,lbOffset){
             <div class="dish-desc">${flavours}</div>
             <div class="dish-price">${price}</div>
           </div>
-          ${card.img?`<span class="img-wrap" data-lbidx="${idx}"><img class="dish-img" src="${card.img}" alt="" loading="lazy"><img class="zoom-ic" src="https://drevicioyster.com/wp-content/uploads/2026/06/icon-zoom.png" alt=""></span>`:''}</div>`;
+          ${card.img?`<span class="img-wrap" data-lbidx="${idx}"><img class="dish-img" src="${card.img}" alt="" loading="lazy"><img class="zoom-ic" src="https://drevicioyster.com/wp-content/uploads/2026/06/icon-zoom2.png" alt=""></span>`:''}</div>`;
       } else {
         (card.dishes||[]).forEach((d,di)=>{
           const idx=d.img?imgIdx++:null;
           const badges=(d.spicy?`<img src="https://drevicioyster.com/wp-content/uploads/2026/06/icon-spicy.png" class="badge-icon" title="Épicé">`:'')+(d.vegan?`<img src="https://drevicioyster.com/wp-content/uploads/2026/06/icon-vegan.png" class="badge-icon" title="Vegan">`:'');
-          html+=`<div class="dish-row"${di===0?' style="padding-top:0"':''}><div class="dish-text"><div class="dish-name-row"><span class="dish-name">${t(d.name)}</span>${badges?`<span class="dish-badges">${badges}</span>`:''}</div><div class="dish-desc">${t(d.desc)}</div><div class="dish-price">${d.price}</div></div>${d.img?`<span class="img-wrap" data-lbidx="${idx}"><img class="dish-img" src="${d.img}" alt="" loading="lazy"><img class="zoom-ic" src="https://drevicioyster.com/wp-content/uploads/2026/06/icon-zoom.png" alt=""></span>`:''}</div>`;
+          html+=`<div class="dish-row"${di===0?' style="padding-top:0"':''}><div class="dish-text"><div class="dish-name-row"><span class="dish-name">${t(d.name)}</span>${badges?`<span class="dish-badges">${badges}</span>`:''}</div><div class="dish-desc">${t(d.desc)}</div><div class="dish-price">${d.price}</div></div>${d.img?`<span class="img-wrap" data-lbidx="${idx}"><img class="dish-img" src="${d.img}" alt="" loading="lazy"><img class="zoom-ic" src="https://drevicioyster.com/wp-content/uploads/2026/06/icon-zoom2.png" alt=""></span>`:''}</div>`;
         });
       }
       html+=`</div></div>`;
@@ -670,8 +675,8 @@ function renderAdminGlobal(){
     h+=`<div class="admin-card">
       <div class="admin-card-hdr"><span class="admin-card-num">${t(sp.label)}</span></div>
       <label class="admin-toggle"><input type="checkbox" ${sp.active?'checked':''} onchange="DATA.specials[${si}].active=this.checked;renderAll()"><label>Activer</label></label>
-      <div class="af"><label class="al">Titre FR</label><input class="ai" value="${sp.title.fr||''}" oninput="DATA.specials[${si}].title.fr=this.value;renderAll()"></div>
-      <div class="af"><label class="al">Description FR</label><input class="ai" value="${sp.desc.fr||''}" oninput="DATA.specials[${si}].desc.fr=this.value;renderAll()"></div>
+      `+biInput('Titre', sp.title.fr||'', sp.title[adminLang]||'', `DATA.specials[${si}].title[adminLang]=this.value;renderAll()`)+`
+      `+biInput('Description', sp.desc.fr||'', sp.desc[adminLang]||'', `DATA.specials[${si}].desc[adminLang]=this.value;renderAll()`)+`
       <div class="af"><label class="al">Prix</label><input class="ai ai-sm" value="${sp.price||''}" oninput="DATA.specials[${si}].price=this.value;renderAll()"></div>
     </div>`;
   });
@@ -750,8 +755,8 @@ function renderAdminTab(ti){
       h+=`<button class="aadd" onclick="addVariant(${ti},${ci})">+ Variante</button>`;
     } else {
       (card.dishes||[]).forEach((d,di)=>{
-        h+=`<div class="admin-card" style="background:#fff;margin-top:6px">
-          <div class="admin-card-hdr"><span class="admin-card-num">Plat ${di+1}</span><button class="adel" onclick="askConfirm('Supprimer « ${d.name.fr||'ce plat'} » ?',()=>delDish(${ti},${ci},${di}))">×</button></div>
+        h+=`<div class="admin-card" style="background:#fff;margin-top:6px" draggable="true" ondragstart="onDragStart(event,${ti},${ci},${di})" ondragend="onDragEnd(event)" ondragover="onDragOver(event,${ti},${ci},${di})" ondragleave="onDragLeave(event)" ondrop="onDrop(event,${ti},${ci},${di})">
+          <div class="admin-card-hdr"><span class="drag-handle" title="Glisser pour réordonner">⠿</span><span class="admin-card-num">Plat ${di+1}</span><button class="adel" onclick="askConfirm('Supprimer « ${d.name.fr||'ce plat'} » ?',()=>delDish(${ti},${ci},${di}))">×</button></div>
           `+biInput('Nom', d.name.fr||'', d.name[adminLang]||'', `DATA.tabs[${ti}].cards[${ci}].dishes[${di}].name[adminLang]=this.value;renderAll()`)+`
           `+biInput('Description', d.desc.fr||'', d.desc[adminLang]||'', `DATA.tabs[${ti}].cards[${ci}].dishes[${di}].desc[adminLang]=this.value;renderAll()`)+`
           <div class="af"><label class="al">Prix</label><input class="ai ai-sm" value="${d.price||''}" oninput="DATA.tabs[${ti}].cards[${ci}].dishes[${di}].price=this.value;renderAll()"></div>
@@ -798,6 +803,24 @@ function addNewTab(){
 }
 
 // ═══════════════════════════════════════════
+// DRAG AND DROP
+// ═══════════════════════════════════════════
+let dragSrc=null;
+function onDragStart(e,ti,ci,di){ dragSrc={ti,ci,di}; e.currentTarget.classList.add('dragging'); e.dataTransfer.effectAllowed='move'; }
+function onDragEnd(e){ e.currentTarget.classList.remove('dragging'); document.querySelectorAll('.admin-card').forEach(el=>el.classList.remove('drag-over')); }
+function onDragOver(e,ti,ci,di){ e.preventDefault(); e.currentTarget.classList.add('drag-over'); }
+function onDragLeave(e){ e.currentTarget.classList.remove('drag-over'); }
+function onDrop(e,ti,ci,di){
+  e.preventDefault(); e.currentTarget.classList.remove('drag-over');
+  if(!dragSrc||dragSrc.ti!==ti||dragSrc.ci!==ci||dragSrc.di===di) return;
+  const dishes=DATA.tabs[ti].cards[ci].dishes;
+  const [moved]=dishes.splice(dragSrc.di,1);
+  dishes.splice(di,0,moved);
+  dragSrc=null;
+  renderAll(); renderAdminSection(DATA.tabs[ti].id);
+}
+
+// ═══════════════════════════════════════════
 // GITHUB SYNC
 // ═══════════════════════════════════════════
 const GH_USER   = 'sowonboxx-cmd';
@@ -812,15 +835,19 @@ async function loadFromGitHub(){
   try{
     const url=`https://raw.githubusercontent.com/${GH_USER}/${GH_REPO}/${GH_BRANCH}/${GH_FILE}?t=${Date.now()}`;
     const r=await fetch(url);
-    if(!r.ok) return;
+    if(!r.ok){ console.log('menu.json absent, mode local'); return; }
     const json=await r.json();
-    if(json.tabs) DATA.tabs=json.tabs;
-    if(json.hero) DATA.hero=json.hero;
-    if(json.intro) DATA.intro=json.intro;
-    if(json.specials) DATA.specials=json.specials;
-    if(json.pinnedDishes) DATA.pinnedDishes=json.pinnedDishes;
-    console.log('Menu chargé depuis GitHub ✓');
-  }catch(e){ console.log('Mode local'); }
+    // Full replace — ensures specials/intro/pinned all sync
+    if(json.tabs && Array.isArray(json.tabs)) DATA.tabs=json.tabs;
+    if(json.hero && typeof json.hero==='object') DATA.hero=json.hero;
+    if(json.intro && typeof json.intro==='object') DATA.intro=json.intro;
+    if(json.specials && Array.isArray(json.specials)) DATA.specials=json.specials;
+    if(Array.isArray(json.pinnedDishes)) DATA.pinnedDishes=json.pinnedDishes;
+    // Restore isHome on first tab
+    if(DATA.tabs.length>0 && !DATA.tabs.some(t=>t.isHome)) DATA.tabs[0].isHome=true;
+    currentTabId=DATA.tabs[0]?.id||currentTabId;
+    console.log('✓ Menu chargé depuis GitHub');
+  }catch(e){ console.log('Mode local:', e.message); }
 }
 
 async function publishToGitHub(){
