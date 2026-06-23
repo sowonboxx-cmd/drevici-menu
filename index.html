@@ -19,10 +19,10 @@ body{background:var(--bg);font-family:'Jost',sans-serif;font-weight:400;font-siz
 .lb-nav:hover{background:rgba(255,255,255,0.32)}
 .lb-prev{left:20px}.lb-next{right:20px}
 .lb-footer{width:100%;max-width:680px;background:#fff;border-radius:16px 16px 0 0;padding:18px 20px 32px;margin-top:14px}
-.lb-dish-name{font-family:'Cormorant Garamond',serif;font-size:20px;color:#1a1a1a;font-weight:700;margin-bottom:4px;line-height:1.2}
-.lb-dish-desc{font-size:13px;color:#888;font-family:'Jost',sans-serif;font-weight:300;line-height:1.55;margin-bottom:10px}
-.lb-footer-row{display:flex;align-items:center;justify-content:space-between}
-.lb-count{font-size:11px;color:#bbb;letter-spacing:.1em;font-family:'Jost',sans-serif}
+.lb-dish-name{font-family:'Cormorant Garamond',serif;font-size:22px;color:#1a1a1a;font-weight:700;margin-bottom:6px;line-height:1.2;text-align:center}
+.lb-dish-desc{font-size:13px;color:#777;font-family:'Jost',sans-serif;font-weight:300;line-height:1.6;margin-bottom:12px;text-align:left}
+.lb-footer-row{display:flex;align-items:center;justify-content:center}
+.lb-count{font-size:11px;color:#bbb;letter-spacing:.12em;font-family:'Jost',sans-serif;text-align:center}
 .lb-close{position:absolute;top:14px;right:16px;background:rgba(255,255,255,0.15);border:none;color:#fff;font-size:18px;cursor:pointer;line-height:1;width:32px;height:32px;border-radius:50%;display:flex;align-items:center;justify-content:center;z-index:3}
 
 /* ── LAYOUT ── */
@@ -97,6 +97,8 @@ body{background:var(--bg);font-family:'Jost',sans-serif;font-weight:400;font-siz
 
 /* ── DISH LIST ── */
 .dish-row{display:flex;gap:12px;align-items:flex-start;padding:12px 0;border-bottom:1px solid rgba(0,0,0,0.05)}
+.dish-row-clickable{cursor:pointer;transition:background .15s;border-radius:6px;margin:0 -6px;padding-left:6px;padding-right:6px}
+.dish-row-clickable:hover{background:rgba(16,40,94,0.03)}
 .dish-row:first-child{padding-top:0}
 .dish-row:last-child{border-bottom:none;padding-bottom:0}
 .dish-text{flex:1;min-width:0}
@@ -549,24 +551,28 @@ function renderTabContent(tab,lbOffset){
       html+=`<div class="card"><div class="card-hdr"><span class="card-label">${t(card.label)}</span></div><div class="card-body">`;
 
       if(card.type==='bevs'){
-        (card.items||[]).forEach(item=>{ html+=`<div class="bev-row"><div><span class="bev-name">${t(item.name)}</span>${t(item.desc)?`<div class="dish-desc" style="margin-top:2px">${t(item.desc)}</div>`:''}</div><span class="bev-price">${item.price}</span></div>`; });
+        (card.items||[]).forEach(item=>{
+  const sizes=item.sizes||[];
+  const priceStr=sizes.length>0?sizes.map(s=>(s.cl?s.cl+'cl':'')+(s.cl&&s.price?' — ':'')+(s.price?s.price+'€':'')).join(' / '):(item.price||'');
+  html+=`<div class="bev-row"><div><span class="bev-name">${t(item.name)}</span>${t(item.desc)?`<div class="dish-desc" style="margin-top:2px">${t(item.desc)}</div>`:''}</div><span class="bev-price">${priceStr}</span></div>`;
+});
       } else if(card.type==='variants'){
         // Render as dish row: name in navy + all flavours as description
         const flavours=(card.variants||[]).map(v=>t(v.name)).join(' · ');
         const price=card.variants&&card.variants[0]?card.variants[0].price:'';
         const idx=card.img?imgIdx++:null;
-        html+=`<div class="dish-row" style="padding-top:0">
+        html+=`<div class="dish-row${card.img?' dish-row-clickable':''}" style="padding-top:0"${card.img?` data-lbidx="${idx}"`:''}>
           <div class="dish-text">
             <div class="dish-name-row"><span class="dish-name">${t(card.label)}</span></div>
             <div class="dish-desc">${flavours}</div>
             <div class="dish-price">${price}</div>
           </div>
-          ${card.img?`<span class="img-wrap" data-lbidx="${idx}"><img class="dish-img" src="${card.img}" alt="" loading="lazy"></span>`:''}</div>`;
+          ${card.img?`<span class="img-wrap"><img class="dish-img" src="${card.img}" alt="" loading="lazy"></span>`:''}</div>`;
       } else {
         (card.dishes||[]).forEach((d,di)=>{
           const idx=d.img?imgIdx++:null;
           const badges=(d.spicy?`<img src="https://drevicioyster.com/wp-content/uploads/2026/06/icon-spicy.png" class="badge-icon" title="Épicé">`:'')+(d.vegan?`<img src="https://drevicioyster.com/wp-content/uploads/2026/06/icon-vegan.png" class="badge-icon" title="Vegan">`:'');
-          html+=`<div class="dish-row"${di===0?' style="padding-top:0"':''}><div class="dish-text"><div class="dish-name-row"><span class="dish-name">${t(d.name)}</span>${badges?`<span class="dish-badges">${badges}</span>`:''}</div><div class="dish-desc">${t(d.desc)}</div><div class="dish-price">${d.price}</div></div>${d.img?`<span class="img-wrap" data-lbidx="${idx}"><img class="dish-img" src="${d.img}" alt="" loading="lazy"></span>`:''}</div>`;
+          html+=`<div class="dish-row${d.img?' dish-row-clickable':''}"${d.img?` data-lbidx="${idx}"`:''}${di===0?' style="padding-top:0"':''}><div class="dish-text"><div class="dish-name-row"><span class="dish-name">${t(d.name)}</span>${badges?`<span class="dish-badges">${badges}</span>`:''}</div><div class="dish-desc">${t(d.desc)}</div><div class="dish-price">${d.price}</div></div>${d.img?`<span class="img-wrap"><img class="dish-img" src="${d.img}" alt="" loading="lazy"></span>`:''}</div>`;
         });
       }
       html+=`</div></div>`;
@@ -673,7 +679,7 @@ function priceField(d, ti, ci, di){
     <div style="display:flex;align-items:center;gap:6px">
       <input class="ai" type="number" min="0" step="0.5" value="${numVal}" style="max-width:100px" oninput="DATA.tabs[${ti}].cards[${ci}].dishes[${di}].price=this.value?this.value+'€':'';renderAll()">
       <span style="font-size:13px;color:var(--text3)">€</span>
-      <label style="display:flex;align-items:center;gap:4px;font-size:11px;color:var(--text3);cursor:pointer;margin-left:8px"><input type="checkbox" ${d.priceType==='dual'?'checked':''} onchange="DATA.tabs[${ti}].cards[${ci}].dishes[${di}].priceType=this.checked?'dual':'';if(this.checked){DATA.tabs[${ti}].cards[${ci}].dishes[${di}].qty1='';DATA.tabs[${ti}].cards[${ci}].dishes[${di}].p1='';DATA.tabs[${ti}].cards[${ci}].dishes[${di}].qty2='';DATA.tabs[${ti}].cards[${ci}].dishes[${di}].p2='';}renderAll();renderAdminSection(DATA.tabs[${ti}].id)"> Double offre</label>
+      ${DATA.tabs[ti].id==='huitres'?`<label style='display:flex;align-items:center;gap:4px;font-size:11px;color:var(--text3);cursor:pointer;margin-left:8px'><input type='checkbox' ${d.priceType==='dual'?'checked':''} onchange='DATA.tabs[${ti}].cards[${ci}].dishes[${di}].priceType=this.checked?"dual":"";renderAll();renderAdminSection(DATA.tabs[${ti}].id)'> + Ajouter un prix</label>`:''}
     </div>
   </div>`;
 }
@@ -761,19 +767,24 @@ function renderAdminTab(ti){
 
   // Cards
   tab.cards.forEach((card,ci)=>{
-    h+=`<div class="admin-section"><div class="admin-sect-title">Carte — ${t(card.label)}</div>`;
+    const canDelCard=card.type==='bevs'&&tab.cards.length>1;
+    h+=`<div class="admin-section"><div class="admin-sect-title" style="display:flex;justify-content:space-between;align-items:center"><span>Carte — ${t(card.label)}</span>${canDelCard?`<button class="adel" style="font-size:11px;padding:2px 8px" onclick="askConfirm('Supprimer cette carte ?',()=>{DATA.tabs[${ti}].cards.splice(${ci},1);renderAll();renderAdminSection(DATA.tabs[${ti}].id)})">✕ Suppr.</button>`:''}</div>`;
     h+=`<div class="admin-card">`;
     h+=biInput('Titre de section', card.label.fr||'', card.label[adminLang]||'', `DATA.tabs[${ti}].cards[${ci}].label[adminLang]=this.value;renderAll()`);
     h+=``;
 
     if(card.type==='bevs'){
       (card.items||[]).forEach((item,ii)=>{
-        h+=`<div class="admin-card" style="background:#fff;margin-top:4px"><div class="admin-card-hdr"><span class="admin-card-num">Boisson ${ii+1}</span><button class="adel" onclick="askConfirm('Supprimer cette boisson ?',()=>delBev(${ti},${ci},${ii}))">×</button></div>
-          <div class="ai-row"><input class="ai" placeholder="${adminLang!=='fr'&&typeof item.name==='object'?item.name.fr||'Nom':'Nom'}" value="${typeof item.name==='object'?(item.name[adminLang]||''): item.name||''}" oninput="if(typeof DATA.tabs[${ti}].cards[${ci}].items[${ii}].name!=='object'){DATA.tabs[${ti}].cards[${ci}].items[${ii}].name={fr:DATA.tabs[${ti}].cards[${ci}].items[${ii}].name};}DATA.tabs[${ti}].cards[${ci}].items[${ii}].name[adminLang]=this.value;renderAll()"><input class="ai ai-sm" type="number" min="0" step="0.5" placeholder="€" value="${(item.price||'').replace('€','').trim()}" oninput="DATA.tabs[${ti}].cards[${ci}].items[${ii}].price=this.value?this.value+'€':'';renderAll()"></div>
-          <input class="ai" style="margin-top:4px" placeholder="${adminLang!=='fr'&&item.desc&&typeof item.desc==='object'?item.desc.fr||'Description (optionnel)':'Description (optionnel)'}" value="${item.desc?(typeof item.desc==='object'?item.desc[adminLang]||'':(item.desc||'')):''}" oninput="if(!DATA.tabs[${ti}].cards[${ci}].items[${ii}].desc||typeof DATA.tabs[${ti}].cards[${ci}].items[${ii}].desc!=='object'){DATA.tabs[${ti}].cards[${ci}].items[${ii}].desc={fr:''};}DATA.tabs[${ti}].cards[${ci}].items[${ii}].desc[adminLang]=this.value;renderAll()">
+        const sizeRows=(item.sizes||[]).map((s,si)=>`<div class="ai-row" style="margin-bottom:4px"><input class="ai" type="number" min="0" placeholder="cl" value="${s.cl||''}" style="max-width:64px" oninput="DATA.tabs[${ti}].cards[${ci}].items[${ii}].sizes[${si}].cl=this.value;renderAll()"><span style="font-size:11px;color:var(--text3);padding:0 4px">cl</span><input class="ai" type="number" min="0" step="0.5" placeholder="prix" value="${s.price||''}" style="max-width:64px" oninput="DATA.tabs[${ti}].cards[${ci}].items[${ii}].sizes[${si}].price=this.value;renderAll()"><span style="font-size:11px;color:var(--text3);padding:0 4px">€</span><button class="adel" onclick="DATA.tabs[${ti}].cards[${ci}].items[${ii}].sizes.splice(${si},1);renderAll();renderAdminSection(DATA.tabs[${ti}].id)">×</button></div>`).join('');
+        h+=`<div class="admin-card" style="background:#fff;margin-top:4px" draggable="true" ondragstart="onDragBev(event,${ti},${ci},${ii})" ondragend="onDragEnd(event)" ondragover="onDragOver(event,${ti},${ci},${ii})" ondragleave="onDragLeave(event)" ondrop="onDropBev(event,${ti},${ci},${ii})">
+          <div class="admin-card-hdr"><span class="drag-handle">⠿</span><span class="admin-card-num">Boisson ${ii+1}</span><button class="adel" onclick="askConfirm('Supprimer cette boisson ?',()=>delBev(${ti},${ci},${ii}))">×</button></div>
+          <input class="ai" style="margin-bottom:4px" placeholder="${adminLang!=='fr'&&typeof item.name==='object'?item.name.fr||'Nom':'Nom'}" value="${typeof item.name==='object'?(item.name[adminLang]||''):item.name||''}" oninput="if(typeof DATA.tabs[${ti}].cards[${ci}].items[${ii}].name!=='object'){DATA.tabs[${ti}].cards[${ci}].items[${ii}].name={fr:DATA.tabs[${ti}].cards[${ci}].items[${ii}].name};}DATA.tabs[${ti}].cards[${ci}].items[${ii}].name[adminLang]=this.value;renderAll()">
+          <input class="ai" style="margin-bottom:6px" placeholder="${adminLang!=='fr'&&item.desc&&typeof item.desc==='object'?item.desc.fr||'Description':'Description (optionnel)'}" value="${item.desc?(typeof item.desc==='object'?item.desc[adminLang]||'':(item.desc||'')):''}" oninput="if(!Array.isArray(DATA.tabs[${ti}].cards[${ci}].items[${ii}].desc)&&typeof DATA.tabs[${ti}].cards[${ci}].items[${ii}].desc!=='object'){DATA.tabs[${ti}].cards[${ci}].items[${ii}].desc={fr:''};} if(typeof DATA.tabs[${ti}].cards[${ci}].items[${ii}].desc!=='object'){DATA.tabs[${ti}].cards[${ci}].items[${ii}].desc={fr:''};} DATA.tabs[${ti}].cards[${ci}].items[${ii}].desc[adminLang]=this.value;renderAll()">
+          <div style="font-size:10px;letter-spacing:.1em;text-transform:uppercase;color:var(--text3);font-family:Jost,sans-serif;margin-bottom:4px">Tailles & prix</div>
+          ${sizeRows}
+          <button class="aadd" style="margin-top:2px" onclick="if(!Array.isArray(DATA.tabs[${ti}].cards[${ci}].items[${ii}].sizes)){DATA.tabs[${ti}].cards[${ci}].items[${ii}].sizes=[];}DATA.tabs[${ti}].cards[${ci}].items[${ii}].sizes.push({cl:'',price:''});renderAll();renderAdminSection(DATA.tabs[${ti}].id)">+ Taille</button>
         </div>`;
       });
-      h+=`<button class="aadd" onclick="addBev(${ti},${ci})">+ Boisson</button>`;
     } else if(card.type==='variants'){
       h+=`<div class="af"><label class="al">Image URL</label><input class="ai" value="${card.img||''}" oninput="DATA.tabs[${ti}].cards[${ci}].img=this.value;renderAll()"></div>`;
       (card.variants||[]).forEach((v,vi)=>{
@@ -841,6 +852,14 @@ function addNewTab(){
 // DRAG AND DROP
 // ═══════════════════════════════════════════
 let dragSrc=null;
+function onDragBev(e,ti,ci,ii){ dragSrc={ti,ci,ii,isBev:true}; e.currentTarget.classList.add('dragging'); e.dataTransfer.effectAllowed='move'; }
+function onDropBev(e,ti,ci,ii){
+  e.preventDefault(); e.currentTarget.classList.remove('drag-over');
+  if(!dragSrc||!dragSrc.isBev||dragSrc.ti!==ti||dragSrc.ci!==ci||dragSrc.ii===ii) return;
+  const items=DATA.tabs[ti].cards[ci].items;
+  const [moved]=items.splice(dragSrc.ii,1); items.splice(ii,0,moved);
+  dragSrc=null; renderAll(); renderAdminSection(DATA.tabs[ti].id);
+}
 function onDragStart(e,ti,ci,di){ dragSrc={ti,ci,di}; e.currentTarget.classList.add('dragging'); e.dataTransfer.effectAllowed='move'; }
 function onDragEnd(e){ e.currentTarget.classList.remove('dragging'); document.querySelectorAll('.admin-card').forEach(el=>el.classList.remove('drag-over')); }
 function onDragOver(e,ti,ci,di){ e.preventDefault(); e.currentTarget.classList.add('drag-over'); }
@@ -870,41 +889,44 @@ async function loadFromGitHub(){
   try{
     const url=`https://raw.githubusercontent.com/${GH_USER}/${GH_REPO}/${GH_BRANCH}/${GH_FILE}?t=${Date.now()}`;
     const r=await fetch(url);
-    if(!r.ok){ console.log('menu.json absent, mode local'); return; }
+    if(!r.ok){ console.log('menu.json absent — mode local'); return; }
     const json=await r.json();
-    // Full replace — ensures specials/intro/pinned all sync
-    if(json.tabs && Array.isArray(json.tabs)) DATA.tabs=json.tabs;
-    if(json.hero && typeof json.hero==='object') DATA.hero=json.hero;
-    if(json.intro && typeof json.intro==='object') DATA.intro=json.intro;
-    if(json.specials && Array.isArray(json.specials)) DATA.specials=json.specials;
+    if(Array.isArray(json.tabs)){ DATA.tabs=json.tabs; DATA.tabs[0].isHome=true; }
+    if(json.hero) DATA.hero=json.hero;
+    if(json.intro) DATA.intro=json.intro;
+    if(Array.isArray(json.specials)) DATA.specials=json.specials;
     if(Array.isArray(json.pinnedDishes)) DATA.pinnedDishes=json.pinnedDishes;
-    // Restore isHome on first tab
-    if(DATA.tabs.length>0 && !DATA.tabs.some(t=>t.isHome)) DATA.tabs[0].isHome=true;
-    currentTabId=DATA.tabs[0]?.id||currentTabId;
-    console.log('✓ Menu chargé depuis GitHub');
-  }catch(e){ console.log('Mode local:', e.message); }
+    if(DATA.tabs.length && !DATA.tabs.find(tb=>tb.id===currentTabId)) currentTabId=DATA.tabs[0].id;
+    console.log('✓ GitHub loaded — tabs:'+DATA.tabs.length+' specials:'+DATA.specials.filter(s=>s.active).length+' intro:'+DATA.intro.active);
+  }catch(e){ console.warn('GitHub load failed:', e.message); }
 }
 
 async function publishToGitHub(){
   const token=getToken();
-  if(!token){ showToast('⚠️ Saisis ton token GitHub d\'abord'); renderAdminSection('__global'); return; }
+  if(!token){ showToast('⚠️ Token GitHub manquant'); renderAdminSection('__global'); return; }
   const btn=document.getElementById('ghPublishBtn');
   if(btn){ btn.textContent='⏳ Publication…'; btn.disabled=true; }
   try{
     const apiBase=`https://api.github.com/repos/${GH_USER}/${GH_REPO}/contents/${GH_FILE}`;
-    const headers={'Authorization':'token '+token,'Content-Type':'application/json'};
+    const headers={'Authorization':'token '+token,'Content-Type':'application/json','Accept':'application/vnd.github.v3+json'};
+    // Get SHA
     let sha=null;
-    const existing=await fetch(apiBase,{headers});
-    if(existing.ok){ const d=await existing.json(); sha=d.sha; }
-    const content=btoa(unescape(encodeURIComponent(JSON.stringify(DATA,null,2))));
-    const body={message:'Menu update '+new Date().toLocaleString('fr'),content,branch:GH_BRANCH};
+    const getR=await fetch(apiBase+'?t='+Date.now(),{headers});
+    if(getR.ok){ const meta=await getR.json(); sha=meta.sha||null; }
+    // Encode — use TextEncoder for full Unicode support
+    const jsonStr=JSON.stringify(DATA,null,2);
+    const bytes=new TextEncoder().encode(jsonStr);
+    let bin=''; bytes.forEach(b=>bin+=String.fromCharCode(b));
+    const content=btoa(bin);
+    const body={message:'Menu update '+new Date().toLocaleString('fr-FR'),content,branch:GH_BRANCH};
     if(sha) body.sha=sha;
-    const res=await fetch(apiBase,{method:'PUT',headers,body:JSON.stringify(body)});
-    if(!res.ok){ const err=await res.json(); throw new Error(err.message||res.status); }
-    showToast('✅ Publié ! En ligne dans ~30 secondes');
+    const putR=await fetch(apiBase,{method:'PUT',headers,body:JSON.stringify(body)});
+    if(!putR.ok){ const err=await putR.json(); throw new Error(err.message||'HTTP '+putR.status); }
+    showToast('✅ Publié sur GitHub !');
   }catch(e){
+    console.error('Publish error:',e);
     showToast('❌ '+e.message);
-    if(e.message.includes('401')||e.message.includes('credentials')){ saveToken(''); renderAdminSection('__global'); }
+    if(e.message.includes('401')||e.message.toLowerCase().includes('credential')){ saveToken(''); renderAdminSection('__global'); }
   }finally{
     if(btn){ btn.textContent='🚀 Publier sur GitHub'; btn.disabled=false; }
   }
