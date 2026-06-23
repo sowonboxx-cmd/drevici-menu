@@ -8,7 +8,7 @@
     "jp": "シーフード · ブルターニュ · パリ"
   },
   "intro": {
-    "active": true,
+    "active": false,
     "text": {
       "fr": "Bienvenue chez Drevici Oyster, un bar à huîtres breton au cœur de Paris.",
       "en": "Welcome to Drevici Oyster, a Breton oyster bar in the heart of Paris."
@@ -17,7 +17,7 @@
   "specials": [
     {
       "id": "jour",
-      "active": true,
+      "active": false,
       "label": {
         "fr": "Menu du jour",
         "en": "Today's menu"
@@ -27,14 +27,14 @@
         "en": "Today's menu"
       },
       "desc": {
-        "fr": "Champignons",
+        "fr": "",
         "en": ""
       },
-      "price": "34€"
+      "price": ""
     },
     {
       "id": "midi",
-      "active": true,
+      "active": false,
       "label": {
         "fr": "Menu midi",
         "en": "Lunch menu"
@@ -44,10 +44,10 @@
         "en": "Lunch menu"
       },
       "desc": {
-        "fr": "Mayonnaise",
+        "fr": "",
         "en": ""
       },
-      "price": "14€"
+      "price": ""
     },
     {
       "id": "soir",
@@ -230,6 +230,20 @@
               "price": "12€",
               "img": "https://drevicioyster.com/wp-content/uploads/2026/05/gambas-1000x1000.webp",
               "spicy": true,
+              "vegan": false
+            },
+            {
+              "name": {
+                "fr": "200gr de bulots",
+                "en": "New dish"
+              },
+              "desc": {
+                "fr": "Frais et incroyables",
+                "en": ""
+              },
+              "price": "7€",
+              "img": "https://drevicioyster.com/wp-content/uploads/2026/06/bulots-hero2.webp",
+              "spicy": false,
               "vegan": false
             }
           ]
