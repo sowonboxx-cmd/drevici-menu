@@ -231,20 +231,6 @@
               "img": "https://drevicioyster.com/wp-content/uploads/2026/05/gambas-1000x1000.webp",
               "spicy": true,
               "vegan": false
-            },
-            {
-              "name": {
-                "fr": "200gr de bulots",
-                "en": "New dish"
-              },
-              "desc": {
-                "fr": "Frais et incroyables",
-                "en": ""
-              },
-              "price": "7€",
-              "img": "https://drevicioyster.com/wp-content/uploads/2026/06/bulots-hero2.webp",
-              "spicy": false,
-              "vegan": false
             }
           ]
         }
