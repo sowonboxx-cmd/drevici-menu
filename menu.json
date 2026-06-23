@@ -8,7 +8,7 @@
     "jp": "シーフード · ブルターニュ · パリ"
   },
   "intro": {
-    "active": true,
+    "active": false,
     "text": {
       "fr": "Bienvenue chez Drevici Oyster, un bar à huîtres breton au cœur de Paris.",
       "en": "Welcome to Drevici Oyster, a Breton oyster bar in the heart of Paris."
@@ -17,7 +17,7 @@
   "specials": [
     {
       "id": "jour",
-      "active": true,
+      "active": false,
       "label": {
         "fr": "Menu du jour",
         "en": "Today's menu"
@@ -27,10 +27,10 @@
         "en": "Today's menu"
       },
       "desc": {
-        "fr": "Chips et poulet",
+        "fr": "",
         "en": ""
       },
-      "price": "54€ "
+      "price": ""
     },
     {
       "id": "midi",
@@ -421,6 +421,13 @@
             {
               "name": "Picpoul de Pinet",
               "price": "8€"
+            },
+            {
+              "name": {
+                "fr": "Nouvelle boisson",
+                "en": "New drink"
+              },
+              "price": ""
             }
           ]
         },
@@ -491,6 +498,28 @@
                 "jp": "コーヒー"
               },
               "price": "2€"
+            }
+          ]
+        },
+        {
+          "label": {
+            "fr": "Vins Rouges",
+            "en": "New section"
+          },
+          "dishes": [
+            {
+              "name": {
+                "fr": "Côte du Rhône",
+                "en": "New dish"
+              },
+              "desc": {
+                "fr": "25cl / 50cl",
+                "en": ""
+              },
+              "price": "5€ / 17€",
+              "img": "",
+              "spicy": false,
+              "vegan": false
             }
           ]
         }
