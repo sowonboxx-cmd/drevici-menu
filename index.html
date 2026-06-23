@@ -391,7 +391,7 @@ function showToast(msg){
   clearTimeout(el._t); el._t=setTimeout(()=>el.style.opacity='0',2200);
 }
 
-function confirm(msg,cb){
+function askConfirm(msg,cb){
   document.getElementById('confirmText').textContent=msg;
   document.getElementById('confirmOk').onclick=()=>{closeConfirm();cb();};
   document.getElementById('confirmModal').classList.add('open');
@@ -676,7 +676,7 @@ function renderAdminTab(ti){
   h+=`<div class="admin-section"><div class="admin-sect-title">Nom de l'onglet</div>
     <div class="af"><label class="al">FR</label><input class="ai" value="${tab.label.fr||''}" oninput="DATA.tabs[${ti}].label.fr=this.value;renderAll()"></div>
     <div class="af"><label class="al">EN</label><input class="ai" value="${tab.label.en||''}" oninput="DATA.tabs[${ti}].label.en=this.value;renderAll()"></div>
-    <button class="adanger" onclick="confirm('Supprimer la tab « ${tab.label.fr} » et tout son contenu ?',()=>delTab(${ti}))">Supprimer cette tab</button>
+    <button class="adanger" onclick="askConfirm('Supprimer la tab « ${tab.label.fr} » et tout son contenu ?',()=>delTab(${ti}))">Supprimer cette tab</button>
   </div>`;
 
   // Cards
@@ -686,7 +686,7 @@ function renderAdminTab(ti){
 
     if(card.type==='bevs'){
       (card.items||[]).forEach((item,ii)=>{
-        h+=`<div class="admin-card" style="background:#fff;margin-top:4px"><div class="admin-card-hdr"><span class="admin-card-num">Boisson ${ii+1}</span><button class="adel" onclick="confirm('Supprimer cette boisson ?',()=>delBev(${ti},${ci},${ii}))">×</button></div>
+        h+=`<div class="admin-card" style="background:#fff;margin-top:4px"><div class="admin-card-hdr"><span class="admin-card-num">Boisson ${ii+1}</span><button class="adel" onclick="askConfirm('Supprimer cette boisson ?',()=>delBev(${ti},${ci},${ii}))">×</button></div>
           <div class="ai-row"><input class="ai" placeholder="Nom" value="${t(item.name)||''}" oninput="if(typeof DATA.tabs[${ti}].cards[${ci}].items[${ii}].name==='object'){DATA.tabs[${ti}].cards[${ci}].items[${ii}].name.fr=this.value}else{DATA.tabs[${ti}].cards[${ci}].items[${ii}].name=this.value};renderAll()"><input class="ai ai-sm" placeholder="Prix" value="${item.price||''}" oninput="DATA.tabs[${ti}].cards[${ci}].items[${ii}].price=this.value;renderAll()"></div>
         </div>`;
       });
@@ -694,13 +694,13 @@ function renderAdminTab(ti){
     } else if(card.type==='variants'){
       h+=`<div class="af"><label class="al">Image URL</label><input class="ai" value="${card.img||''}" oninput="DATA.tabs[${ti}].cards[${ci}].img=this.value;renderAll()"></div>`;
       (card.variants||[]).forEach((v,vi)=>{
-        h+=`<div class="ai-row" style="margin-top:4px"><input class="ai" value="${t(v.name)||''}" oninput="if(typeof DATA.tabs[${ti}].cards[${ci}].variants[${vi}].name==='object'){DATA.tabs[${ti}].cards[${ci}].variants[${vi}].name.fr=this.value}else{DATA.tabs[${ti}].cards[${ci}].variants[${vi}].name=this.value};renderAll()"><input class="ai ai-sm" value="${v.price||''}" oninput="DATA.tabs[${ti}].cards[${ci}].variants[${vi}].price=this.value;renderAll()"><button class="adel" onclick="confirm('Supprimer cette variante ?',()=>delVariant(${ti},${ci},${vi}))">×</button></div>`;
+        h+=`<div class="ai-row" style="margin-top:4px"><input class="ai" value="${t(v.name)||''}" oninput="if(typeof DATA.tabs[${ti}].cards[${ci}].variants[${vi}].name==='object'){DATA.tabs[${ti}].cards[${ci}].variants[${vi}].name.fr=this.value}else{DATA.tabs[${ti}].cards[${ci}].variants[${vi}].name=this.value};renderAll()"><input class="ai ai-sm" value="${v.price||''}" oninput="DATA.tabs[${ti}].cards[${ci}].variants[${vi}].price=this.value;renderAll()"><button class="adel" onclick="askConfirm('Supprimer cette variante ?',()=>delVariant(${ti},${ci},${vi}))">×</button></div>`;
       });
       h+=`<button class="aadd" onclick="addVariant(${ti},${ci})">+ Variante</button>`;
     } else {
       (card.dishes||[]).forEach((d,di)=>{
         h+=`<div class="admin-card" style="background:#fff;margin-top:6px">
-          <div class="admin-card-hdr"><span class="admin-card-num">Plat ${di+1}</span><button class="adel" onclick="confirm('Supprimer « ${d.name.fr||'ce plat'} » ?',()=>delDish(${ti},${ci},${di}))">×</button></div>
+          <div class="admin-card-hdr"><span class="admin-card-num">Plat ${di+1}</span><button class="adel" onclick="askConfirm('Supprimer « ${d.name.fr||'ce plat'} » ?',()=>delDish(${ti},${ci},${di}))">×</button></div>
           <div class="af"><label class="al">Nom FR</label><input class="ai" value="${d.name.fr||''}" oninput="DATA.tabs[${ti}].cards[${ci}].dishes[${di}].name.fr=this.value;renderAll()"></div>
           <div class="af"><label class="al">Nom EN</label><input class="ai" value="${d.name.en||''}" oninput="DATA.tabs[${ti}].cards[${ci}].dishes[${di}].name.en=this.value;renderAll()"></div>
           <div class="af"><label class="al">Description FR</label><input class="ai" value="${d.desc.fr||''}" oninput="DATA.tabs[${ti}].cards[${ci}].dishes[${di}].desc.fr=this.value;renderAll()"></div>
@@ -772,7 +772,7 @@ async function loadFromGitHub(){
 
 async function publishToGitHub(){
   const token=getToken();
-  if(!token){ showToast('⚠️ Saisis d'abord ton token'); renderAdminSection('__global'); return; }
+  if(!token){ showToast('⚠️ Saisis ton token GitHub d\'abord'); renderAdminSection('__global'); return; }
   const btn=document.getElementById('ghPublishBtn');
   if(btn){ btn.textContent='⏳ Publication…'; btn.disabled=true; }
   try{
