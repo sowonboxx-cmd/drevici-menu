@@ -239,14 +239,14 @@
             },
             {
               "name": {
-                "fr": "Nouveau plat",
+                "fr": "Mousaillon",
                 "en": "New dish"
               },
               "desc": {
-                "fr": "sss",
+                "fr": "Plateau populaire",
                 "en": ""
               },
-              "price": "56",
+              "price": "43€",
               "img": "https://drevicioyster.com/wp-content/uploads/2026/06/xxx.webp",
               "spicy": false,
               "vegan": false
