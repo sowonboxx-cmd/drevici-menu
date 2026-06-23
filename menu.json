@@ -162,20 +162,6 @@
               "img": "https://drevicioyster.com/wp-content/uploads/2026/06/huitres-6-02apres.webp",
               "spicy": false,
               "vegan": true
-            },
-            {
-              "name": {
-                "fr": "Plateaux",
-                "en": "New dish"
-              },
-              "desc": {
-                "fr": "Toutes nos huîtres sont accompagnées de pain, beurre, citron et/ou vinaigre-échalotes.",
-                "en": ""
-              },
-              "price": "56€",
-              "img": "https://drevicioyster.com/wp-content/uploads/2026/06/xxx.webp",
-              "spicy": false,
-              "vegan": false
             }
           ]
         }
@@ -248,17 +234,17 @@
             },
             {
               "name": {
-                "fr": "Plateaux",
+                "fr": "Nouveau plat",
                 "en": "New dish"
               },
               "desc": {
-                "fr": "Miam",
+                "fr": "sss",
                 "en": ""
               },
-              "price": "56€",
+              "price": "56",
               "img": "https://drevicioyster.com/wp-content/uploads/2026/06/xxx.webp",
               "spicy": false,
-              "vegan": true
+              "vegan": false
             }
           ]
         }
