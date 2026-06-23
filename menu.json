@@ -8,7 +8,7 @@
     "jp": "シーフード · ブルターニュ · パリ"
   },
   "intro": {
-    "active": true,
+    "active": false,
     "text": {
       "fr": "Bienvenue chez Drevici Oyster, un bar à huîtres breton au cœur de Paris.",
       "en": "Welcome to Drevici Oyster, a Breton oyster bar in the heart of Paris."
@@ -101,7 +101,7 @@
                 "jp": "天然牡蠣 n°4"
               },
               "desc": {
-                "fr": "Fraîches, iodées, servies sur lit de glace avec pain de seigle et beurre salé",
+                "fr": "Toutes nos huîtres sont accompagnées de pain, beurre, citron et/ou vinaigre-échalotes.",
                 "en": "Fresh, briny, on ice with rye bread and salted butter",
                 "es": "Frescas sobre hielo con pan de centeno",
                 "it": "Fresche su ghiaccio con pane di segale",
@@ -137,7 +137,7 @@
             },
             {
               "name": {
-                "fr": "Nouveau plat",
+                "fr": "Huîtres nature n°4",
                 "en": "New dish"
               },
               "desc": {
@@ -148,6 +148,20 @@
               "img": "https://drevicioyster.com/wp-content/uploads/2026/06/huitresiuf6.webp",
               "spicy": false,
               "vegan": false
+            },
+            {
+              "name": {
+                "fr": "Huîtres nature n°2",
+                "en": "New dish"
+              },
+              "desc": {
+                "fr": "Toutes nos huîtres sont accompagnées de pain, beurre, citron et/ou vinaigre-échalotes.",
+                "en": ""
+              },
+              "price": "Les 6 — 14€ · Les 16 — 30€",
+              "img": "https://drevicioyster.com/wp-content/uploads/2026/06/huitres-6-02apres.webp",
+              "spicy": false,
+              "vegan": true
             }
           ]
         }
