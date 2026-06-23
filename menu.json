@@ -250,6 +250,20 @@
               "img": "https://drevicioyster.com/wp-content/uploads/2026/06/xxx.webp",
               "spicy": false,
               "vegan": false
+            },
+            {
+              "name": {
+                "fr": "Bulots (200gr)",
+                "en": "New dish"
+              },
+              "desc": {
+                "fr": "On va se régalade",
+                "en": ""
+              },
+              "price": "9€",
+              "img": "https://drevicioyster.com/wp-content/uploads/2026/06/bulots-hero2.webp",
+              "spicy": false,
+              "vegan": true
             }
           ]
         }
