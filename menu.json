@@ -8,7 +8,7 @@
     "jp": "シーフード · ブルターニュ · パリ"
   },
   "intro": {
-    "active": true,
+    "active": false,
     "text": {
       "fr": "Bienvenue chez Drevici Oyster, un bar à huîtres breton au cœur de Paris.",
       "en": "Welcome to Drevici Oyster, a Breton oyster bar in the heart of Paris."
@@ -17,20 +17,20 @@
   "specials": [
     {
       "id": "jour",
-      "active": false,
+      "active": true,
       "label": {
         "fr": "Menu du jour",
         "en": "Today's menu"
       },
       "title": {
-        "fr": "Menu du Jour",
+        "fr": "miaama",
         "en": "Today's menu"
       },
       "desc": {
-        "fr": "",
+        "fr": "ddd",
         "en": ""
       },
-      "price": ""
+      "price": "45"
     },
     {
       "id": "midi",
