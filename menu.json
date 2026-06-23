@@ -232,7 +232,7 @@
                 "kr": "야생 왕새우 플란차 구이, 코럴 버터, 라임",
                 "jp": "天然海老の鉄板焼き、コーラルバター"
               },
-              "price": "14€",
+              "price": "12€",
               "img": "https://drevicioyster.com/wp-content/uploads/2026/05/gambas-1000x1000.webp",
               "spicy": true,
               "vegan": false
@@ -249,20 +249,6 @@
               "price": "9€",
               "img": "https://drevicioyster.com/wp-content/uploads/2026/06/bulots-hero2.webp",
               "spicy": false,
-              "vegan": true
-            },
-            {
-              "name": {
-                "fr": "Soupe de poisson",
-                "en": "New dish"
-              },
-              "desc": {
-                "fr": "Miaaaam",
-                "en": ""
-              },
-              "price": "8€",
-              "img": "https://drevicioyster.com/wp-content/uploads/2026/05/compo.webp",
-              "spicy": true,
               "vegan": true
             }
           ]
