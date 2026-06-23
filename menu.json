@@ -17,20 +17,20 @@
   "specials": [
     {
       "id": "jour",
-      "active": true,
+      "active": false,
       "label": {
         "fr": "Menu du jour",
         "en": "Today's menu"
       },
       "title": {
-        "fr": "miaama",
+        "fr": "Menu du Jour",
         "en": "Today's menu"
       },
       "desc": {
-        "fr": "ddd",
+        "fr": "",
         "en": ""
       },
-      "price": "45"
+      "price": ""
     },
     {
       "id": "midi",
@@ -503,23 +503,27 @@
         },
         {
           "label": {
+            "fr": "",
+            "en": "New section"
+          },
+          "dishes": []
+        },
+        {
+          "label": {
             "fr": "Vins Rouges",
             "en": "New section"
           },
-          "dishes": [
+          "type": "bevs",
+          "items": [
             {
               "name": {
                 "fr": "Côte du Rhône",
-                "en": "New dish"
+                "en": "New drink"
               },
+              "price": "5€",
               "desc": {
-                "fr": "25cl / 50cl",
-                "en": ""
-              },
-              "price": "5€ / 17€",
-              "img": "",
-              "spicy": false,
-              "vegan": false
+                "fr": "25cl / 50cl"
+              }
             }
           ]
         }
