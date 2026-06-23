@@ -11,18 +11,19 @@
 body{background:var(--bg);font-family:'Jost',sans-serif;font-weight:400;font-size:14px}
 
 /* ── LIGHTBOX ── */
-.lb{position:fixed;inset:0;background:rgba(0,0,0,0.93);z-index:1000;display:none;align-items:center;justify-content:center;flex-direction:column}
+.lb{position:fixed;inset:0;background:rgba(0,0,0,0.88);z-index:1000;display:none;flex-direction:column;align-items:center;justify-content:center;padding:20px 0 0}
 .lb.open{display:flex}
-.lb-inner{position:relative;width:100%;padding:0}
-.lb img{width:100%;height:55vh;object-fit:cover;display:block}
-
-.lb-nav{position:absolute;top:50%;transform:translateY(-50%);background:rgba(255,255,255,0.15);border:none;color:#fff;width:38px;height:38px;border-radius:50%;cursor:pointer;font-size:20px;display:flex;align-items:center;justify-content:center;backdrop-filter:blur(4px);transition:background .15s}
-.lb-nav:hover{background:rgba(255,255,255,0.28)}
-.lb-prev{left:4px}.lb-next{right:4px}
-.lb-footer{margin-top:14px;text-align:center}
-.lb-dish-name{font-family:'Cormorant Garamond',serif;font-size:19px;color:#fff;font-weight:600;margin-bottom:4px}
-.lb-count{font-size:11px;color:rgba(255,255,255,0.45);letter-spacing:.12em;font-family:'Jost',sans-serif}
-.lb-close{position:absolute;top:14px;right:16px;background:rgba(255,255,255,0.12);border:none;color:#fff;font-size:18px;cursor:pointer;line-height:1;width:32px;height:32px;border-radius:50%;display:flex;align-items:center;justify-content:center}
+.lb-inner{position:relative;width:100%;max-width:680px;padding:0 16px;flex:1;display:flex;align-items:center}
+.lb img{width:100%;max-height:56vh;border-radius:12px;object-fit:cover;display:block}
+.lb-nav{position:absolute;top:50%;transform:translateY(-50%);background:rgba(255,255,255,0.18);border:none;color:#fff;width:38px;height:38px;border-radius:50%;cursor:pointer;font-size:22px;display:flex;align-items:center;justify-content:center;backdrop-filter:blur(6px);transition:background .15s;z-index:2}
+.lb-nav:hover{background:rgba(255,255,255,0.32)}
+.lb-prev{left:20px}.lb-next{right:20px}
+.lb-footer{width:100%;max-width:680px;background:#fff;border-radius:16px 16px 0 0;padding:18px 20px 32px;margin-top:14px}
+.lb-dish-name{font-family:'Cormorant Garamond',serif;font-size:20px;color:#1a1a1a;font-weight:700;margin-bottom:4px;line-height:1.2}
+.lb-dish-desc{font-size:13px;color:#888;font-family:'Jost',sans-serif;font-weight:300;line-height:1.55;margin-bottom:10px}
+.lb-footer-row{display:flex;align-items:center;justify-content:space-between}
+.lb-count{font-size:11px;color:#bbb;letter-spacing:.1em;font-family:'Jost',sans-serif}
+.lb-close{position:absolute;top:14px;right:16px;background:rgba(255,255,255,0.15);border:none;color:#fff;font-size:18px;cursor:pointer;line-height:1;width:32px;height:32px;border-radius:50%;display:flex;align-items:center;justify-content:center;z-index:3}
 
 /* ── LAYOUT ── */
 .page{background:var(--bg);min-height:100vh;padding-bottom:100px}
@@ -199,12 +200,10 @@ body{background:var(--bg);font-family:'Jost',sans-serif;font-weight:400;font-siz
 /* ── TOAST ── */
 #toast{position:fixed;bottom:90px;left:50%;transform:translateX(-50%);background:var(--navy);color:#fff;padding:9px 18px;border-radius:50px;font-size:12px;font-family:'Jost',sans-serif;z-index:9999;opacity:0;transition:opacity .3s;pointer-events:none;white-space:nowrap}
 .img-wrap{position:relative;display:inline-block;flex:none;cursor:pointer}
-.img-wrap .zoom-ic{position:absolute;top:5px;right:5px;width:24px;height:24px;pointer-events:none;opacity:0;transition:opacity .15s;background:rgba(255,255,255,0.75);border-radius:50%;padding:3px;backdrop-filter:blur(2px)}
-.img-wrap:hover .zoom-ic,.img-wrap.touch .zoom-ic{opacity:1}
+.img-wrap .zoom-ic{display:none}
 .gc-wrap{position:relative;cursor:pointer;display:block}
-.gc-wrap .zoom-ic{position:absolute;top:6px;right:6px;width:26px;height:26px;pointer-events:none;opacity:0;transition:opacity .15s;background:rgba(255,255,255,0.75);border-radius:50%;padding:3px;backdrop-filter:blur(2px)}
-.gc-wrap:hover .zoom-ic,.gc-wrap.touch .zoom-ic{opacity:1}
-@media(max-width:768px){.img-wrap .zoom-ic,.gc-wrap .zoom-ic{opacity:1}}
+.gc-wrap .zoom-ic{display:none}
+
 .drag-handle{cursor:grab;padding:4px 6px 4px 2px;color:var(--text3);font-size:16px;line-height:1;user-select:none;flex:none}
 .drag-handle:active{cursor:grabbing}
 .admin-card.dragging{opacity:.4;border:2px dashed var(--navy)}
@@ -219,17 +218,15 @@ body{background:var(--bg);font-family:'Jost',sans-serif;font-weight:400;font-siz
 <div class="lb" id="lb">
   <button class="lb-close" onclick="closeLb()">✕</button>
   <div class="lb-inner">
-    <img id="lbImg" src="" alt="" style="border-radius:0"/>
+    <button class="lb-nav lb-prev" onclick="lbStep(-1)">&#8249;</button>
+    <img id="lbImg" src="" alt=""/>
+    <button class="lb-nav lb-next" onclick="lbStep(1)">&#8250;</button>
   </div>
-  <div class="lb-card">
+  <div class="lb-footer">
     <div class="lb-dish-name" id="lbName"></div>
     <div class="lb-dish-desc" id="lbDesc"></div>
-    <div class="lb-bottom-row">
+    <div class="lb-footer-row">
       <span class="lb-count" id="lbCount"></span>
-      <div class="lb-arrows">
-        <button class="lb-arrow-btn" onclick="lbStep(-1)">&#8249;</button>
-        <button class="lb-arrow-btn" onclick="lbStep(1)">&#8250;</button>
-      </div>
     </div>
   </div>
 </div>
@@ -348,8 +345,8 @@ let DATA = {
       cards:[{
         label:{fr:'À la carte',en:'À la carte',es:'A la carta',it:'Alla carta',kr:'단품',jp:'アラカルト'},
         dishes:[
-          {name:{fr:'Huîtres nature n°4',en:'Natural oysters n°4',es:'Ostras naturales n°4',it:'Ostriche naturali n°4',kr:'자연산 굴 n°4',jp:'天然牡蠣 n°4'},desc:{fr:'Fraîches, iodées, servies sur lit de glace avec pain de seigle et beurre salé',en:'Fresh, briny, on ice with rye bread and salted butter',es:'Frescas sobre hielo con pan de centeno',it:'Fresche su ghiaccio con pane di segale',kr:'신선한 굴, 얼음 위에 호밀빵과 가염버터',jp:'氷の上、ライ麦パンと有塩バター'},price:'Les 6 — 12€ · Les 12 — 22€',img:'https://drevicioyster.com/wp-content/uploads/2026/05/Artboard-%E2%80%93-3-1000x1000.webp',spicy:false,vegan:false},
-          {name:{fr:'Huîtres gratinées',en:'Gratin oysters',es:'Ostras gratinadas',it:'Ostriche gratinate',kr:'그라탱 굴',jp:'グラタン牡蠣'},desc:{fr:'Gratinées au four, beurre herbé, chapelure croustillante, servies chaudes',en:'Oven-gratinated, herb butter, crunchy breadcrumbs, hot',es:'Gratinadas al horno, mantequilla de hierbas',it:'Gratinate al forno, burro alle erbe',kr:'오븐 그라탱, 허브 버터, 바삭한 빵가루',jp:'オーブングラタン、ハーブバター'},price:'Les 3 — 9€ · Les 6 — 17€',img:'https://drevicioyster.com/wp-content/uploads/2026/05/gratines-1.webp',spicy:false,vegan:false}
+          {name:{fr:'Huîtres nature n°4',en:'Natural oysters n°4',es:'Ostras naturales n°4',it:'Ostriche naturali n°4',kr:'자연산 굴 n°4',jp:'天然牡蠣 n°4'},desc:{fr:'Fraîches, iodées, servies sur lit de glace avec pain de seigle et beurre salé',en:'Fresh, briny, on ice with rye bread and salted butter',es:'Frescas sobre hielo con pan de centeno',it:'Fresche su ghiaccio con pane di segale',kr:'신선한 굴, 얼음 위에 호밀빵과 가염버터',jp:'氷の上、ライ麦パンと有塩バター'},price:'Les 6 — 12€ · Les 12 — 22€',priceType:'dual',qty1:'6',p1:'12',qty2:'12',p2:'22',img:'https://drevicioyster.com/wp-content/uploads/2026/05/Artboard-%E2%80%93-3-1000x1000.webp',spicy:false,vegan:false},
+          {name:{fr:'Huîtres gratinées',en:'Gratin oysters',es:'Ostras gratinadas',it:'Ostriche gratinate',kr:'그라탱 굴',jp:'グラタン牡蠣'},desc:{fr:'Gratinées au four, beurre herbé, chapelure croustillante, servies chaudes',en:'Oven-gratinated, herb butter, crunchy breadcrumbs, hot',es:'Gratinadas al horno, mantequilla de hierbas',it:'Gratinate al forno, burro alle erbe',kr:'오븐 그라탱, 허브 버터, 바삭한 빵가루',jp:'オーブングラタン、ハーブバター'},price:'Les 3 — 9€ · Les 6 — 17€',priceType:'dual',qty1:'3',p1:'9',qty2:'6',p2:'17',img:'https://drevicioyster.com/wp-content/uploads/2026/05/gratines-1.webp',spicy:false,vegan:false}
         ]
       }]
     },
@@ -509,12 +506,12 @@ function renderTabContent(tab,lbOffset){
   if(tab.isHome){
     // active specials
     DATA.specials.forEach(sp=>{
-      if(sp.active && (t(sp.desc)||sp.price)){
+      if(sp.active){
         html+=`<div class="special-banner"><div class="special-banner-label">${t(sp.label)}</div><div class="special-banner-title">${t(sp.title)}</div><div class="special-banner-text">${t(sp.desc)}</div>${sp.price?`<div class="special-banner-price">${sp.price}</div>`:''}</div>`;
       }
     });
     // intro
-    if(DATA.intro.active && t(DATA.intro.text)){
+    if(DATA.intro.active){
       html+=`<div class="intro-card"><div class="intro-card-label">Le restaurant</div><div class="intro-card-text">${t(DATA.intro.text)}</div></div>`;
     }
     // featured / pinned
@@ -536,13 +533,13 @@ function renderTabContent(tab,lbOffset){
         const idx=card.img?imgIdx++:null;
         const flavours=(card.variants||[]).map(v=>t(v.name)).join(' · ');
         const price=card.variants&&card.variants[0]?card.variants[0].price:'';
-        gridItems.push(`<div class="gc"><div class="gc-wrap" ${card.img?`data-lbidx="${idx}"`:''}>${card.img?`<img class="gc-img" src="${card.img}" alt="" loading="lazy"><img class="zoom-ic" src="https://drevicioyster.com/wp-content/uploads/2026/06/icon-zoom2.png" alt="">`:'<div style="aspect-ratio:1;background:#ece8e1"></div>'}</div><div class="gc-body"><div class="gc-name">${t(card.label)}</div><div class="gc-desc">${flavours}</div><div class="gc-price">${price}</div></div></div>`);
+        gridItems.push(`<div class="gc"><div class="gc-wrap" ${card.img?`data-lbidx="${idx}"`:''}>${card.img?`<img class="gc-img" src="${card.img}" alt="" loading="lazy">`:'<div style="aspect-ratio:1;background:#ece8e1"></div>'}</div><div class="gc-body"><div class="gc-name">${t(card.label)}</div><div class="gc-desc">${flavours}</div><div class="gc-price">${price}</div></div></div>`);
         return;
       }
       (card.dishes||[]).forEach(d=>{
         const idx=d.img?imgIdx++:null;
         const badges=(d.spicy?`<img src="https://drevicioyster.com/wp-content/uploads/2026/06/icon-spicy.png" class="badge-icon" title="Épicé">`:'')+(d.vegan?`<img src="https://drevicioyster.com/wp-content/uploads/2026/06/icon-vegan.png" class="badge-icon" title="Vegan">`:'');
-        gridItems.push(`<div class="gc"><div class="gc-wrap" ${d.img?`data-lbidx="${idx}"`:''}>${d.img?`<img class="gc-img" src="${d.img}" alt="" loading="lazy"><img class="zoom-ic" src="https://drevicioyster.com/wp-content/uploads/2026/06/icon-zoom2.png" alt="">`:'<div style="aspect-ratio:1;background:#ece8e1"></div>'}</div><div class="gc-body"><div class="gc-name">${t(d.name)}${badges?` <span class="dish-badges" style="display:inline-flex">${badges}</span>`:''}</div><div class="gc-desc">${t(d.desc)}</div><div class="gc-price">${d.price}</div></div></div>`);
+        gridItems.push(`<div class="gc"><div class="gc-wrap" ${d.img?`data-lbidx="${idx}"`:''}>${d.img?`<img class="gc-img" src="${d.img}" alt="" loading="lazy">`:'<div style="aspect-ratio:1;background:#ece8e1"></div>'}</div><div class="gc-body"><div class="gc-name">${t(d.name)}${badges?` <span class="dish-badges" style="display:inline-flex">${badges}</span>`:''}</div><div class="gc-desc">${t(d.desc)}</div><div class="gc-price">${d.price}</div></div></div>`);
       });
     });
     if(gridItems.length) html+=`<div class="dish-grid">${gridItems.join('')}</div>`;
@@ -552,7 +549,7 @@ function renderTabContent(tab,lbOffset){
       html+=`<div class="card"><div class="card-hdr"><span class="card-label">${t(card.label)}</span></div><div class="card-body">`;
 
       if(card.type==='bevs'){
-        (card.items||[]).forEach(item=>{ html+=`<div class="bev-row"><span class="bev-name">${t(item.name)}</span><span class="bev-price">${item.price}</span></div>`; });
+        (card.items||[]).forEach(item=>{ html+=`<div class="bev-row"><div><span class="bev-name">${t(item.name)}</span>${t(item.desc)?`<div class="dish-desc" style="margin-top:2px">${t(item.desc)}</div>`:''}</div><span class="bev-price">${item.price}</span></div>`; });
       } else if(card.type==='variants'){
         // Render as dish row: name in navy + all flavours as description
         const flavours=(card.variants||[]).map(v=>t(v.name)).join(' · ');
@@ -564,12 +561,12 @@ function renderTabContent(tab,lbOffset){
             <div class="dish-desc">${flavours}</div>
             <div class="dish-price">${price}</div>
           </div>
-          ${card.img?`<span class="img-wrap" data-lbidx="${idx}"><img class="dish-img" src="${card.img}" alt="" loading="lazy"><img class="zoom-ic" src="https://drevicioyster.com/wp-content/uploads/2026/06/icon-zoom2.png" alt=""></span>`:''}</div>`;
+          ${card.img?`<span class="img-wrap" data-lbidx="${idx}"><img class="dish-img" src="${card.img}" alt="" loading="lazy"></span>`:''}</div>`;
       } else {
         (card.dishes||[]).forEach((d,di)=>{
           const idx=d.img?imgIdx++:null;
           const badges=(d.spicy?`<img src="https://drevicioyster.com/wp-content/uploads/2026/06/icon-spicy.png" class="badge-icon" title="Épicé">`:'')+(d.vegan?`<img src="https://drevicioyster.com/wp-content/uploads/2026/06/icon-vegan.png" class="badge-icon" title="Vegan">`:'');
-          html+=`<div class="dish-row"${di===0?' style="padding-top:0"':''}><div class="dish-text"><div class="dish-name-row"><span class="dish-name">${t(d.name)}</span>${badges?`<span class="dish-badges">${badges}</span>`:''}</div><div class="dish-desc">${t(d.desc)}</div><div class="dish-price">${d.price}</div></div>${d.img?`<span class="img-wrap" data-lbidx="${idx}"><img class="dish-img" src="${d.img}" alt="" loading="lazy"><img class="zoom-ic" src="https://drevicioyster.com/wp-content/uploads/2026/06/icon-zoom2.png" alt=""></span>`:''}</div>`;
+          html+=`<div class="dish-row"${di===0?' style="padding-top:0"':''}><div class="dish-text"><div class="dish-name-row"><span class="dish-name">${t(d.name)}</span>${badges?`<span class="dish-badges">${badges}</span>`:''}</div><div class="dish-desc">${t(d.desc)}</div><div class="dish-price">${d.price}</div></div>${d.img?`<span class="img-wrap" data-lbidx="${idx}"><img class="dish-img" src="${d.img}" alt="" loading="lazy"></span>`:''}</div>`;
         });
       }
       html+=`</div></div>`;
@@ -654,6 +651,37 @@ function biInput(label, frVal, targetVal, onInputCode){
   const value = targetVal||'';
   const langLabel = adminLang.toUpperCase();
   return `<div class="af"><label class="al">${label}${isFr?'':` <span style="color:var(--text3);font-weight:400">(${langLabel})</span>`}</label><input class="ai" value="${value.replace(/"/g,'&quot;')}" placeholder="${placeholder.replace(/"/g,'&quot;')}" oninput="${onInputCode}"></div>`;
+}
+
+// Price field helper
+function priceField(d, ti, ci, di){
+  if(d.priceType==='dual'){
+    const qty1=d.qty1||''; const p1=d.p1||''; const qty2=d.qty2||''; const p2=d.p2||'';
+    return `<div class="af"><label class="al">Prix (double offre)</label>
+      <div style="display:grid;grid-template-columns:1fr 1fr 1fr 1fr;gap:6px;align-items:center">
+        <div><div style="font-size:10px;color:var(--text3);margin-bottom:3px">Qté 1</div><input class="ai" type="number" value="${qty1}" placeholder="ex: 6" oninput="DATA.tabs[${ti}].cards[${ci}].dishes[${di}].qty1=this.value;updateDualPrice(${ti},${ci},${di})"></div>
+        <div><div style="font-size:10px;color:var(--text3);margin-bottom:3px">Prix 1 (€)</div><input class="ai" type="number" value="${p1}" placeholder="12" oninput="DATA.tabs[${ti}].cards[${ci}].dishes[${di}].p1=this.value;updateDualPrice(${ti},${ci},${di})"></div>
+        <div><div style="font-size:10px;color:var(--text3);margin-bottom:3px">Qté 2</div><input class="ai" type="number" value="${qty2}" placeholder="ex: 12" oninput="DATA.tabs[${ti}].cards[${ci}].dishes[${di}].qty2=this.value;updateDualPrice(${ti},${ci},${di})"></div>
+        <div><div style="font-size:10px;color:var(--text3);margin-bottom:3px">Prix 2 (€)</div><input class="ai" type="number" value="${p2}" placeholder="22" oninput="DATA.tabs[${ti}].cards[${ci}].dishes[${di}].p2=this.value;updateDualPrice(${ti},${ci},${di})"></div>
+      </div>
+      <div style="font-size:11px;color:var(--text3);margin-top:4px">→ Affichage : <em>Les ${qty1||'?'} — ${p1||'?'}€ · Les ${qty2||'?'} — ${p2||'?'}€</em></div>
+    </div>`;
+  }
+  // Standard price
+  const numVal=(d.price||'').replace('€','').trim();
+  return `<div class="af"><label class="al">Prix (€)</label>
+    <div style="display:flex;align-items:center;gap:6px">
+      <input class="ai" type="number" min="0" step="0.5" value="${numVal}" style="max-width:100px" oninput="DATA.tabs[${ti}].cards[${ci}].dishes[${di}].price=this.value?this.value+'€':'';renderAll()">
+      <span style="font-size:13px;color:var(--text3)">€</span>
+      <label style="display:flex;align-items:center;gap:4px;font-size:11px;color:var(--text3);cursor:pointer;margin-left:8px"><input type="checkbox" ${d.priceType==='dual'?'checked':''} onchange="DATA.tabs[${ti}].cards[${ci}].dishes[${di}].priceType=this.checked?'dual':'';if(this.checked){DATA.tabs[${ti}].cards[${ci}].dishes[${di}].qty1='';DATA.tabs[${ti}].cards[${ci}].dishes[${di}].p1='';DATA.tabs[${ti}].cards[${ci}].dishes[${di}].qty2='';DATA.tabs[${ti}].cards[${ci}].dishes[${di}].p2='';}renderAll();renderAdminSection(DATA.tabs[${ti}].id)"> Double offre</label>
+    </div>
+  </div>`;
+}
+
+function updateDualPrice(ti,ci,di){
+  const d=DATA.tabs[ti].cards[ci].dishes[di];
+  d.price=`Les ${d.qty1||'?'} — ${d.p1||'?'}€ · Les ${d.qty2||'?'} — ${d.p2||'?'}€`;
+  renderAll();
 }
 
 function renderAdminGlobal(){
@@ -741,7 +769,8 @@ function renderAdminTab(ti){
     if(card.type==='bevs'){
       (card.items||[]).forEach((item,ii)=>{
         h+=`<div class="admin-card" style="background:#fff;margin-top:4px"><div class="admin-card-hdr"><span class="admin-card-num">Boisson ${ii+1}</span><button class="adel" onclick="askConfirm('Supprimer cette boisson ?',()=>delBev(${ti},${ci},${ii}))">×</button></div>
-          <div class="ai-row"><input class="ai" placeholder="${adminLang!=='fr'&&typeof item.name==='object'?item.name.fr||'Nom':'Nom'}" value="${typeof item.name==='object'?(item.name[adminLang]||''): item.name||''}" oninput="if(typeof DATA.tabs[${ti}].cards[${ci}].items[${ii}].name!=='object'){DATA.tabs[${ti}].cards[${ci}].items[${ii}].name={fr:DATA.tabs[${ti}].cards[${ci}].items[${ii}].name};}DATA.tabs[${ti}].cards[${ci}].items[${ii}].name[adminLang]=this.value;renderAll()"><input class="ai ai-sm" placeholder="Prix" value="${item.price||''}" oninput="DATA.tabs[${ti}].cards[${ci}].items[${ii}].price=this.value;renderAll()"></div>
+          <div class="ai-row"><input class="ai" placeholder="${adminLang!=='fr'&&typeof item.name==='object'?item.name.fr||'Nom':'Nom'}" value="${typeof item.name==='object'?(item.name[adminLang]||''): item.name||''}" oninput="if(typeof DATA.tabs[${ti}].cards[${ci}].items[${ii}].name!=='object'){DATA.tabs[${ti}].cards[${ci}].items[${ii}].name={fr:DATA.tabs[${ti}].cards[${ci}].items[${ii}].name};}DATA.tabs[${ti}].cards[${ci}].items[${ii}].name[adminLang]=this.value;renderAll()"><input class="ai ai-sm" type="number" min="0" step="0.5" placeholder="€" value="${(item.price||'').replace('€','').trim()}" oninput="DATA.tabs[${ti}].cards[${ci}].items[${ii}].price=this.value?this.value+'€':'';renderAll()"></div>
+          <input class="ai" style="margin-top:4px" placeholder="${adminLang!=='fr'&&item.desc&&typeof item.desc==='object'?item.desc.fr||'Description (optionnel)':'Description (optionnel)'}" value="${item.desc?(typeof item.desc==='object'?item.desc[adminLang]||'':(item.desc||'')):''}" oninput="if(!DATA.tabs[${ti}].cards[${ci}].items[${ii}].desc||typeof DATA.tabs[${ti}].cards[${ci}].items[${ii}].desc!=='object'){DATA.tabs[${ti}].cards[${ci}].items[${ii}].desc={fr:''};}DATA.tabs[${ti}].cards[${ci}].items[${ii}].desc[adminLang]=this.value;renderAll()">
         </div>`;
       });
       h+=`<button class="aadd" onclick="addBev(${ti},${ci})">+ Boisson</button>`;
@@ -759,7 +788,7 @@ function renderAdminTab(ti){
           <div class="admin-card-hdr"><span class="drag-handle" title="Glisser pour réordonner">⠿</span><span class="admin-card-num">Plat ${di+1}</span><button class="adel" onclick="askConfirm('Supprimer « ${d.name.fr||'ce plat'} » ?',()=>delDish(${ti},${ci},${di}))">×</button></div>
           `+biInput('Nom', d.name.fr||'', d.name[adminLang]||'', `DATA.tabs[${ti}].cards[${ci}].dishes[${di}].name[adminLang]=this.value;renderAll()`)+`
           `+biInput('Description', d.desc.fr||'', d.desc[adminLang]||'', `DATA.tabs[${ti}].cards[${ci}].dishes[${di}].desc[adminLang]=this.value;renderAll()`)+`
-          <div class="af"><label class="al">Prix</label><input class="ai ai-sm" value="${d.price||''}" oninput="DATA.tabs[${ti}].cards[${ci}].dishes[${di}].price=this.value;renderAll()"></div>
+          `+priceField(d,ti,ci,di)+`
           <div class="af"><label class="al">Image URL</label><input class="ai" value="${d.img||''}" oninput="DATA.tabs[${ti}].cards[${ci}].dishes[${di}].img=this.value;renderAll()"></div>
           <div class="badge-group">
             <label class="badge-check"><input type="checkbox" ${d.spicy?'checked':''} onchange="DATA.tabs[${ti}].cards[${ci}].dishes[${di}].spicy=this.checked;renderAll()"><img src="https://drevicioyster.com/wp-content/uploads/2026/06/icon-spicy.png" class="badge-icon"> Épicé</label>
@@ -789,7 +818,13 @@ function delBev(ti,ci,ii){ DATA.tabs[ti].cards[ci].items.splice(ii,1); renderAll
 function addDish(ti,ci){ DATA.tabs[ti].cards[ci].dishes.push({name:{fr:'Nouveau plat',en:'New dish'},desc:{fr:'',en:''},price:'',img:'',spicy:false,vegan:false}); renderAll(); renderAdminSection(DATA.tabs[ti].id); }
 function addVariant(ti,ci){ DATA.tabs[ti].cards[ci].variants.push({name:{fr:'Nouvelle variante',en:'New item'},price:'9€'}); renderAll(); renderAdminSection(DATA.tabs[ti].id); }
 function addBev(ti,ci){ DATA.tabs[ti].cards[ci].items.push({name:{fr:'Nouvelle boisson',en:'New drink'},price:''}); renderAll(); renderAdminSection(DATA.tabs[ti].id); }
-function addCard(ti){ DATA.tabs[ti].cards.push({label:{fr:'Nouvelle carte',en:'New section'},dishes:[]}); renderAll(); renderAdminSection(DATA.tabs[ti].id); }
+function addCard(ti){
+  const tab=DATA.tabs[ti];
+  const isBev=tab.id==='boissons'||tab.cards.every(c=>c.type==='bevs');
+  if(isBev) DATA.tabs[ti].cards.push({label:{fr:'Nouvelle carte',en:'New section'},type:'bevs',items:[]});
+  else DATA.tabs[ti].cards.push({label:{fr:'Nouvelle carte',en:'New section'},dishes:[]});
+  renderAll(); renderAdminSection(DATA.tabs[ti].id);
+}
 function addNewTab(){
   const id='tab_'+Date.now();
   DATA.tabs.push({id,label:{fr:'Nouvelle tab',en:'New tab'},cards:[{label:{fr:'À la carte',en:'À la carte'},dishes:[]}]});
