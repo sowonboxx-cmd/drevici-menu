@@ -10,7 +10,7 @@
   "intro": {
     "active": true,
     "text": {
-      "fr": "Bienvenue chez Drevici Oyster, un bar à huîtres breton au cœur de Paris.",
+      "fr": "Bienvenue chez Drevici Oyster, une entreprise familiale située à Surzur, dans le Morbihan. Passionnés par notre métier et ancrés dans notre territoire, nous cultivons des huîtres issues de captages naturels en respectant les traditions et en intégrant des pratiques innovantes et durables.",
       "en": "Welcome to Drevici Oyster, a Breton oyster bar in the heart of Paris."
     }
   },
@@ -117,6 +117,23 @@
       "price": ""
     }
   ],
+  "infoBanner": {
+    "active": false,
+    "label": {
+      "fr": "Informations",
+      "en": "Information"
+    },
+    "title": {
+      "fr": "",
+      "en": ""
+    },
+    "desc": {
+      "fr": "",
+      "en": ""
+    },
+    "showHome": true,
+    "showFirst": true
+  },
   "pinnedDishes": [],
   "tabs": [
     {
