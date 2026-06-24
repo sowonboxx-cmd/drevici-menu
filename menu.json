@@ -8,7 +8,7 @@
     "jp": "シーフード · ブルターニュ · パリ"
   },
   "intro": {
-    "active": true,
+    "active": false,
     "text": {
       "fr": "Bienvenue chez Drevici Oyster, un bar à huîtres breton au cœur de Paris.",
       "en": "Welcome to Drevici Oyster, a Breton oyster bar in the heart of Paris."
@@ -179,6 +179,20 @@
               },
               "price": "53€",
               "img": "https://drevicioyster.com/wp-content/uploads/2026/06/IMG_3058-1-scaled.webp",
+              "spicy": false,
+              "vegan": false
+            },
+            {
+              "name": {
+                "fr": "Nouveau plat",
+                "en": "New dish"
+              },
+              "desc": {
+                "fr": "",
+                "en": ""
+              },
+              "price": "67€",
+              "img": "",
               "spicy": false,
               "vegan": false
             }
