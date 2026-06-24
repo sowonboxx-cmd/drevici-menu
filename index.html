@@ -37,9 +37,9 @@ body{background:var(--bg);font-family:'Jost',sans-serif;font-weight:400;font-siz
 .container{max-width:680px;margin:0 auto;padding:0 16px}
 
 /* ── HEADER ── */
-.header{background:var(--navy);padding:14px 0 0}
+.header{background:var(--navy);padding:14px 0 10px}
 .header .container{display:flex;flex-direction:column;align-items:center}
-.header-top{width:100%;display:flex;justify-content:space-between;align-items:center;margin-bottom:10px}
+.header-top{width:100%;display:flex;justify-content:space-between;align-items:center;margin-bottom:16px}
 .header-top-left{display:flex;align-items:center;gap:6px}
 .header-top-right{display:flex;align-items:center;gap:6px}
 
@@ -89,6 +89,7 @@ body{background:var(--bg);font-family:'Jost',sans-serif;font-weight:400;font-siz
 .intro-card-label{font-size:10px;font-weight:500;letter-spacing:.14em;text-transform:uppercase;color:var(--text3);font-family:'Jost',sans-serif;margin-bottom:8px}
 .intro-card-text{font-family:'Open Sans',sans-serif;font-size:12px;color:var(--text);line-height:1.7}
 .social-icons{display:flex;gap:14px;align-items:center;margin-top:14px;padding-top:12px;border-top:1px solid rgba(0,0,0,0.06)}
+.social-icons-centered{display:flex;gap:14px;align-items:center;justify-content:center;padding:10px 0}
 .social-icon{display:flex;align-items:center;justify-content:center;width:30px;height:30px;border-radius:50%;border:1px solid var(--border);color:var(--text3);text-decoration:none;transition:all .15s;font-size:13px}
 .social-icon:hover{border-color:var(--navy);color:var(--navy)}
 .social-icon svg{width:14px;height:14px;fill:currentColor}
@@ -335,7 +336,11 @@ body{background:var(--bg);font-family:'Jost',sans-serif;font-weight:400;font-siz
             </div>
           </div>
         </div>
-        <div class="logo-centered"><img class="logo-img" src="https://drevicioyster.com/wp-content/uploads/2026/06/Drevici-Oyster-white-HD.png" alt="Drevici Oyster" onerror="this.style.display='none'"/><span class="logo-text" id="logoText">Drevici Oyster</span></div>
+        <div class="logo-centered" style="display:flex;flex-direction:column;align-items:center;">
+          <img class="logo-img" src="https://drevicioyster.com/wp-content/uploads/2026/06/Drevici-Oyster-white-HD.png" alt="Drevici Oyster" onerror="this.style.display='none'"/>
+          <span class="logo-text" id="logoText">Drevici Oyster</span>
+          <span class="header-sub" id="heroSubEl" style="margin-bottom:0"></span>
+        </div>
         <div class="header-top-right">
           <button class="admin-btn" onclick="openAdmin()">
             <svg viewBox="0 0 16 16"><circle cx="8" cy="6" r="2.5"/><path d="M2 14c0-3 2.7-5.5 6-5.5s6 2.5 6 5.5"/></svg>
@@ -352,14 +357,17 @@ body{background:var(--bg);font-family:'Jost',sans-serif;font-weight:400;font-siz
     </div>
     <div class="view-bar">
       <div class="view-bar-inner">
-        <span class="view-tab-label" id="viewLabel"></span>
-        <div class="view-btns" id="viewBtnsWrap" style="min-width:72px;justify-content:flex-end;">
-          <button class="view-btn active" id="btnList" onclick="setView('list')" aria-label="Liste">
-            <svg viewBox="0 0 16 16"><line x1="2" y1="4" x2="14" y2="4"/><line x1="2" y1="8" x2="14" y2="8"/><line x1="2" y1="12" x2="14" y2="12"/></svg>
-          </button>
-          <button class="view-btn" id="btnGrid" onclick="setView('grid')" aria-label="Grille">
-            <svg viewBox="0 0 16 16"><rect x="2" y="2" width="5" height="5" rx="1"/><rect x="9" y="2" width="5" height="5" rx="1"/><rect x="2" y="9" width="5" height="5" rx="1"/><rect x="9" y="9" width="5" height="5" rx="1"/></svg>
-          </button>
+        <span class="view-tab-label" id="viewLabel" style="padding-left:16px"></span>
+        <div style="display:flex;align-items:center;gap:10px">
+          <div id="schedWidgetInline"></div>
+          <div class="view-btns" id="viewBtnsWrap" style="min-width:72px;justify-content:flex-end;">
+            <button class="view-btn active" id="btnList" onclick="setView('list')" aria-label="Liste">
+              <svg viewBox="0 0 16 16"><line x1="2" y1="4" x2="14" y2="4"/><line x1="2" y1="8" x2="14" y2="8"/><line x1="2" y1="12" x2="14" y2="12"/></svg>
+            </button>
+            <button class="view-btn" id="btnGrid" onclick="setView('grid')" aria-label="Grille">
+              <svg viewBox="0 0 16 16"><rect x="2" y="2" width="5" height="5" rx="1"/><rect x="9" y="2" width="5" height="5" rx="1"/><rect x="2" y="9" width="5" height="5" rx="1"/><rect x="9" y="9" width="5" height="5" rx="1"/></svg>
+            </button>
+          </div>
         </div>
       </div>
     </div>
@@ -379,17 +387,18 @@ body{background:var(--bg);font-family:'Jost',sans-serif;font-weight:400;font-siz
 // DATA
 // ═══════════════════════════════════════════
 let DATA = {
+  heroActive: true,
   hero: { fr:'Fruits de mer · Bretagne · Paris', en:'Seafood · Brittany · Paris', es:'Mariscos · Bretaña · París', it:'Frutti di mare · Bretagna · Parigi', kr:'해산물 · 브르타뉴 · 파리', jp:'シーフード · ブルターニュ · パリ' },
   intro: { active:false, text:{fr:'Bienvenue chez Drevici Oyster, un bar à huîtres breton au cœur de Paris.',en:'Welcome to Drevici Oyster, a Breton oyster bar in the heart of Paris.'} },
   social: { instagram:'', tiktok:'', facebook:'' },
   homeTab: { active:false, photo:'', video:'' },
   schedule: [
     { day:'Lundi',    services:[] },
-    { day:'Mardi',    services:[{label:'Soir',open:17,close:26}] },
-    { day:'Mercredi', services:[{label:'Soir',open:17,close:26}] },
-    { day:'Jeudi',    services:[{label:'Soir',open:17,close:26}] },
-    { day:'Vendredi', services:[{label:'Soir',open:17,close:26}] },
-    { day:'Samedi',   services:[{label:'Soir',open:17,close:26}] },
+    { day:'Mardi',    services:[{label:'Soir',open:17,close:2}] },
+    { day:'Mercredi', services:[{label:'Soir',open:17,close:2}] },
+    { day:'Jeudi',    services:[{label:'Soir',open:17,close:2}] },
+    { day:'Vendredi', services:[{label:'Soir',open:17,close:2}] },
+    { day:'Samedi',   services:[{label:'Soir',open:17,close:2}] },
     { day:'Dimanche', services:[] }
   ],
   specials: [
@@ -530,7 +539,12 @@ document.addEventListener('keydown',e=>{ const lb=document.getElementById('lb');
 // ═══════════════════════════════════════════
 // RENDER
 // ═══════════════════════════════════════════
-function renderAll(){ collectLbImages(); renderNav(); renderTabs(); renderViewBar();  }
+function renderAll(){
+  collectLbImages(); renderNav(); renderTabs(); renderViewBar();
+  const subEl=document.getElementById('heroSubEl');
+  if(subEl){ subEl.textContent=(DATA.heroActive&&DATA.hero)?t(DATA.hero):''; subEl.style.display=DATA.heroActive?'block':'none'; }
+  applyRestaurantBranding();
+}
 
 function renderNav(){
   const nav=document.getElementById('nav'); nav.innerHTML='';
@@ -548,9 +562,49 @@ function renderViewBar(){
   document.getElementById('viewLabel').textContent=tab?t(tab.label):'';
   document.getElementById('btnList').classList.toggle('active',view==='list');
   document.getElementById('btnGrid').classList.toggle('active',view==='grid');
-  // Hide list/grid on home tab
   const isHome=currentTabId==='__home';
   document.getElementById('viewBtnsWrap').style.visibility=isHome?'hidden':'visible';
+  // Inline schedule in subheader
+  const wi=document.getElementById('schedWidgetInline');
+  if(wi) wi.innerHTML=renderScheduleInline();
+}
+
+function renderScheduleInline(){
+  const sch=DATA.schedule||[];
+  const now=new Date();
+  let today=now.getDay(); let hour=now.getHours()+now.getMinutes()/60;
+  if(hour<6){today=(today+6)%7;hour+=24;}
+  const dayIdx=today===0?6:today-1;
+  const dayData=sch[dayIdx]||{};
+  const svcs=dayData.services||[];
+  const allSvcs=svcs.length===0&&dayData.open!=null?[{label:'',open:dayData.open,close:dayData.close}]:svcs;
+  let state='closed',label="Fermé";
+  for(const s of allSvcs){
+    if(s.open==null) continue;
+    const openH=s.open; const closeH=s.close>24?s.close-24:s.close;
+    const effectiveClose=s.close<=s.open?s.close+24:s.close;
+    if(hour>=s.open&&hour<effectiveClose){state='open';label="Ouvert jusqu'à "+closeH+'h';break;}
+    if(hour<s.open){state='soon';label='Ouvre à '+s.open+'h';}
+  }
+  const dotClass=state==='open'?'open':state==='soon'?'soon':'closed';
+  const rows=sch.map((d,i)=>{
+    const isToday=(i===dayIdx);
+    const svs=(d.services||[]).length>0?d.services:(d.open!=null?[{label:'',open:d.open,close:d.close}]:[]);
+    const h=svs.length===0?'Fermé':svs.map(s=>{
+      const o=s.open!=null?s.open+'h':'';
+      const c=s.close!=null?(s.close>24?(s.close-24)+'h':s.close+'h'):'';
+      return o&&c?o+' – '+c:(s.label||'Fermé');
+    }).join(', ');
+    return `<div class="resto-popup-row${isToday?' today':''}"><span class="rday">${d.day}</span><span>${h}</span></div>`;
+  }).join('');
+  return `<div class="resto-badge-inline" id="schedBadge" onclick="toggleSchedPopup(event)" style="display:inline-flex;align-items:center;gap:6px;cursor:pointer;padding:4px 0;position:relative;user-select:none">
+    <span class="resto-dot ${dotClass}"></span>
+    <span style="font-size:11px;color:var(--text2);font-family:Jost,sans-serif">${label}</span>
+    <div class="resto-popup" id="schedPopup">
+      <div class="resto-popup-title" style="color:${state==='open'?'#22c55e':state==='soon'?'#f97316':'#ef4444'}">Horaires d'ouverture</div>
+      ${rows}
+    </div>
+  </div>`;
 }
 
 function setView(v){ view=v; renderAll(); }
@@ -603,8 +657,8 @@ function renderTabContent(tab,lbOffset){
       const ig=soc.instagram?`<a class="social-icon" href="https://instagram.com/${soc.instagram.replace('@','')}" target="_blank" title="Instagram"><svg viewBox="0 0 24 24"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/></svg></a>`:'';
       const tk=soc.tiktok?`<a class="social-icon" href="https://tiktok.com/@${soc.tiktok.replace('@','')}" target="_blank" title="TikTok"><svg viewBox="0 0 24 24"><path d="M19.59 6.69a4.83 4.83 0 01-3.77-4.25V2h-3.45v13.67a2.89 2.89 0 01-2.88 2.5 2.89 2.89 0 01-2.89-2.89 2.89 2.89 0 012.89-2.89c.28 0 .54.04.79.1V9.01a6.33 6.33 0 00-.79-.05 6.34 6.34 0 00-6.34 6.34 6.34 6.34 0 006.34 6.34 6.34 6.34 0 006.33-6.34V8.69a8.18 8.18 0 004.78 1.52V6.76a4.85 4.85 0 01-1.01-.07z"/></svg></a>`:'';
       const fb=soc.facebook?`<a class="social-icon" href="https://facebook.com/${soc.facebook.replace('@','')}" target="_blank" title="Facebook"><svg viewBox="0 0 24 24"><path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/></svg></a>`:'';
-      const socRow=(ig||tk||fb)?`<div class="social-icons">${ig}${tk}${fb}</div>`:'';
-      html+=`<div class="intro-card"><div class="intro-card-label">À propos</div><div class="intro-card-text">${t(DATA.intro.text)}</div>${socRow}</div>`;
+      const socRow=(ig||tk||fb)?`<div class="social-icons-centered">${ig}${tk}${fb}</div>`:'';
+      html+=`<div class="intro-card"><div class="intro-card-label">À propos</div><div class="intro-card-text">${t(DATA.intro.text)}</div></div>${socRow}`;
     }
     // 2. Media (photo or video)
     if(DATA.homeTab&&DATA.homeTab.video){
@@ -612,8 +666,8 @@ function renderTabContent(tab,lbOffset){
       let embedUrl='';
       const ytMatch=videoUrl.match(/(?:youtube\.com\/watch\?v=|youtu\.be\/)([\w-]+)/);
       const vimeoMatch=videoUrl.match(/vimeo\.com\/([\d]+)/);
-      if(ytMatch) embedUrl=`https://www.youtube.com/embed/${ytMatch[1]}?autoplay=0&rel=0`;
-      else if(vimeoMatch) embedUrl=`https://player.vimeo.com/video/${vimeoMatch[1]}`;
+      if(ytMatch) embedUrl=`https://www.youtube.com/embed/${ytMatch[1]}?autoplay=0&rel=0&controls=0&modestbranding=1&showinfo=0`;
+      else if(vimeoMatch) embedUrl=`https://player.vimeo.com/video/${vimeoMatch[1]}?controls=0&title=0&byline=0&portrait=0`;
       else embedUrl=videoUrl;
       if(embedUrl) html+=`<div class="home-photo-wrap" style="aspect-ratio:4/3;background:#000"><iframe src="${embedUrl}" style="width:100%;height:100%;border:none" allowfullscreen loading="lazy"></iframe></div>`;
     } else if(DATA.homeTab&&DATA.homeTab.photo){
@@ -628,8 +682,7 @@ function renderTabContent(tab,lbOffset){
     if(DATA.infoBanner&&DATA.infoBanner.active&&(DATA.infoBanner.showHome!==false)){
       html+=renderInfoBanner(DATA.infoBanner);
     }
-        // Schedule widget
-    html+=renderScheduleWidget();
+        // Schedule widget rendered in subheader (renderViewBar)
     html+='</div>';
     return html;
   }
@@ -642,8 +695,8 @@ function renderTabContent(tab,lbOffset){
       const ig=soc.instagram?`<a class="social-icon" href="https://instagram.com/${soc.instagram.replace('@','')}" target="_blank" title="Instagram"><svg viewBox="0 0 24 24"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/></svg></a>`:'';
       const tk=soc.tiktok?`<a class="social-icon" href="https://tiktok.com/@${soc.tiktok.replace('@','')}" target="_blank" title="TikTok"><svg viewBox="0 0 24 24"><path d="M19.59 6.69a4.83 4.83 0 01-3.77-4.25V2h-3.45v13.67a2.89 2.89 0 01-2.88 2.5 2.89 2.89 0 01-2.89-2.89 2.89 2.89 0 012.89-2.89c.28 0 .54.04.79.1V9.01a6.33 6.33 0 00-.79-.05 6.34 6.34 0 00-6.34 6.34 6.34 6.34 0 006.34 6.34 6.34 6.34 0 006.33-6.34V8.69a8.18 8.18 0 004.78 1.52V6.76a4.85 4.85 0 01-1.01-.07z"/></svg></a>`:'';
       const fb=soc.facebook?`<a class="social-icon" href="https://facebook.com/${soc.facebook.replace('@','')}" target="_blank" title="Facebook"><svg viewBox="0 0 24 24"><path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/></svg></a>`:'';
-      const socRow=(ig||tk||fb)?`<div class="social-icons">${ig}${tk}${fb}</div>`:'';
-      html+=`<div class="intro-card"><div class="intro-card-label">À propos</div><div class="intro-card-text">${t(DATA.intro.text)}</div>${socRow}</div>`;
+      const socRow=(ig||tk||fb)?`<div class="social-icons-centered">${ig}${tk}${fb}</div>`:'';
+      html+=`<div class="intro-card"><div class="intro-card-label">À propos</div><div class="intro-card-text">${t(DATA.intro.text)}</div></div>${socRow}`;
     }
     // specials on first tab
     DATA.specials.forEach(sp=>{
@@ -736,7 +789,8 @@ function renderScheduleWidget(){
   let state='closed', label="Fermé aujourd'hui";
   for(const s of allSvcs){
     if(s.open==null) continue;
-    if(hour>=s.open&&hour<s.close){ state='open'; label="Ouvert jusqu'à "+(s.close%24)+'h'+(s.label?' · '+s.label:''); break; }
+    const effClose=s.close<=s.open?s.close+24:s.close;
+    if(hour>=s.open&&hour<effClose){ state='open'; label="Ouvert jusqu'à "+s.close+'h'+(s.label?' · '+s.label:''); break; }
     if(hour<s.open){ state='soon'; label='Ouvre à '+s.open+'h'+(s.label?' · '+s.label:''); }
   }
 
@@ -772,10 +826,11 @@ function toggleSchedPopup(e){
   let left=rect.right-pw;
   if(left<12) left=12;
   if(left+pw>vw-12) left=vw-pw-12;
-  const top=rect.top-10;
+  // Open downward below the badge
+  const top=rect.bottom+8;
   p.style.left=left+'px';
   p.style.top=top+'px';
-  p.style.transform='translateY(-100%)';
+  p.style.transform='none';
   p.classList.add('visible');
 }
 // Close schedule popup on outside click
@@ -893,7 +948,7 @@ function onDropTab(e,ti){
 function renderScheduleAdmin(){
   const sch=DATA.schedule||[];
   let h=`<div class="admin-section"><div class="admin-sect-title">🕐 Horaires d'ouverture</div>`;
-  h+=`<div style="font-size:11px;color:var(--text3);font-family:Jost,sans-serif;margin-bottom:10px;line-height:1.6">Format 24h. Ex: 12 = midi, 17 = 17h, 26 = 2h du matin (lendemain).<br>Vous pouvez ajouter plusieurs services par jour (midi, soir, brunch…).</div>`;
+  h+=`<div style="font-size:11px;color:var(--text3);font-family:Jost,sans-serif;margin-bottom:10px;line-height:1.6">Format 24h standard. Ex: 12 = midi, 17 = 17h00, 2 = 2h du matin, 0 = minuit.<br>Vous pouvez ajouter plusieurs services par jour (midi, soir, brunch…).</div>`;
   sch.forEach((d,i)=>{
     // Compat: migrate old {open,close} to services[]
     if(!d.services) d.services = (d.open!=null?[{label:'',open:d.open,close:d.close}]:[]);
@@ -912,10 +967,10 @@ function renderScheduleAdmin(){
         </div>
         <div class="ai-row">
           <div style="flex:1"><div style="font-size:10px;color:var(--text3);margin-bottom:2px">Ouverture</div>
-            <input class="ai" type="number" min="0" max="30" value="${s.open!=null?s.open:''}" placeholder="ex: 12"
+            <input class="ai" type="number" min="0" max="24" step="0.5" value="${s.open!=null?s.open:''}" placeholder="ex: 12"
               oninput="DATA.schedule[${i}].services[${si}].open=this.value===''?null:parseFloat(this.value);renderAll()"></div>
           <div style="flex:1"><div style="font-size:10px;color:var(--text3);margin-bottom:2px">Fermeture</div>
-            <input class="ai" type="number" min="0" max="30" value="${s.close!=null?s.close:''}" placeholder="ex: 26"
+            <input class="ai" type="number" min="0" max="24" step="0.5" value="${s.close!=null?s.close:''}" placeholder="ex: 26"
               oninput="DATA.schedule[${i}].services[${si}].close=this.value===''?null:parseFloat(this.value);renderAll()"></div>
         </div>
       </div>`;
@@ -947,7 +1002,7 @@ function closeAdmin(){ document.getElementById('adminOverlay').classList.remove(
 
 function renderAdminTabDd(){
   const dd=document.getElementById('adminTabDd');
-  dd.innerHTML='<option value="__global">⚙️ Global & Accueil</option>'
+  dd.innerHTML='<option value="__global">⚙️ Global</option>'
     +DATA.tabs.map(tb=>`<option value="${tb.id}"${tb.id===adminCurrentTab?' selected':''}>${t(tb.label)}</option>`).join('')
     +'<option value="__reorder">↕ Réordonner les tabs</option>'
     +'<option value="__addtab">+ Nouvelle tab</option>';
@@ -1094,11 +1149,11 @@ function renderAdminGlobal(){
   let h='';
   // Hero
   h+=`<div class="admin-section"><div class="admin-sect-title">En-tête</div>
+    <label class="admin-toggle"><input type="checkbox" ${DATA.heroActive?'checked':''} onchange="DATA.heroActive=this.checked;renderAll()"><label>Afficher le sous-titre</label></label>
     `+biInput('Sous-titre', DATA.hero.fr||'', DATA.hero[adminLang]||'', `DATA.hero[adminLang]=this.value;renderAll()`)+`
   </div>`;
 
-  // Schedule (stays in global)
-  h+=renderScheduleAdmin();
+  // Schedule moved to home tab admin
 
   // Specials
   h+=`<div class="admin-section"><div class="admin-sect-title">📋 Menu du jour</div>`;
@@ -1344,6 +1399,7 @@ async function loadFromGitHub(){
       DATA.tabs[0].isHome=true;
     }
     if(json.hero && typeof json.hero==='object') DATA.hero=json.hero;
+    if(typeof json.heroActive!=='undefined') DATA.heroActive=json.heroActive;
     if(json.intro && typeof json.intro==='object') DATA.intro=json.intro;
     if(Array.isArray(json.specials) && json.specials.length>0) DATA.specials=json.specials.filter(s=>s.id!=='midi'&&s.id!=='soir');
     if(Array.isArray(json.pinnedDishes)) DATA.pinnedDishes=json.pinnedDishes;
