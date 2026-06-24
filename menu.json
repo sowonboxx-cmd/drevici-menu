@@ -21,43 +21,81 @@
   },
   "homeTab": {
     "active": true,
-    "photo": "https://drevicioyster.com/wp-content/uploads/2026/06/storytest3.webp"
+    "photo": "https://drevicioyster.com/wp-content/uploads/2026/06/storytest3.webp",
+    "video": "https://drevicioyster.com/wp-content/uploads/2026/06/renton_work_1780184342_3908791903579571463_78349449169.mp4"
   },
   "schedule": [
     {
       "day": "Lundi",
       "open": null,
-      "close": null
+      "close": null,
+      "services": []
     },
     {
       "day": "Mardi",
       "open": 17,
-      "close": 2
+      "close": 2,
+      "services": [
+        {
+          "label": "",
+          "open": 17,
+          "close": 2
+        }
+      ]
     },
     {
       "day": "Mercredi",
       "open": 17,
-      "close": 26
+      "close": 26,
+      "services": [
+        {
+          "label": "",
+          "open": 17,
+          "close": 26
+        }
+      ]
     },
     {
       "day": "Jeudi",
       "open": 17,
-      "close": 26
+      "close": 26,
+      "services": [
+        {
+          "label": "",
+          "open": 17,
+          "close": 26
+        }
+      ]
     },
     {
       "day": "Vendredi",
       "open": 17,
-      "close": 26
+      "close": 26,
+      "services": [
+        {
+          "label": "",
+          "open": 17,
+          "close": 26
+        }
+      ]
     },
     {
       "day": "Samedi",
       "open": 17,
-      "close": 26
+      "close": 26,
+      "services": [
+        {
+          "label": "",
+          "open": 17,
+          "close": 26
+        }
+      ]
     },
     {
       "day": "Dimanche",
       "open": null,
-      "close": null
+      "close": null,
+      "services": []
     }
   ],
   "specials": [
