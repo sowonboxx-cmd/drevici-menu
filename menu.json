@@ -19,6 +19,47 @@
     "tiktok": "",
     "facebook": ""
   },
+  "homeTab": {
+    "active": true,
+    "photo": "https://drevicioyster.com/wp-content/uploads/2026/06/storytest3.webp"
+  },
+  "schedule": [
+    {
+      "day": "Lundi",
+      "open": null,
+      "close": null
+    },
+    {
+      "day": "Mardi",
+      "open": 17,
+      "close": 2
+    },
+    {
+      "day": "Mercredi",
+      "open": 17,
+      "close": 26
+    },
+    {
+      "day": "Jeudi",
+      "open": 17,
+      "close": 26
+    },
+    {
+      "day": "Vendredi",
+      "open": 17,
+      "close": 26
+    },
+    {
+      "day": "Samedi",
+      "open": 17,
+      "close": 26
+    },
+    {
+      "day": "Dimanche",
+      "open": null,
+      "close": null
+    }
+  ],
   "specials": [
     {
       "id": "jour",
@@ -74,6 +115,18 @@
   ],
   "pinnedDishes": [],
   "tabs": [
+    {
+      "id": "__home",
+      "label": {
+        "fr": "Accueil",
+        "en": "Home",
+        "es": "Inicio",
+        "it": "Casa",
+        "kr": "홈",
+        "jp": "ホーム"
+      },
+      "cards": []
+    },
     {
       "id": "huitres",
       "isHome": true,
