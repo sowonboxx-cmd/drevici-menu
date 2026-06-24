@@ -292,6 +292,20 @@
               "img": "https://drevicioyster.com/wp-content/uploads/2026/06/bulots-hero2.webp",
               "spicy": false,
               "vegan": true
+            },
+            {
+              "name": {
+                "fr": "Soupe de Poisson",
+                "en": "New dish"
+              },
+              "desc": {
+                "fr": "Délicieuse et savoureuse",
+                "en": ""
+              },
+              "price": "8€",
+              "img": "https://drevicioyster.com/wp-content/uploads/2026/06/soupe-poisson.webp",
+              "spicy": true,
+              "vegan": true
             }
           ]
         }
