@@ -707,8 +707,8 @@ function renderScheduleWidget(){
   const dayIdx = today===0 ? 6 : today-1;
   const s = sch[dayIdx]||{};
   let state, label;
-  if(!s.open){ state='closed'; label='Fermé aujourd'hui'; }
-  else if(hour>=s.open && hour<s.close){ state='open'; label='Ouvert jusqu'à '+(s.close%24)+'h'; }
+  if(!s.open){ state='closed'; label="Fermé aujourd'hui"; }
+  else if(hour>=s.open && hour<s.close){ state='open'; label="Ouvert jusqu'à "+(s.close%24)+'h'; }
   else if(hour<s.open){ state='soon'; label='Ouvre à '+s.open+'h'; }
   else { state='closed'; label='Fermé'; }
 
