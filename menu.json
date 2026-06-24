@@ -573,28 +573,8 @@
                   "price": ""
                 }
               ]
-            },
-            {
-              "name": {
-                "fr": "Ginger Beer",
-                "en": "New drink"
-              },
-              "price": "",
-              "sizes": [
-                {
-                  "cl": "33",
-                  "price": "5"
-                }
-              ]
             }
           ]
-        },
-        {
-          "label": {
-            "fr": "",
-            "en": "New section"
-          },
-          "dishes": []
         },
         {
           "label": {
