@@ -2,9 +2,9 @@
 <html lang="fr">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 <title>Drevici Oyster — Menu</title>
-<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;0,700;1,400&family=Jost:wght@300;400;500&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;0,700;1,400&family=Jost:wght@300;400;500&family=Open+Sans:wght@400;600&display=swap" rel="stylesheet">
 <style>
 *{box-sizing:border-box;margin:0;padding:0}
 :root{--navy:#10285E;--gold:#C6A24A;--bg:#F4F0EA;--white:#fff;--border:rgba(0,0,0,0.08);--text:#1a1a1a;--text2:#666;--text3:#aaa;--r:10px;--rs:6px}
@@ -14,15 +14,21 @@ body{background:var(--bg);font-family:'Jost',sans-serif;font-weight:400;font-siz
 .lb{position:fixed;inset:0;background:rgba(0,0,0,0.88);z-index:1000;display:none;align-items:center;justify-content:center}
 .lb.open{display:flex}
 .lb-card{position:relative;width:min(420px,92vw);border-radius:16px;overflow:hidden;background:#10285E}
+.lb-zone{position:absolute;top:0;bottom:0;width:45%;z-index:3;cursor:pointer}
+.lb-zone-left{left:0}
+.lb-zone-right{right:0}
 .lb img{width:100%;aspect-ratio:1/1;object-fit:cover;display:block}
-.lb-nav{position:absolute;top:50%;transform:translateY(-50%);background:rgba(0,0,0,0.28);border:none;color:#fff;width:38px;height:38px;border-radius:50%;cursor:pointer;font-size:24px;display:flex;align-items:center;justify-content:center;backdrop-filter:blur(4px);transition:background .15s;z-index:2}
-.lb-nav:hover{background:rgba(0,0,0,0.5)}
+.lb-nav{position:absolute;top:50%;transform:translateY(-50%);background:none;border:none;color:#fff;width:44px;height:44px;cursor:pointer;font-size:28px;display:flex;align-items:center;justify-content:center;text-shadow:0 1px 6px rgba(0,0,0,0.6);transition:opacity .15s;z-index:2}
+.lb-nav:hover{opacity:.75}
 .lb-prev{left:10px}.lb-next{right:10px}
-.lb-footer{background:#10285E;padding:16px 20px 20px}
-.lb-dish-name{font-family:'Cormorant Garamond',serif;font-size:22px;color:#fff;font-weight:700;line-height:1.2;text-align:center;margin-bottom:5px}
-.lb-dish-desc{font-size:14px;color:rgba(255,255,255,0.75);font-family:'Jost',sans-serif;font-weight:300;line-height:1.55;text-align:center;margin-bottom:10px}
+.lb-footer{background:#10285E;padding:14px 20px 20px}
+.lb-cat-row{display:flex;align-items:center;justify-content:center;gap:10px;margin-bottom:10px}
+.lb-cat-line{flex:1;height:1px;background:var(--gold);opacity:.6;max-width:40px}
+.lb-cat-label{font-family:'Open Sans',sans-serif;font-size:10px;letter-spacing:.14em;text-transform:uppercase;color:rgba(255,255,255,0.45)}
+.lb-dish-name{font-family:'Open Sans',sans-serif;font-size:16px;color:#fff;font-weight:600;line-height:1.2;text-align:center;margin-bottom:6px;text-transform:uppercase;letter-spacing:.06em}
+.lb-dish-desc{font-size:13px;color:rgba(255,255,255,0.65);font-family:'Open Sans',sans-serif;font-weight:400;line-height:1.55;text-align:center;margin-bottom:10px}
 .lb-footer-row{display:flex;align-items:center;justify-content:center}
-.lb-count{font-size:11px;color:#10285E;letter-spacing:.12em;font-family:'Jost',sans-serif;background:rgba(255,255,255,0.9);padding:2px 10px;border-radius:20px}
+.lb-count{font-size:11px;color:#10285E;letter-spacing:.12em;font-family:'Open Sans',sans-serif;background:rgba(255,255,255,0.9);padding:2px 10px;border-radius:20px;border:none}
 .lb-close{position:absolute;top:10px;right:10px;background:rgba(0,0,0,0.35);border:none;color:#fff;font-size:16px;cursor:pointer;line-height:1;width:28px;height:28px;border-radius:50%;display:flex;align-items:center;justify-content:center;z-index:3;backdrop-filter:blur(4px)}
 
 /* ── LAYOUT ── */
@@ -38,7 +44,7 @@ body{background:var(--bg);font-family:'Jost',sans-serif;font-weight:400;font-siz
 
 .lang-wrap{position:relative}
 .lang-sel{display:flex;align-items:center;gap:3px;padding:5px 10px;border:1px solid rgba(255,255,255,0.25);border-radius:6px;cursor:pointer;background:rgba(255,255,255,0.1);color:rgba(255,255,255,0.85);font-size:11px;font-family:'Jost',sans-serif;font-weight:500;letter-spacing:.06em;user-select:none}
-.lang-dd{position:absolute;right:0;top:calc(100% + 6px);background:#fff;border:1px solid rgba(0,0,0,0.1);border-radius:8px;overflow:hidden;z-index:400;display:none;min-width:140px;box-shadow:0 4px 20px rgba(0,0,0,0.15)}
+.lang-dd{position:absolute;left:0;top:calc(100% + 6px);background:#fff;border:1px solid rgba(0,0,0,0.1);border-radius:8px;overflow:hidden;z-index:400;display:none;min-width:140px;box-shadow:0 4px 20px rgba(0,0,0,0.15)}
 .lang-dd.open{display:block}
 .lang-opt{padding:9px 14px;font-size:12px;color:var(--text2);cursor:pointer;font-family:'Jost',sans-serif;white-space:nowrap;transition:background .1s}
 .lang-opt:hover{background:var(--bg)}
@@ -47,10 +53,11 @@ body{background:var(--bg);font-family:'Jost',sans-serif;font-weight:400;font-siz
 .admin-btn:hover{background:rgba(255,255,255,0.2)}
 .admin-btn svg{width:15px;height:15px;stroke:currentColor;fill:none;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}
 .admin-btn svg{width:13px;height:13px;stroke:currentColor;fill:none;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}
-.logo-img{height:32px;object-fit:contain;display:block;}
+.logo-img{height:32px;object-fit:contain;display:none;}
+.logo-text{font-family:'Cormorant Garamond',serif;font-size:20px;font-weight:700;color:#fff;letter-spacing:.08em;white-space:nowrap;text-align:center}
 .header-top{position:relative}
-.logo-centered{position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);pointer-events:none}
-@media(min-width:480px){.logo-img{height:42px}}
+.logo-centered{position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);pointer-events:none;display:flex;align-items:center;justify-content:center}
+@media(min-width:480px){.logo-img{height:42px;display:block}.logo-text{display:none}}
 .header-sub{font-size:10px;font-weight:300;color:rgba(255,255,255,0.45);letter-spacing:.14em;text-transform:uppercase;margin-bottom:14px;text-align:center}
 
 /* ── STICKY NAV ── */
@@ -72,12 +79,18 @@ body{background:var(--bg);font-family:'Jost',sans-serif;font-weight:400;font-siz
 /* ── CONTENT ── */
 .tab-content{display:none;padding:18px 0}
 .tab-content.active{display:block}
+.dish-grid,.cards-stack{animation:fadeIn 0.15s ease}
+@keyframes fadeIn{from{opacity:0}to{opacity:1}}
 .cards-stack{display:flex;flex-direction:column;gap:12px}
 
 /* ── INTRO CARD ── */
 .intro-card{background:#fff;border-radius:var(--r);border:1px solid var(--border);padding:18px 20px}
 .intro-card-label{font-size:10px;font-weight:500;letter-spacing:.14em;text-transform:uppercase;color:var(--text3);font-family:'Jost',sans-serif;margin-bottom:8px}
 .intro-card-text{font-family:'Cormorant Garamond',serif;font-size:17px;font-style:italic;color:var(--text);line-height:1.6}
+.social-icons{display:flex;gap:14px;align-items:center;margin-top:14px;padding-top:12px;border-top:1px solid rgba(0,0,0,0.06)}
+.social-icon{display:flex;align-items:center;justify-content:center;width:30px;height:30px;border-radius:50%;border:1px solid var(--border);color:var(--text3);text-decoration:none;transition:all .15s;font-size:13px}
+.social-icon:hover{border-color:var(--navy);color:var(--navy)}
+.social-icon svg{width:14px;height:14px;fill:currentColor}
 
 /* ── FEATURED ── */
 .featured-card{background:#fff;border-radius:var(--r);border:1px solid var(--border);padding:16px}
@@ -103,11 +116,11 @@ body{background:var(--bg);font-family:'Jost',sans-serif;font-weight:400;font-siz
 .dish-row:last-child{border-bottom:none;padding-bottom:0}
 .dish-text{flex:1;min-width:0}
 .dish-name-row{display:flex;align-items:center;gap:6px;flex-wrap:wrap}
-.dish-name{font-family:'Cormorant Garamond',serif;font-size:16px;font-weight:600;color:var(--navy);line-height:1.2}
+.dish-name{font-family:'Cormorant Garamond',serif;font-size:18px;font-weight:600;color:var(--navy);line-height:1.2}
 .dish-badges{display:flex;gap:4px;align-items:center}
 .badge-icon{width:18px;height:18px;object-fit:contain;display:inline-block}
-.dish-desc{font-size:12px;font-weight:300;color:var(--text2);line-height:1.55;margin-top:2px;display:-webkit-box;-webkit-line-clamp:3;-webkit-box-orient:vertical;overflow:hidden}
-.dish-price{font-size:12px;font-weight:500;color:var(--gold);margin-top:6px}
+.dish-desc{font-size:14px;font-weight:300;color:var(--text2);line-height:1.55;margin-top:2px;display:-webkit-box;-webkit-line-clamp:3;-webkit-box-orient:vertical;overflow:hidden}
+.dish-price{font-size:13px;font-weight:500;color:var(--gold);margin-top:6px}
 .dish-img{width:80px;height:80px;border-radius:8px;object-fit:cover;flex:none;background:#ece8e1;cursor:pointer;transition:opacity .15s}
 .dish-img:hover{opacity:.82}
 
@@ -142,10 +155,14 @@ body{background:var(--bg);font-family:'Jost',sans-serif;font-weight:400;font-siz
 
 /* ── STICKY RESERVE ── */
 .sticky-reserve{position:sticky;bottom:0;z-index:100;padding:10px 0 14px;background:linear-gradient(to top,var(--bg) 70%,transparent)}
-.ig-text{display:block;text-align:center;font-size:10px;letter-spacing:.16em;color:var(--text3);text-decoration:none;font-family:'Jost',sans-serif;font-weight:400;margin-top:8px;transition:color .15s}
-.ig-text:hover{color:var(--navy)}
 .sticky-reserve .container{display:block}
 .reserve-btn{display:block;width:100%;padding:15px;background:var(--navy);color:#fff;border:none;border-radius:10px;font-size:14px;font-weight:500;font-family:'Jost',sans-serif;letter-spacing:.06em;cursor:pointer;text-align:center;text-decoration:none}
+@media(max-width:640px){
+  .sticky-reserve{position:fixed;bottom:0;left:0;right:0;z-index:100;padding:10px 0 env(safe-area-inset-bottom,14px);background:linear-gradient(to top,var(--bg) 80%,transparent)}
+  .sticky-reserve .container{padding:0 0}
+  .reserve-btn{border-radius:0;padding:17px 16px}
+  .page{padding-bottom:80px}
+}
 
 /* ── ADMIN ── */
 .admin-overlay{position:fixed;inset:0;background:rgba(0,0,0,0.45);z-index:500;display:none}
@@ -164,6 +181,7 @@ body{background:var(--bg);font-family:'Jost',sans-serif;font-weight:400;font-siz
 .al{font-size:11px;font-weight:500;color:var(--text2);font-family:'Jost',sans-serif;margin-bottom:3px;display:block;letter-spacing:.04em}
 .ai{width:100%;padding:7px 10px;border:1px solid var(--border);border-radius:var(--rs);font-size:13px;font-family:'Jost',sans-serif;color:var(--text);background:#fff;outline:none;transition:border-color .15s}
 .ai:focus{border-color:var(--navy)}
+.ai::placeholder{color:#ccc}
 .ai-row{display:flex;gap:6px}
 .ai-sm{width:80px!important;flex:none!important}
 .ai-check{display:flex;align-items:center;gap:6px;cursor:pointer;font-size:12px;font-family:'Jost',sans-serif;color:var(--text2)}
@@ -222,11 +240,14 @@ body{background:var(--bg);font-family:'Jost',sans-serif;font-weight:400;font-siz
   <div class="lb-card">
     <button class="lb-close" onclick="closeLb()">✕</button>
     <div style="position:relative">
+      <div class="lb-zone lb-zone-left" onclick="lbStep(-1)"></div>
+      <div class="lb-zone lb-zone-right" onclick="lbStep(1)"></div>
       <button class="lb-nav lb-prev" onclick="lbStep(-1)">&#8249;</button>
       <img id="lbImg" src="" alt=""/>
       <button class="lb-nav lb-next" onclick="lbStep(1)">&#8250;</button>
     </div>
     <div class="lb-footer">
+      <div class="lb-cat-row"><div class="lb-cat-line"></div><div class="lb-cat-label" id="lbCat"></div><div class="lb-cat-line"></div></div>
       <div class="lb-dish-name" id="lbName"></div>
       <div class="lb-dish-desc" id="lbDesc"></div>
       <div class="lb-footer-row">
@@ -290,7 +311,7 @@ body{background:var(--bg);font-family:'Jost',sans-serif;font-weight:400;font-siz
             </div>
           </div>
         </div>
-        <div class="logo-centered"><img class="logo-img" src="https://drevicioyster.com/wp-content/uploads/2026/06/Drevici-Oyster-white-HD.png" alt="Drevici Oyster" onerror="this.style.display='none'"/></div>
+        <div class="logo-centered"><img class="logo-img" src="https://drevicioyster.com/wp-content/uploads/2026/06/Drevici-Oyster-white-HD.png" alt="Drevici Oyster" onerror="this.style.display='none'"/><span class="logo-text" id="logoText">Drevici Oyster</span></div>
         <div class="header-top-right">
           <button class="admin-btn" onclick="openAdmin()">
             <svg viewBox="0 0 16 16"><circle cx="8" cy="6" r="2.5"/><path d="M2 14c0-3 2.7-5.5 6-5.5s6 2.5 6 5.5"/></svg>
@@ -325,7 +346,6 @@ body{background:var(--bg);font-family:'Jost',sans-serif;font-weight:400;font-siz
   <div class="sticky-reserve">
     <div class="container">
       <a class="reserve-btn" id="reserveMain" href="https://LIEN_A_DEFINIR">Réserver une table</a>
-      <a href="https://www.instagram.com/drevicioysterbar/" target="_blank" class="ig-text">INSTAGRAM</a>
     </div>
   </div>
 </div>
@@ -337,6 +357,7 @@ body{background:var(--bg);font-family:'Jost',sans-serif;font-weight:400;font-siz
 let DATA = {
   hero: { fr:'Fruits de mer · Bretagne · Paris', en:'Seafood · Brittany · Paris', es:'Mariscos · Bretaña · París', it:'Frutti di mare · Bretagna · Parigi', kr:'해산물 · 브르타뉴 · 파리', jp:'シーフード · ブルターニュ · パリ' },
   intro: { active:false, text:{fr:'Bienvenue chez Drevici Oyster, un bar à huîtres breton au cœur de Paris.',en:'Welcome to Drevici Oyster, a Breton oyster bar in the heart of Paris.'} },
+  social: { instagram:'', tiktok:'', facebook:'' },
   specials: [
     { id:'jour', active:false, label:{fr:'Menu du jour',en:'Today\'s menu'}, title:{fr:'Menu du Jour',en:'Today\'s menu'}, desc:{fr:'',en:''}, price:''},
     { id:'midi', active:false, label:{fr:'Menu midi',en:'Lunch menu'}, title:{fr:'Menu Midi',en:'Lunch menu'}, desc:{fr:'',en:''}, price:''},
@@ -447,9 +468,23 @@ function renderLbSlide(){
   document.getElementById('lbName').textContent=item.name;
   document.getElementById('lbDesc').textContent=item.desc||'';
   document.getElementById('lbCount').textContent=(lbIdx+1)+' / '+lbImages.length;
+  const catEl=document.getElementById('lbCat'); if(catEl) catEl.textContent=item.cat||'';
 }
 document.getElementById('lb').addEventListener('click',e=>{ if(!e.target.closest('.lb-card')) closeLb(); });
 document.addEventListener('keydown',e=>{ const lb=document.getElementById('lb'); if(!lb.classList.contains('open'))return; if(e.key==='Escape')closeLb(); if(e.key==='ArrowLeft')lbStep(-1); if(e.key==='ArrowRight')lbStep(1); });
+// Swipe support
+(function(){
+  let sx=0,sy=0;
+  const lb=document.getElementById('lb');
+  lb.addEventListener('touchstart',e=>{ sx=e.touches[0].clientX; sy=e.touches[0].clientY; },{passive:true});
+  lb.addEventListener('touchend',e=>{
+    const dx=e.changedTouches[0].clientX-sx;
+    const dy=e.changedTouches[0].clientY-sy;
+    if(Math.abs(dx)>Math.abs(dy)&&Math.abs(dx)>40){
+      if(dx<0) lbStep(1); else lbStep(-1);
+    }
+  });
+})();
 
 // ═══════════════════════════════════════════
 // RENDER
@@ -509,16 +544,21 @@ function renderTabContent(tab,lbOffset){
 
   // HOME: specials + intro + featured
   if(tab.isHome){
-    // active specials
+    // intro FIRST
+    if(DATA.intro.active){
+      const soc=DATA.social||{};
+      const ig=soc.instagram?`<a class="social-icon" href="https://instagram.com/${soc.instagram.replace('@','')}" target="_blank" title="Instagram"><svg viewBox="0 0 24 24"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/></svg></a>`:'';
+      const tk=soc.tiktok?`<a class="social-icon" href="https://tiktok.com/@${soc.tiktok.replace('@','')}" target="_blank" title="TikTok"><svg viewBox="0 0 24 24"><path d="M19.59 6.69a4.83 4.83 0 01-3.77-4.25V2h-3.45v13.67a2.89 2.89 0 01-2.88 2.5 2.89 2.89 0 01-2.89-2.89 2.89 2.89 0 012.89-2.89c.28 0 .54.04.79.1V9.01a6.33 6.33 0 00-.79-.05 6.34 6.34 0 00-6.34 6.34 6.34 6.34 0 006.34 6.34 6.34 6.34 0 006.33-6.34V8.69a8.18 8.18 0 004.78 1.52V6.76a4.85 4.85 0 01-1.01-.07z"/></svg></a>`:'';
+      const fb=soc.facebook?`<a class="social-icon" href="https://facebook.com/${soc.facebook.replace('@','')}" target="_blank" title="Facebook"><svg viewBox="0 0 24 24"><path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/></svg></a>`:'';
+      const socRow=(ig||tk||fb)?`<div class="social-icons">${ig}${tk}${fb}</div>`:'';
+      html+=\`<div class="intro-card"><div class="intro-card-label">Le restaurant</div><div class="intro-card-text">\${t(DATA.intro.text)}</div>\${socRow}</div>\`;
+    }
+    // then specials
     DATA.specials.forEach(sp=>{
       if(sp.active){
         html+=`<div class="special-banner"><div class="special-banner-label">${t(sp.label)}</div><div class="special-banner-title">${t(sp.title)}</div><div class="special-banner-text">${t(sp.desc)}</div>${sp.price?`<div class="special-banner-price">${sp.price}</div>`:''}</div>`;
       }
     });
-    // intro
-    if(DATA.intro.active){
-      html+=`<div class="intro-card"><div class="intro-card-label">Le restaurant</div><div class="intro-card-text">${t(DATA.intro.text)}</div></div>`;
-    }
     // featured / pinned
     const pins=DATA.pinnedDishes||[];
     const pinDishes=pins.map(p=>{ const tb=DATA.tabs.find(tb=>tb.id===p.tabId); if(!tb)return null; const card=tb.cards[p.cardIdx]; if(!card||!card.dishes)return null; return card.dishes[p.dishIdx]; }).filter(Boolean);
@@ -703,9 +743,27 @@ function renderAdminGlobal(){
   </div>`;
 
   // Intro
+  const soc=DATA.social||{};
   h+=`<div class="admin-section"><div class="admin-sect-title">Présentation (page d'accueil)</div>
     <label class="admin-toggle"><input type="checkbox" ${DATA.intro.active?'checked':''} onchange="DATA.intro.active=this.checked;renderAll();renderAdminSection('__global')"><label>Activer le bloc présentation</label></label>
     `+biInput('Texte de présentation', DATA.intro.text.fr||'', DATA.intro.text[adminLang]||'', `DATA.intro.text[adminLang]=this.value;renderAll()`)+`
+    <div class="admin-sect-title" style="margin-top:14px;padding-top:12px">Réseaux sociaux</div>
+    <div class="af"><label class="al">Instagram</label>
+      <div style="display:flex;align-items:center;gap:6px">
+        <span style="font-size:13px;color:var(--text3)">@</span>
+        <input class="ai" value="${soc.instagram||''}" placeholder="drevicioysterbar" oninput="if(!DATA.social)DATA.social={};DATA.social.instagram=this.value;renderAll()">
+      </div></div>
+    <div class="af"><label class="al">TikTok</label>
+      <div style="display:flex;align-items:center;gap:6px">
+        <span style="font-size:13px;color:var(--text3)">@</span>
+        <input class="ai" value="${soc.tiktok||''}" placeholder="drevicioyster" oninput="if(!DATA.social)DATA.social={};DATA.social.tiktok=this.value;renderAll()">
+      </div></div>
+    <div class="af"><label class="al">Facebook</label>
+      <div style="display:flex;align-items:center;gap:6px">
+        <span style="font-size:13px;color:var(--text3)">@</span>
+        <input class="ai" value="${soc.facebook||''}" placeholder="drevicioyster" oninput="if(!DATA.social)DATA.social={};DATA.social.facebook=this.value;renderAll()">
+      </div></div>
+    <div style="font-size:11px;color:var(--text3);font-family:'Jost',sans-serif;margin-top:4px;line-height:1.5">Les icônes s'affichent discrètement sous la présentation si le champ est rempli.</div>
   </div>`;
 
   // Specials
@@ -832,7 +890,7 @@ function delTab(ti){ DATA.tabs.splice(ti,1); if(DATA.tabs.length>0)adminCurrentT
 function delDish(ti,ci,di){ DATA.tabs[ti].cards[ci].dishes.splice(di,1); renderAll(); renderAdminSection(DATA.tabs[ti].id); }
 function delVariant(ti,ci,vi){ DATA.tabs[ti].cards[ci].variants.splice(vi,1); renderAll(); renderAdminSection(DATA.tabs[ti].id); }
 function delBev(ti,ci,ii){ DATA.tabs[ti].cards[ci].items.splice(ii,1); renderAll(); renderAdminSection(DATA.tabs[ti].id); }
-function addDish(ti,ci){ DATA.tabs[ti].cards[ci].dishes.push({name:{fr:'Nouveau plat',en:'New dish'},desc:{fr:'',en:''},price:'',img:'',spicy:false,vegan:false}); renderAll(); renderAdminSection(DATA.tabs[ti].id); }
+function addDish(ti,ci){ DATA.tabs[ti].cards[ci].dishes.push({name:{fr:'',en:''},desc:{fr:'',en:''},price:'',img:'',spicy:false,vegan:false}); renderAll(); renderAdminSection(DATA.tabs[ti].id); }
 function addVariant(ti,ci){ DATA.tabs[ti].cards[ci].variants.push({name:{fr:'Nouvelle variante',en:'New item'},price:'9€'}); renderAll(); renderAdminSection(DATA.tabs[ti].id); }
 function addBev(ti,ci){ DATA.tabs[ti].cards[ci].items.push({name:{fr:'Nouvelle boisson',en:'New drink'},price:''}); renderAll(); renderAdminSection(DATA.tabs[ti].id); }
 function addCard(ti){
@@ -922,6 +980,7 @@ async function loadFromGitHub(){
     if(json.intro && typeof json.intro==='object') DATA.intro=json.intro;
     if(Array.isArray(json.specials) && json.specials.length>0) DATA.specials=json.specials;
     if(Array.isArray(json.pinnedDishes)) DATA.pinnedDishes=json.pinnedDishes;
+    if(json.social && typeof json.social==='object') DATA.social=json.social;
     currentTabId=DATA.tabs[0]?.id||'huitres';
     console.log('✓ Chargé depuis GitHub API — tabs:'+DATA.tabs.length+', specials actifs:'+DATA.specials.filter(s=>s.active).length+', intro:'+DATA.intro.active);
   }catch(e){ console.warn('GitHub load failed:', e.message); }
@@ -977,10 +1036,38 @@ async function publishToGitHub(){
   }
 }
 
+function getRestaurantName(){ return localStorage.getItem('restaurant_name')||'Drevici Oyster'; }
+function getRestaurantLogo(){ return localStorage.getItem('restaurant_logo')||''; }
+function setRestaurantName(v){ localStorage.setItem('restaurant_name',v); applyRestaurantBranding(); }
+function setRestaurantLogo(v){ localStorage.setItem('restaurant_logo',v); applyRestaurantBranding(); }
+function applyRestaurantBranding(){
+  const name=getRestaurantName();
+  const logo=getRestaurantLogo();
+  const logoEl=document.querySelector('.logo-img');
+  const textEl=document.getElementById('logoText');
+  if(logo&&logoEl){ logoEl.src=logo; logoEl.style.display='block'; if(textEl) textEl.style.display='none'; }
+  else { if(logoEl) logoEl.style.display='none'; if(textEl){ textEl.style.display='block'; textEl.textContent=name||'Mon Restaurant'; } }
+  document.title=(name||'Menu')+' — Menu';
+}
+
+function restaurantSettingHtml(){
+  const name=getRestaurantName();
+  const logo=getRestaurantLogo();
+  return \`<div class="admin-section"><div class="admin-sect-title">🏪 Mon établissement</div>
+    <div class="af"><label class="al">Nom de l'établissement</label>
+      <input class="ai" value="\${name}" placeholder="Nom du restaurant" oninput="setRestaurantName(this.value);document.getElementById('logoText').textContent=this.value||'Mon Restaurant'">
+    </div>
+    <div class="af"><label class="al">Logo (URL image)</label>
+      <input class="ai" value="\${logo}" placeholder="https://... .png ou .svg" oninput="setRestaurantLogo(this.value.trim())">
+      <div style="font-size:11px;color:var(--text3);font-family:Jost,sans-serif;margin-top:4px">Laissez vide pour afficher le nom en texte. Logo centré dans le header, hauteur max 40px.</div>
+    </div>
+  </div>\`;
+}
+
 function ghSectionHtml(){
   const token=getToken();
   const masked=token?token.slice(0,7)+'••••••••••••••••••'+token.slice(-4):'';
-  return `<div class="admin-section">
+  return restaurantSettingHtml() + `<div class="admin-section">
     <div class="admin-sect-title">🔗 Synchronisation GitHub</div>
     ${token
       ?`<div style="display:flex;align-items:center;gap:8px;padding:10px 12px;background:#eef6ee;border-radius:8px;border:1px solid #b8e0b8;margin-bottom:10px">
@@ -1007,7 +1094,7 @@ renderAdminGlobal=function(){ return ghSectionHtml()+_origGlobal(); };
 // ═══════════════════════════════════════════
 // INIT
 // ═══════════════════════════════════════════
-loadFromGitHub().then(()=>renderAll());
+loadFromGitHub().then(()=>{ renderAll(); applyRestaurantBranding(); });
 </script>
 </body>
 </html>
