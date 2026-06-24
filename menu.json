@@ -430,8 +430,20 @@
           "type": "bevs",
           "items": [
             {
-              "name": "Muscadet Sèvre et Maine",
-              "price": "7€"
+              "name": {
+                "fr": "Sauvignon"
+              },
+              "price": "7€",
+              "sizes": [
+                {
+                  "cl": "25",
+                  "price": "5"
+                },
+                {
+                  "cl": "50",
+                  "price": "17"
+                }
+              ]
             },
             {
               "name": "Chablis 1er cru",
@@ -447,10 +459,6 @@
                 },
                 {
                   "cl": "",
-                  "price": ""
-                },
-                {
-                  "cl": "1",
                   "price": ""
                 }
               ]
