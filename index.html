@@ -13,7 +13,7 @@ body{background:var(--bg);font-family:'Jost',sans-serif;font-weight:400;font-siz
 /* ── LIGHTBOX ── */
 .lb{position:fixed;inset:0;background:rgba(0,0,0,0.88);z-index:1000;display:none;align-items:center;justify-content:center}
 .lb.open{display:flex}
-.lb-card{position:relative;width:min(420px,92vw);border-radius:16px;overflow:hidden;background:#10285E}
+.lb-card{position:relative;width:min(420px,92vw);border-radius:16px;overflow:hidden;background:#10285E;margin-top:44px}
 .lb-zone{position:absolute;top:0;bottom:0;width:45%;z-index:3;cursor:pointer}
 .lb-zone-left{left:0}
 .lb-zone-right{right:0}
@@ -28,8 +28,9 @@ body{background:var(--bg);font-family:'Jost',sans-serif;font-weight:400;font-siz
 .lb-dish-name{font-family:'Open Sans',sans-serif;font-size:16px;color:#fff;font-weight:600;line-height:1.2;text-align:center;margin-bottom:6px;text-transform:uppercase;letter-spacing:.06em}
 .lb-dish-desc{font-size:13px;color:rgba(255,255,255,0.65);font-family:'Open Sans',sans-serif;font-weight:400;line-height:1.55;text-align:center;margin-bottom:10px}
 .lb-footer-row{display:flex;align-items:center;justify-content:center}
-.lb-count{font-size:11px;color:#10285E;letter-spacing:.12em;font-family:'Open Sans',sans-serif;background:rgba(255,255,255,0.9);padding:2px 10px;border-radius:20px;border:none}
-.lb-close{position:absolute;top:10px;right:10px;background:rgba(0,0,0,0.35);border:none;color:#fff;font-size:16px;cursor:pointer;line-height:1;width:28px;height:28px;border-radius:50%;display:flex;align-items:center;justify-content:center;z-index:3;backdrop-filter:blur(4px)}
+.lb-count{font-size:11px;color:#fff;letter-spacing:.12em;font-family:'Open Sans',sans-serif;background:none;padding:2px 0}
+.lb-close{position:absolute;top:-40px;right:0;background:none;border:none;color:#fff;font-size:22px;cursor:pointer;line-height:1;width:32px;height:32px;border-radius:50%;display:flex;align-items:center;justify-content:center;z-index:3;opacity:.8;transition:opacity .15s}
+.lb-close:hover{opacity:1}
 
 /* ── LAYOUT ── */
 .page{background:var(--bg);min-height:100vh;padding-bottom:100px}
@@ -86,7 +87,7 @@ body{background:var(--bg);font-family:'Jost',sans-serif;font-weight:400;font-siz
 /* ── INTRO CARD ── */
 .intro-card{background:#fff;border-radius:var(--r);border:1px solid var(--border);padding:18px 20px}
 .intro-card-label{font-size:10px;font-weight:500;letter-spacing:.14em;text-transform:uppercase;color:var(--text3);font-family:'Jost',sans-serif;margin-bottom:8px}
-.intro-card-text{font-family:'Cormorant Garamond',serif;font-size:17px;font-style:italic;color:var(--text);line-height:1.6}
+.intro-card-text{font-family:'Open Sans',sans-serif;font-size:14px;color:var(--text);line-height:1.7}
 .social-icons{display:flex;gap:14px;align-items:center;margin-top:14px;padding-top:12px;border-top:1px solid rgba(0,0,0,0.06)}
 .social-icon{display:flex;align-items:center;justify-content:center;width:30px;height:30px;border-radius:50%;border:1px solid var(--border);color:var(--text3);text-decoration:none;transition:all .15s;font-size:13px}
 .social-icon:hover{border-color:var(--navy);color:var(--navy)}
@@ -116,10 +117,10 @@ body{background:var(--bg);font-family:'Jost',sans-serif;font-weight:400;font-siz
 .dish-row:last-child{border-bottom:none;padding-bottom:0}
 .dish-text{flex:1;min-width:0}
 .dish-name-row{display:flex;align-items:center;gap:6px;flex-wrap:wrap}
-.dish-name{font-family:'Cormorant Garamond',serif;font-size:18px;font-weight:600;color:var(--navy);line-height:1.2}
+.dish-name{font-family:'Open Sans',sans-serif;font-size:16px;font-weight:600;color:var(--navy);line-height:1.2}
 .dish-badges{display:flex;gap:4px;align-items:center}
 .badge-icon{width:18px;height:18px;object-fit:contain;display:inline-block}
-.dish-desc{font-size:14px;font-weight:300;color:var(--text2);line-height:1.55;margin-top:2px;display:-webkit-box;-webkit-line-clamp:3;-webkit-box-orient:vertical;overflow:hidden}
+.dish-desc{font-size:13px;font-weight:300;color:var(--text2);line-height:1.55;margin-top:2px;display:-webkit-box;-webkit-line-clamp:3;-webkit-box-orient:vertical;overflow:hidden}
 .dish-price{font-size:13px;font-weight:500;color:var(--gold);margin-top:6px}
 .dish-img{width:80px;height:80px;border-radius:8px;object-fit:cover;flex:none;background:#ece8e1;cursor:pointer;transition:opacity .15s}
 .dish-img:hover{opacity:.82}
@@ -246,7 +247,7 @@ body{background:var(--bg);font-family:'Jost',sans-serif;font-weight:400;font-siz
       <img id="lbImg" src="" alt=""/>
       <button class="lb-nav lb-next" onclick="lbStep(1)">&#8250;</button>
     </div>
-    <div class="lb-footer">
+    <div class="lb-footer" id="lbFooter">
       <div class="lb-cat-row"><div class="lb-cat-line"></div><div class="lb-cat-label" id="lbCat"></div><div class="lb-cat-line"></div></div>
       <div class="lb-dish-name" id="lbName"></div>
       <div class="lb-dish-desc" id="lbDesc"></div>
@@ -345,7 +346,7 @@ body{background:var(--bg);font-family:'Jost',sans-serif;font-weight:400;font-siz
 
   <div class="sticky-reserve">
     <div class="container">
-      <a class="reserve-btn" id="reserveMain" href="https://LIEN_A_DEFINIR">Réserver une table</a>
+      <a class="reserve-btn" id="reserveMain" href="https://LIEN_A_DEFINIR" style="text-transform:uppercase;letter-spacing:.1em;">Réserver une table</a>
     </div>
   </div>
 </div>
@@ -453,9 +454,10 @@ function closeConfirm(){ document.getElementById('confirmModal').classList.remov
 function collectLbImages(){
   lbImages=[];
   DATA.tabs.forEach(tab=>{
+    const cat=t(tab.label);
     tab.cards.forEach(card=>{
-      if(card.dishes) card.dishes.forEach(d=>{ if(d.img) lbImages.push({src:d.img,name:t(d.name),desc:t(d.desc)||''}); });
-      if(card.img && !card.dishes) lbImages.push({src:card.img,name:t(card.label),desc:''});
+      if(card.dishes) card.dishes.forEach(d=>{ if(d.img) lbImages.push({src:d.img,name:t(d.name),desc:t(d.desc)||'',cat}); });
+      if(card.img && !card.dishes) lbImages.push({src:card.img,name:t(card.label),desc:'',cat});
     });
   });
 }
@@ -471,6 +473,13 @@ function renderLbSlide(){
   const catEl=document.getElementById('lbCat'); if(catEl) catEl.textContent=item.cat||'';
 }
 document.getElementById('lb').addEventListener('click',e=>{ if(!e.target.closest('.lb-card')) closeLb(); });
+// Tap left/right on footer to navigate
+document.getElementById('lbFooter').addEventListener('click',e=>{
+  const rect=e.currentTarget.getBoundingClientRect();
+  const x=e.clientX-rect.left;
+  if(x < rect.width/2) lbStep(-1); else lbStep(1);
+  e.stopPropagation();
+});
 document.addEventListener('keydown',e=>{ const lb=document.getElementById('lb'); if(!lb.classList.contains('open'))return; if(e.key==='Escape')closeLb(); if(e.key==='ArrowLeft')lbStep(-1); if(e.key==='ArrowRight')lbStep(1); });
 // Swipe support
 (function(){
