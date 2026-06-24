@@ -160,7 +160,7 @@
     }
   ],
   "pinnedShowHome": true,
-  "pinnedShowFirst": true,
+  "pinnedShowFirst": false,
   "tabs": [
     {
       "id": "__home",
