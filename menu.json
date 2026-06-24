@@ -102,7 +102,7 @@
   "specials": [
     {
       "id": "jour",
-      "active": true,
+      "active": false,
       "label": {
         "fr": "Menu du jour",
         "en": "Today's menu"
@@ -137,7 +137,30 @@
     "showHome": true,
     "showFirst": true
   },
-  "pinnedDishes": [],
+  "pinnedDishes": [
+    {
+      "tabId": "huitres",
+      "cardIdx": 0,
+      "dishIdx": 0
+    },
+    {
+      "tabId": "huitres",
+      "cardIdx": 0,
+      "dishIdx": 1
+    },
+    {
+      "tabId": "huitres",
+      "cardIdx": 0,
+      "dishIdx": 2
+    },
+    {
+      "tabId": "huitres",
+      "cardIdx": 0,
+      "dishIdx": 3
+    }
+  ],
+  "pinnedShowHome": true,
+  "pinnedShowFirst": true,
   "tabs": [
     {
       "id": "__home",
