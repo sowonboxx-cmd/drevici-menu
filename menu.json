@@ -278,6 +278,20 @@
               "img": "https://drevicioyster.com/wp-content/uploads/2026/06/bulots-hero2.webp",
               "spicy": false,
               "vegan": true
+            },
+            {
+              "name": {
+                "fr": "plateau de l'arnaque",
+                "en": "New dish"
+              },
+              "desc": {
+                "fr": "",
+                "en": ""
+              },
+              "price": "76€",
+              "img": "https://drevicioyster.com/wp-content/uploads/2026/06/IMG_3058-1-scaled.webp",
+              "spicy": false,
+              "vegan": false
             }
           ]
         }
