@@ -21,7 +21,7 @@
     "facebook": ""
   },
   "homeTab": {
-    "active": true,
+    "active": false,
     "photo": "https://drevicioyster.com/wp-content/uploads/2026/06/storytest3.webp",
     "video": "https://drevicioyster.com/wp-content/uploads/2026/06/renton_work_1780704512_3913155264639435874_78349449169.mp4"
   },
@@ -102,7 +102,7 @@
   "specials": [
     {
       "id": "jour",
-      "active": false,
+      "active": true,
       "label": {
         "fr": "Menu du jour",
         "en": "Today's menu"
@@ -137,44 +137,10 @@
     "showHome": true,
     "showFirst": true
   },
-  "pinnedDishes": [
-    {
-      "tabId": "huitres",
-      "cardIdx": 0,
-      "dishIdx": 0
-    },
-    {
-      "tabId": "huitres",
-      "cardIdx": 0,
-      "dishIdx": 1
-    },
-    {
-      "tabId": "huitres",
-      "cardIdx": 0,
-      "dishIdx": 2
-    },
-    {
-      "tabId": "huitres",
-      "cardIdx": 0,
-      "dishIdx": 3
-    }
-  ],
+  "pinnedDishes": [],
   "pinnedShowHome": true,
-  "pinnedShowFirst": false,
+  "pinnedShowFirst": true,
   "tabs": [
-    {
-      "id": "__home",
-      "label": {
-        "fr": "Accueil",
-        "en": "Home",
-        "es": "Inicio",
-        "it": "Casa",
-        "kr": "홈",
-        "jp": "ホーム"
-      },
-      "cards": [],
-      "isHome": true
-    },
     {
       "id": "huitres",
       "isHome": true,
