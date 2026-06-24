@@ -149,9 +149,9 @@ body{background:var(--bg);font-family:'Jost',sans-serif;font-weight:400;font-siz
 
 /* ── SPECIALS BANNER (menu du jour/midi/soir) ── */
 .special-banner{background:var(--navy);border-radius:var(--r);padding:16px 18px;margin-bottom:4px}
-.special-banner-label{font-size:10px;letter-spacing:.14em;text-transform:uppercase;color:rgba(255,255,255,0.45);font-family:'Jost',sans-serif;margin-bottom:4px}
-.special-banner-title{font-family:'Cormorant Garamond',serif;font-size:20px;font-weight:700;color:#fff;margin-bottom:6px}
-.special-banner-text{font-size:12px;font-weight:300;color:rgba(255,255,255,0.65);line-height:1.6}
+.special-banner-label{font-size:10px;letter-spacing:.14em;text-transform:uppercase;color:rgba(255,255,255,0.45);font-family:'Jost',sans-serif;margin-bottom:4px;display:flex;align-items:center;justify-content:space-between}
+.special-banner-title{font-family:'Open Sans',sans-serif;font-size:16px;font-weight:600;color:#fff;margin-bottom:6px}
+.special-banner-text{font-size:13px;font-weight:400;font-family:'Open Sans',sans-serif;color:rgba(255,255,255,0.7);line-height:1.6}
 .special-banner-price{font-size:15px;font-weight:500;color:var(--gold);margin-top:8px}
 
 /* ── HOME TAB ── */
@@ -353,7 +353,7 @@ body{background:var(--bg);font-family:'Jost',sans-serif;font-weight:400;font-siz
     <div class="view-bar">
       <div class="view-bar-inner">
         <span class="view-tab-label" id="viewLabel"></span>
-        <div class="view-btns" id="viewBtnsWrap">
+        <div class="view-btns" id="viewBtnsWrap" style="min-width:72px;justify-content:flex-end;">
           <button class="view-btn active" id="btnList" onclick="setView('list')" aria-label="Liste">
             <svg viewBox="0 0 16 16"><line x1="2" y1="4" x2="14" y2="4"/><line x1="2" y1="8" x2="14" y2="8"/><line x1="2" y1="12" x2="14" y2="12"/></svg>
           </button>
@@ -393,9 +393,7 @@ let DATA = {
     { day:'Dimanche', services:[] }
   ],
   specials: [
-    { id:'jour', active:false, label:{fr:'Menu du jour',en:'Today\'s menu'}, title:{fr:'Menu du Jour',en:'Today\'s menu'}, desc:{fr:'',en:''}, price:''},
-    { id:'midi', active:false, label:{fr:'Menu midi',en:'Lunch menu'}, title:{fr:'Menu Midi',en:'Lunch menu'}, desc:{fr:'',en:''}, price:''},
-    { id:'soir', active:false, label:{fr:'Menu soir',en:'Evening menu'}, title:{fr:'Menu Soir',en:'Evening menu'}, desc:{fr:'',en:''}, price:''}
+    { id:'jour', active:false, label:{fr:'Menu du jour',en:"Today's menu"}, title:{fr:'Menu du Jour',en:"Today's menu"}, desc:{fr:'',en:''}, price:''}
   ],
   pinnedDishes: [], // array of dish refs {tabId, cardIdx, dishIdx}
   tabs: [
@@ -551,7 +549,7 @@ function renderViewBar(){
   document.getElementById('btnGrid').classList.toggle('active',view==='grid');
   // Hide list/grid on home tab
   const isHome=currentTabId==='__home';
-  document.getElementById('viewBtnsWrap').style.display=isHome?'none':'flex';
+  document.getElementById('viewBtnsWrap').style.visibility=isHome?'hidden':'visible';
 }
 
 function setView(v){ view=v; renderAll(); }
@@ -951,6 +949,8 @@ function renderAdminSection(tid){
   const body=document.getElementById('adminBody');
   if(tid==='__global'){
     body.innerHTML=renderAdminGlobal();
+  } else if(tid==='__home'){
+    body.innerHTML=renderAdminHomeTab();
   } else if(tid==='__reorder'){
     body.innerHTML=renderTabReorder();
   } else {
@@ -1025,16 +1025,12 @@ function updateDualPrice(ti,ci,di){
   renderAll();
 }
 
-function renderAdminGlobal(){
+function renderAdminHomeTab(){
   let h='';
-  // Hero
-  h+=`<div class="admin-section"><div class="admin-sect-title">En-tête</div>
-    `+biInput('Sous-titre', DATA.hero.fr||'', DATA.hero[adminLang]||'', `DATA.hero[adminLang]=this.value;renderAll()`)+`
-  </div>`;
-
-  // Home tab
+  const soc=DATA.social||{};
+  // Onglet Accueil
   h+=`<div class="admin-section"><div class="admin-sect-title">🏠 Onglet Accueil</div>
-    <label class="admin-toggle"><input type="checkbox" ${(DATA.homeTab&&DATA.homeTab.active)?'checked':''} onchange="if(!DATA.homeTab)DATA.homeTab={};DATA.homeTab.active=this.checked;toggleHomeTab();renderAll();renderAdminSection('__global')"><label>Activer l'onglet Accueil (en premier)</label></label>
+    <label class="admin-toggle"><input type="checkbox" ${(DATA.homeTab&&DATA.homeTab.active)?'checked':''} onchange="if(!DATA.homeTab)DATA.homeTab={};DATA.homeTab.active=this.checked;toggleHomeTab();renderAll();renderAdminTabDd();renderAdminSection('__home')"><label>Activer l'onglet Accueil (en premier)</label></label>
     <div class="af"><label class="al">Photo principale (4:3)</label>
       <input class="ai" value="${(DATA.homeTab&&DATA.homeTab.photo)||''}" placeholder="https://... .jpg ou .webp"
         oninput="if(!DATA.homeTab)DATA.homeTab={};DATA.homeTab.photo=this.value.trim();DATA.homeTab.video='';renderAll()">
@@ -1046,15 +1042,9 @@ function renderAdminGlobal(){
       <div style="font-size:11px;color:var(--text3);font-family:Jost,sans-serif;margin-top:4px">Si renseignée, la vidéo remplace la photo.</div>
     </div>
   </div>`;
-
-  // Schedule
-  h+=renderScheduleAdmin();
-
-  // Intro
-  const soc=DATA.social||{};
-  h+=`<div class="admin-section"><div class="admin-sect-title">Présentation (page d'accueil)</div>
-    <label class="admin-toggle"><input type="checkbox" ${DATA.intro.active?'checked':''} onchange="DATA.intro.active=this.checked;renderAll();renderAdminSection('__global')"><label>Activer le bloc présentation</label></label>
-    ${!(DATA.homeTab&&DATA.homeTab.active)?`<div style="font-size:11px;color:var(--text3);font-family:Jost,sans-serif;padding:6px 10px;background:#fffbf0;border-radius:6px;border:1px solid #f0e6c0">⚠ La description s'affiche uniquement quand l'onglet Accueil est activé.</div>`:''}
+  // Présentation
+  h+=`<div class="admin-section"><div class="admin-sect-title">📝 Présentation du restaurant</div>
+    <label class="admin-toggle"><input type="checkbox" ${DATA.intro.active?'checked':''} onchange="DATA.intro.active=this.checked;renderAll();renderAdminSection('__home')"><label>Afficher la présentation</label></label>
     `+biInput('Texte de présentation', DATA.intro.text.fr||'', DATA.intro.text[adminLang]||'', `DATA.intro.text[adminLang]=this.value;renderAll()`)+`
     <div class="admin-sect-title" style="margin-top:14px;padding-top:12px">Réseaux sociaux</div>
     <div class="af"><label class="al">Instagram</label>
@@ -1072,17 +1062,30 @@ function renderAdminGlobal(){
         <span style="font-size:13px;color:var(--text3)">@</span>
         <input class="ai" value="${soc.facebook||''}" placeholder="drevicioyster" oninput="if(!DATA.social)DATA.social={};DATA.social.facebook=this.value;renderAll()">
       </div></div>
-    <div style="font-size:11px;color:var(--text3);font-family:'Jost',sans-serif;margin-top:4px;line-height:1.5">Les icônes s'affichent discrètement sous la présentation si le champ est rempli.</div>
+    <div style="font-size:11px;color:var(--text3);font-family:Jost,sans-serif;margin-top:4px;line-height:1.5">Les icônes s'affichent sous la présentation si le champ est rempli.</div>
+  </div>`;
+  return h;
+}
+
+function renderAdminGlobal(){
+  let h='';
+  // Hero
+  h+=`<div class="admin-section"><div class="admin-sect-title">En-tête</div>
+    `+biInput('Sous-titre', DATA.hero.fr||'', DATA.hero[adminLang]||'', `DATA.hero[adminLang]=this.value;renderAll()`)+`
   </div>`;
 
+  // Schedule (stays in global)
+  h+=renderScheduleAdmin();
+
   // Specials
-  h+=`<div class="admin-section"><div class="admin-sect-title">Menus spéciaux</div>`;
+  h+=`<div class="admin-section"><div class="admin-sect-title">📋 Menu du jour</div>`;
   DATA.specials.forEach((sp,si)=>{
     h+=`<div class="admin-card">
-      <div class="admin-card-hdr"><span class="admin-card-num">${t(sp.label)}</span></div>
-      <label class="admin-toggle"><input type="checkbox" ${sp.active?'checked':''} onchange="DATA.specials[${si}].active=this.checked;renderAll()"><label>Activer</label></label>
-      `+biInput('Titre', sp.title.fr||'', sp.title[adminLang]||'', `DATA.specials[${si}].title[adminLang]=this.value;renderAll()`)+`
-      `+biInput('Description', sp.desc.fr||'', sp.desc[adminLang]||'', `DATA.specials[${si}].desc[adminLang]=this.value;renderAll()`)+`
+      <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:8px">
+        <label class="admin-toggle" style="margin-bottom:0"><input type="checkbox" ${sp.active?'checked':''} onchange="DATA.specials[${si}].active=this.checked;renderAll()"><label>Visible sur la carte</label></label>
+      </div>
+      `+biInput('Titre du menu', sp.title.fr||'', sp.title[adminLang]||'', `DATA.specials[${si}].title[adminLang]=this.value;renderAll()`)+`
+      `+biInput('Description / plats', sp.desc.fr||'', sp.desc[adminLang]||'', `DATA.specials[${si}].desc[adminLang]=this.value;renderAll()`)+`
       <div class="af"><label class="al">Prix</label><input class="ai ai-sm" value="${sp.price||''}" oninput="DATA.specials[${si}].price=this.value;renderAll()"></div>
     </div>`;
   });
@@ -1299,7 +1302,7 @@ async function loadFromGitHub(){
     }
     if(json.hero && typeof json.hero==='object') DATA.hero=json.hero;
     if(json.intro && typeof json.intro==='object') DATA.intro=json.intro;
-    if(Array.isArray(json.specials) && json.specials.length>0) DATA.specials=json.specials;
+    if(Array.isArray(json.specials) && json.specials.length>0) DATA.specials=json.specials.filter(s=>s.id!=='midi'&&s.id!=='soir');
     if(Array.isArray(json.pinnedDishes)) DATA.pinnedDishes=json.pinnedDishes;
     if(json.social && typeof json.social==='object') DATA.social=json.social;
     if(json.homeTab && typeof json.homeTab==='object') DATA.homeTab=json.homeTab;
