@@ -17,7 +17,7 @@
   "specials": [
     {
       "id": "jour",
-      "active": false,
+      "active": true,
       "label": {
         "fr": "Menu du jour",
         "en": "Today's menu"
@@ -27,10 +27,10 @@
         "en": "Today's menu"
       },
       "desc": {
-        "fr": "",
+        "fr": "Ndolé royal (cervette et viande)",
         "en": ""
       },
-      "price": ""
+      "price": "45€"
     },
     {
       "id": "midi",
