@@ -125,7 +125,8 @@
         "kr": "홈",
         "jp": "ホーム"
       },
-      "cards": []
+      "cards": [],
+      "isHome": true
     },
     {
       "id": "huitres",
@@ -508,6 +509,101 @@
       ]
     },
     {
+      "id": "tab_1782264697487",
+      "label": {
+        "fr": "Plateaux",
+        "en": "New tab"
+      },
+      "cards": [
+        {
+          "label": {
+            "fr": "À partager ",
+            "en": "À la carte"
+          },
+          "dishes": [
+            {
+              "name": {
+                "fr": "Capitaine",
+                "en": "New dish"
+              },
+              "desc": {
+                "fr": "12 huîtres N°3, 200gr de bulots, 6 gambas",
+                "en": ""
+              },
+              "price": "45€",
+              "img": "https://drevicioyster.com/wp-content/uploads/2026/05/Huitres-04d.webp",
+              "spicy": false,
+              "vegan": false
+            },
+            {
+              "name": {
+                "fr": "Duo champagne",
+                "en": "New dish"
+              },
+              "desc": {
+                "fr": "12 huîtres N°3, 2 coupes de champagne",
+                "en": ""
+              },
+              "price": "48€",
+              "img": "https://drevicioyster.com/wp-content/uploads/2026/05/Huitres-04d.webp",
+              "spicy": false,
+              "vegan": false
+            },
+            {
+              "name": {
+                "fr": "Drevici ",
+                "en": "New dish"
+              },
+              "desc": {
+                "fr": "12 huîtres N°3, charcuterie bretonne, gambas, bulots, tartinade",
+                "en": ""
+              },
+              "price": "65€",
+              "img": "",
+              "spicy": false,
+              "vegan": true
+            }
+          ]
+        },
+        {
+          "label": {
+            "fr": "Plaisir solitaire ",
+            "en": "New section"
+          },
+          "dishes": [
+            {
+              "name": {
+                "fr": "Solo champagne",
+                "en": "New dish"
+              },
+              "desc": {
+                "fr": "6 huîtres N°3, 1 coupe de champagne",
+                "en": ""
+              },
+              "price": "24€",
+              "img": "",
+              "spicy": false,
+              "vegan": false
+            },
+            {
+              "name": {
+                "fr": "Maître ",
+                "en": "New dish"
+              },
+              "desc": {
+                "fr": "6 huîtres N°3, 4 gambas",
+                "en": ""
+              },
+              "price": "22€",
+              "img": "",
+              "spicy": false,
+              "vegan": false
+            }
+          ]
+        }
+      ]
+    },
+    {
       "id": "boissons",
       "label": {
         "fr": "Boissons",
@@ -698,101 +794,6 @@
               "desc": {
                 "fr": "4 cl"
               }
-            }
-          ]
-        }
-      ]
-    },
-    {
-      "id": "tab_1782264697487",
-      "label": {
-        "fr": "Plateaux",
-        "en": "New tab"
-      },
-      "cards": [
-        {
-          "label": {
-            "fr": "À partager ",
-            "en": "À la carte"
-          },
-          "dishes": [
-            {
-              "name": {
-                "fr": "Capitaine",
-                "en": "New dish"
-              },
-              "desc": {
-                "fr": "12 huîtres N°3, 200gr de bulots, 6 gambas",
-                "en": ""
-              },
-              "price": "45€",
-              "img": "https://drevicioyster.com/wp-content/uploads/2026/05/Huitres-04d.webp",
-              "spicy": false,
-              "vegan": false
-            },
-            {
-              "name": {
-                "fr": "Duo champagne",
-                "en": "New dish"
-              },
-              "desc": {
-                "fr": "12 huîtres N°3, 2 coupes de champagne",
-                "en": ""
-              },
-              "price": "48€",
-              "img": "https://drevicioyster.com/wp-content/uploads/2026/05/Huitres-04d.webp",
-              "spicy": false,
-              "vegan": false
-            },
-            {
-              "name": {
-                "fr": "Drevici ",
-                "en": "New dish"
-              },
-              "desc": {
-                "fr": "12 huîtres N°3, charcuterie bretonne, gambas, bulots, tartinade",
-                "en": ""
-              },
-              "price": "65€",
-              "img": "",
-              "spicy": false,
-              "vegan": true
-            }
-          ]
-        },
-        {
-          "label": {
-            "fr": "Plaisir solitaire ",
-            "en": "New section"
-          },
-          "dishes": [
-            {
-              "name": {
-                "fr": "Solo champagne",
-                "en": "New dish"
-              },
-              "desc": {
-                "fr": "6 huîtres N°3, 1 coupe de champagne",
-                "en": ""
-              },
-              "price": "24€",
-              "img": "",
-              "spicy": false,
-              "vegan": false
-            },
-            {
-              "name": {
-                "fr": "Maître ",
-                "en": "New dish"
-              },
-              "desc": {
-                "fr": "6 huîtres N°3, 4 gambas",
-                "en": ""
-              },
-              "price": "22€",
-              "img": "",
-              "spicy": false,
-              "vegan": false
             }
           ]
         }
