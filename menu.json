@@ -114,21 +114,22 @@
         "fr": "Huîtres gratinées • Duo Champagne • Rillettes à la truite de Bretagne",
         "en": ""
       },
-      "price": ""
+      "price": "",
+      "showHome": false
     }
   ],
   "infoBanner": {
-    "active": false,
+    "active": true,
     "label": {
-      "fr": "Informations",
+      "fr": "Nos incontournables",
       "en": "Information"
     },
     "title": {
-      "fr": "",
+      "fr": "Les plats à ne pas manquer ",
       "en": ""
     },
     "desc": {
-      "fr": "",
+      "fr": "Huîtres natures N°3 • Huîtres gratinées • Charcuterie bretonne",
       "en": ""
     },
     "showHome": true,
