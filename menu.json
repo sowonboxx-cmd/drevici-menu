@@ -107,14 +107,14 @@
         "en": "Today's menu"
       },
       "title": {
-        "fr": "Menu du Jour",
+        "fr": "Les plats incontournables",
         "en": "Today's menu"
       },
       "desc": {
-        "fr": "Ndolé royal (cervette et viande)",
+        "fr": "Huîtres gratinées • Menu Duo Champagne • Rillettes à la truite",
         "en": ""
       },
-      "price": "45€"
+      "price": ""
     },
     {
       "id": "midi",
@@ -692,10 +692,6 @@
                 {
                   "cl": "50",
                   "price": "30"
-                },
-                {
-                  "cl": "100",
-                  "price": "60"
                 }
               ]
             },
