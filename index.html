@@ -167,9 +167,9 @@ body{background:var(--bg);font-family:'Jost',sans-serif;font-weight:400;font-siz
 .resto-dot.closed{background:#ef4444}
 .resto-dot.soon{background:#f97316;animation:pulse 2s ease-in-out infinite}
 .resto-badge{display:inline-flex;align-items:center;gap:7px;padding:5px 12px;border-radius:999px;font-size:13px;font-weight:500;border:1px solid var(--border);background:var(--bg);color:var(--navy);cursor:pointer;position:relative;user-select:none}
-.resto-popup{visibility:hidden;opacity:0;pointer-events:none;position:absolute;bottom:calc(100% + 10px);left:50%;transform:translateX(-50%) translateY(4px);transition:opacity .18s ease,transform .18s ease;background:rgba(15,25,50,.96);border:.5px solid rgba(255,255,255,.2);border-radius:12px;padding:14px 18px;min-width:210px;z-index:1000}
-.resto-popup.visible{visibility:visible;opacity:1;pointer-events:auto;transform:translateX(-50%) translateY(0)}
-.resto-popup-arrow{position:absolute;bottom:-5px;left:50%;width:10px;height:10px;background:rgba(15,25,50,.96);border-right:.5px solid rgba(255,255,255,.2);border-bottom:.5px solid rgba(255,255,255,.2);transform:translateX(-50%) rotate(45deg)}
+.resto-popup{visibility:hidden;opacity:0;pointer-events:none;position:fixed;bottom:auto;left:auto;transform:none;transition:opacity .18s ease,transform .18s ease;background:rgba(15,25,50,.96);border:.5px solid rgba(255,255,255,.2);border-radius:12px;padding:14px 18px;min-width:210px;max-width:260px;z-index:9999;box-shadow:0 8px 32px rgba(0,0,0,0.3)}
+.resto-popup.visible{visibility:visible;opacity:1;pointer-events:auto}
+.resto-popup-arrow{display:none}
 .resto-popup-title{font-size:11px;font-weight:600;letter-spacing:.08em;text-transform:uppercase;margin-bottom:10px;color:#fff}
 .resto-popup-row{display:flex;justify-content:space-between;padding:5px 0;font-size:13px;color:rgba(255,255,255,.75);border-bottom:.5px solid rgba(255,255,255,.07)}
 .resto-popup-row:last-child{border-bottom:none}
@@ -353,7 +353,7 @@ body{background:var(--bg);font-family:'Jost',sans-serif;font-weight:400;font-siz
     <div class="view-bar">
       <div class="view-bar-inner">
         <span class="view-tab-label" id="viewLabel"></span>
-        <div class="view-btns">
+        <div class="view-btns" id="viewBtnsWrap">
           <button class="view-btn active" id="btnList" onclick="setView('list')" aria-label="Liste">
             <svg viewBox="0 0 16 16"><line x1="2" y1="4" x2="14" y2="4"/><line x1="2" y1="8" x2="14" y2="8"/><line x1="2" y1="12" x2="14" y2="12"/></svg>
           </button>
@@ -382,15 +382,15 @@ let DATA = {
   hero: { fr:'Fruits de mer · Bretagne · Paris', en:'Seafood · Brittany · Paris', es:'Mariscos · Bretaña · París', it:'Frutti di mare · Bretagna · Parigi', kr:'해산물 · 브르타뉴 · 파리', jp:'シーフード · ブルターニュ · パリ' },
   intro: { active:false, text:{fr:'Bienvenue chez Drevici Oyster, un bar à huîtres breton au cœur de Paris.',en:'Welcome to Drevici Oyster, a Breton oyster bar in the heart of Paris.'} },
   social: { instagram:'', tiktok:'', facebook:'' },
-  homeTab: { active:false, photo:'' },
+  homeTab: { active:false, photo:'', video:'' },
   schedule: [
-    { day:'Lundi',    open:null, close:null },
-    { day:'Mardi',    open:17,   close:26 },
-    { day:'Mercredi', open:17,   close:26 },
-    { day:'Jeudi',    open:17,   close:26 },
-    { day:'Vendredi', open:17,   close:26 },
-    { day:'Samedi',   open:17,   close:26 },
-    { day:'Dimanche', open:null, close:null }
+    { day:'Lundi',    services:[] },
+    { day:'Mardi',    services:[{label:'Soir',open:17,close:26}] },
+    { day:'Mercredi', services:[{label:'Soir',open:17,close:26}] },
+    { day:'Jeudi',    services:[{label:'Soir',open:17,close:26}] },
+    { day:'Vendredi', services:[{label:'Soir',open:17,close:26}] },
+    { day:'Samedi',   services:[{label:'Soir',open:17,close:26}] },
+    { day:'Dimanche', services:[] }
   ],
   specials: [
     { id:'jour', active:false, label:{fr:'Menu du jour',en:'Today\'s menu'}, title:{fr:'Menu du Jour',en:'Today\'s menu'}, desc:{fr:'',en:''}, price:''},
@@ -549,6 +549,9 @@ function renderViewBar(){
   document.getElementById('viewLabel').textContent=tab?t(tab.label):'';
   document.getElementById('btnList').classList.toggle('active',view==='list');
   document.getElementById('btnGrid').classList.toggle('active',view==='grid');
+  // Hide list/grid on home tab
+  const isHome=currentTabId==='__home';
+  document.getElementById('viewBtnsWrap').style.display=isHome?'none':'flex';
 }
 
 function setView(v){ view=v; renderAll(); }
@@ -586,7 +589,16 @@ function renderTabContent(tab,lbOffset){
 
   // ACTUAL HOME TAB
   if(tab.id==='__home'){
-    if(DATA.homeTab&&DATA.homeTab.photo){
+    if(DATA.homeTab&&DATA.homeTab.video){
+      const videoUrl=DATA.homeTab.video;
+      let embedUrl='';
+      const ytMatch=videoUrl.match(/(?:youtube\.com\/watch\?v=|youtu\.be\/)([\w-]+)/);
+      const vimeoMatch=videoUrl.match(/vimeo\.com\/([\d]+)/);
+      if(ytMatch) embedUrl=`https://www.youtube.com/embed/${ytMatch[1]}?autoplay=0&rel=0`;
+      else if(vimeoMatch) embedUrl=`https://player.vimeo.com/video/${vimeoMatch[1]}`;
+      else embedUrl=videoUrl;
+      if(embedUrl) html+=`<div class="home-photo-wrap" style="aspect-ratio:4/3;background:#000"><iframe src="${embedUrl}" style="width:100%;height:100%;border:none" allowfullscreen loading="lazy"></iframe></div>`;
+    } else if(DATA.homeTab&&DATA.homeTab.photo){
       html+=`<div class="home-photo-wrap"><img class="home-photo" src="${DATA.homeTab.photo}" alt="Photo restaurant" loading="lazy"></div>`;
     }
     if(DATA.intro.active){
@@ -610,8 +622,8 @@ function renderTabContent(tab,lbOffset){
 
   // OLD HOME: specials + intro + featured
   if(tab.isHome){
-    // intro FIRST
-    if(DATA.intro.active){
+    // intro only if no dedicated home tab
+    if(DATA.intro.active && !DATA.tabs.some(tb=>tb.id==='__home')){
       const soc=DATA.social||{};
       const ig=soc.instagram?`<a class="social-icon" href="https://instagram.com/${soc.instagram.replace('@','')}" target="_blank" title="Instagram"><svg viewBox="0 0 24 24"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/></svg></a>`:'';
       const tk=soc.tiktok?`<a class="social-icon" href="https://tiktok.com/@${soc.tiktok.replace('@','')}" target="_blank" title="TikTok"><svg viewBox="0 0 24 24"><path d="M19.59 6.69a4.83 4.83 0 01-3.77-4.25V2h-3.45v13.67a2.89 2.89 0 01-2.88 2.5 2.89 2.89 0 01-2.89-2.89 2.89 2.89 0 012.89-2.89c.28 0 .54.04.79.1V9.01a6.33 6.33 0 00-.79-.05 6.34 6.34 0 00-6.34 6.34 6.34 6.34 0 006.34 6.34 6.34 6.34 0 006.33-6.34V8.69a8.18 8.18 0 004.78 1.52V6.76a4.85 4.85 0 01-1.01-.07z"/></svg></a>`:'';
@@ -700,27 +712,31 @@ function renderTabContent(tab,lbOffset){
 function renderScheduleWidget(){
   const sch = DATA.schedule||[];
   const now = new Date();
-  let today = now.getDay(); // 0=Sun
+  let today = now.getDay();
   let hour = now.getHours() + now.getMinutes()/60;
   if(hour < 6){ today=(today+6)%7; hour+=24; }
-  // Map JS getDay() to our array (0=Lundi index)
   const dayIdx = today===0 ? 6 : today-1;
-  const s = sch[dayIdx]||{};
-  let state, label;
-  if(!s.open){ state='closed'; label="Fermé aujourd'hui"; }
-  else if(hour>=s.open && hour<s.close){ state='open'; label="Ouvert jusqu'à "+(s.close%24)+'h'; }
-  else if(hour<s.open){ state='soon'; label='Ouvre à '+s.open+'h'; }
-  else { state='closed'; label='Fermé'; }
+  const dayData = sch[dayIdx]||{};
+  const svcs = dayData.services||[];
+  // Compat: old format {open,close}
+  const allSvcs = svcs.length===0&&dayData.open!=null ? [{label:'',open:dayData.open,close:dayData.close}] : svcs;
+  let state='closed', label="Fermé aujourd'hui";
+  for(const s of allSvcs){
+    if(s.open==null) continue;
+    if(hour>=s.open&&hour<s.close){ state='open'; label="Ouvert jusqu'à "+(s.close%24)+'h'+(s.label?' · '+s.label:''); break; }
+    if(hour<s.open){ state='soon'; label='Ouvre à '+s.open+'h'+(s.label?' · '+s.label:''); }
+  }
 
   const rows = sch.map((d,i)=>{
     const isToday=(i===dayIdx);
-    const h=d.open?(d.open+'h – '+(d.close%24)+'h'):'Fermé';
+    const svs=(d.services||[]).length>0?d.services:(d.open!=null?[{label:'',open:d.open,close:d.close}]:[]);
+    const h=svs.length===0?'Fermé':svs.map(s=>s.open+'h – '+(s.close%24)+'h'+(s.label?' ('+s.label+')':'')).join(', ');
     return `<div class="resto-popup-row${isToday?' today':''}"><span class="rday">${d.day}</span><span>${h}</span></div>`;
   }).join('');
 
   return `<div class="home-schedule-row">
     <span class="home-schedule-label">Horaires</span>
-    <div class="resto-badge" id="schedBadge" onclick="document.getElementById('schedPopup').classList.toggle('visible');event.stopPropagation()">
+    <div class="resto-badge" id="schedBadge" onclick="toggleSchedPopup(event)">
       <span class="resto-dot ${state}"></span>
       <span>${label}</span>
       <div class="resto-popup" id="schedPopup">
@@ -732,6 +748,23 @@ function renderScheduleWidget(){
   </div>`;
 }
 
+function toggleSchedPopup(e){
+  e.stopPropagation();
+  const p=document.getElementById('schedPopup');
+  const badge=document.getElementById('schedBadge');
+  if(p.classList.contains('visible')){ p.classList.remove('visible'); return; }
+  const rect=badge.getBoundingClientRect();
+  const pw=268;
+  const vw=window.innerWidth;
+  let left=rect.right-pw;
+  if(left<12) left=12;
+  if(left+pw>vw-12) left=vw-pw-12;
+  const top=rect.top-10;
+  p.style.left=left+'px';
+  p.style.top=top+'px';
+  p.style.transform='translateY(-100%)';
+  p.classList.add('visible');
+}
 // Close schedule popup on outside click
 document.addEventListener('click', function(){
   const p=document.getElementById('schedPopup');
@@ -746,19 +779,24 @@ function renderTabReorder(){
   h+=`<div style="font-size:11px;color:var(--text3);font-family:Jost,sans-serif;margin-bottom:10px;line-height:1.5">Glissez les onglets pour changer leur ordre d'affichage.</div>`;
   h+=`<div id="tabReorderList">`;
   DATA.tabs.forEach((tab,ti)=>{
-    h+=`<div class="admin-card" style="display:flex;align-items:center;gap:10px;background:#fff;margin-bottom:6px;cursor:grab"
+    h+=`<div class="admin-card" style="display:flex;align-items:center;gap:10px;background:#fff;margin-bottom:6px;cursor:grab;touch-action:none"
+          data-ti="${ti}"
           draggable="true"
           ondragstart="onDragTab(event,${ti})"
           ondragend="onDragEnd(event)"
           ondragover="onDragOver(event,0,0,${ti})"
           ondragleave="onDragLeave(event)"
           ondrop="onDropTab(event,${ti})">
-      <span class="drag-handle" style="font-size:18px">⠿</span>
+      <span class="drag-handle" style="font-size:18px;padding:8px 6px">⠿</span>
       <span style="font-family:Jost,sans-serif;font-size:13px;font-weight:500;color:var(--navy);flex:1">${t(tab.label)}</span>
-      <span style="font-size:10px;color:var(--text3)">${ti+1}</span>
+      <span style="font-size:10px;color:var(--text3)">Tab ${ti+1}</span>
     </div>`;
   });
-  h+=`</div></div>`;
+  h+=`</div>
+  <div style="display:flex;gap:8px;margin-top:12px">
+    <button class="asave" style="flex:1;background:rgba(16,40,94,0.12);color:var(--navy)" onclick="renderAll();showToast('Aperçu mis à jour')">👁 Aperçu</button>
+    <button class="asave" style="flex:1" onclick="renderAll();publishToGitHub()">🚀 Publier</button>
+  </div></div>`;
   return h;
 }
 
@@ -772,11 +810,68 @@ function onDropTab(e,ti){
   tabs.splice(ti,0,moved);
   dragTabSrc=null;
   currentTabId=DATA.tabs[0]?.id;
-  renderAll();
-  renderAdminTabDd();
-  renderAdminSection('__reorder');
+  renderAll(); renderAdminTabDd(); renderAdminSection('__reorder');
   showToast('Ordre mis à jour');
 }
+
+// Touch drag for mobile reorder
+(function(){
+  let touchSrc=null, touchEl=null, ghost=null, listEl=null;
+  document.addEventListener('touchstart',e=>{
+    const handle=e.target.closest('.drag-handle');
+    if(!handle) return;
+    const card=handle.closest('[data-ti]');
+    if(!card) return;
+    touchSrc=parseInt(card.dataset.ti);
+    touchEl=card;
+    listEl=card.parentElement;
+    ghost=card.cloneNode(true);
+    ghost.style.cssText='position:fixed;opacity:.6;pointer-events:none;z-index:9999;width:'+card.offsetWidth+'px;background:#e8edf5;border-radius:8px;';
+    document.body.appendChild(ghost);
+    card.style.opacity='.3';
+  },{passive:true});
+  document.addEventListener('touchmove',e=>{
+    if(touchSrc===null) return;
+    e.preventDefault();
+    const t=e.touches[0];
+    ghost.style.left=(t.clientX-80)+'px';
+    ghost.style.top=(t.clientY-20)+'px';
+    // find target
+    const els=Array.from(listEl.querySelectorAll('[data-ti]'));
+    els.forEach(el=>{
+      const r=el.getBoundingClientRect();
+      if(t.clientY>r.top&&t.clientY<r.bottom&&el!==touchEl){
+        el.style.borderTop='3px solid #10285E';
+      } else {
+        el.style.borderTop='';
+      }
+    });
+  },{passive:false});
+  document.addEventListener('touchend',e=>{
+    if(touchSrc===null) return;
+    const t=e.changedTouches[0];
+    const els=Array.from(listEl.querySelectorAll('[data-ti]'));
+    let targetTi=null;
+    els.forEach(el=>{
+      el.style.borderTop='';
+      const r=el.getBoundingClientRect();
+      if(t.clientY>r.top&&t.clientY<r.bottom&&el!==touchEl){
+        targetTi=parseInt(el.dataset.ti);
+      }
+    });
+    if(ghost) ghost.remove();
+    if(touchEl) touchEl.style.opacity='';
+    if(targetTi!==null && targetTi!==touchSrc){
+      const tabs=DATA.tabs;
+      const [moved]=tabs.splice(touchSrc,1);
+      tabs.splice(targetTi,0,moved);
+      currentTabId=DATA.tabs[0]?.id;
+      renderAll(); renderAdminTabDd(); renderAdminSection('__reorder');
+      showToast('Ordre mis à jour');
+    }
+    touchSrc=null; touchEl=null; ghost=null;
+  });
+})();
 
 // ═══════════════════════════════════════════
 // SCHEDULE ADMIN
@@ -784,18 +879,34 @@ function onDropTab(e,ti){
 function renderScheduleAdmin(){
   const sch=DATA.schedule||[];
   let h=`<div class="admin-section"><div class="admin-sect-title">🕐 Horaires d'ouverture</div>`;
-  h+=`<div style="font-size:11px;color:var(--text3);font-family:Jost,sans-serif;margin-bottom:10px">Laissez vide = fermé ce jour-là. Heures en format 24h (ex: 17 = 17h, 26 = 2h du matin)</div>`;
+  h+=`<div style="font-size:11px;color:var(--text3);font-family:Jost,sans-serif;margin-bottom:10px;line-height:1.6">Format 24h. Ex: 12 = midi, 17 = 17h, 26 = 2h du matin (lendemain).<br>Vous pouvez ajouter plusieurs services par jour (midi, soir, brunch…).</div>`;
   sch.forEach((d,i)=>{
+    // Compat: migrate old {open,close} to services[]
+    if(!d.services) d.services = (d.open!=null?[{label:'',open:d.open,close:d.close}]:[]);
+    const svcs=d.services||[];
     h+=`<div class="admin-card" style="background:#fff;margin-bottom:6px">
-      <div style="font-size:12px;font-weight:500;color:var(--navy);font-family:Jost,sans-serif;margin-bottom:6px">${d.day}</div>
-      <div class="ai-row">
-        <div style="flex:1"><div style="font-size:10px;color:var(--text3);margin-bottom:3px">Ouverture (h)</div>
-          <input class="ai" type="number" min="0" max="30" value="${d.open!==null?d.open:''}" placeholder="Fermé"
-            oninput="DATA.schedule[${i}].open=this.value===''?null:parseFloat(this.value);renderAll()"></div>
-        <div style="flex:1"><div style="font-size:10px;color:var(--text3);margin-bottom:3px">Fermeture (h)</div>
-          <input class="ai" type="number" min="0" max="30" value="${d.close!==null?d.close:''}" placeholder="—"
-            oninput="DATA.schedule[${i}].close=this.value===''?null:parseFloat(this.value);renderAll()"></div>
-      </div>
+      <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:8px">
+        <div style="font-size:12px;font-weight:600;color:var(--navy);font-family:Jost,sans-serif">${d.day}</div>
+        ${svcs.length===0?`<span style="font-size:11px;color:var(--text3)">Fermé</span>`:''}
+      </div>`;
+    svcs.forEach((s,si)=>{
+      h+=`<div class="admin-card" style="background:var(--bg);margin-bottom:6px;padding:8px 10px">
+        <div style="display:flex;align-items:center;gap:6px;margin-bottom:6px">
+          <input class="ai" value="${s.label||''}" placeholder="Service (ex: Midi, Soir, Brunch)" style="flex:1"
+            oninput="DATA.schedule[${i}].services[${si}].label=this.value;renderAll()">
+          <button class="adel" onclick="DATA.schedule[${i}].services.splice(${si},1);renderAll();renderAdminSection('__global')">×</button>
+        </div>
+        <div class="ai-row">
+          <div style="flex:1"><div style="font-size:10px;color:var(--text3);margin-bottom:2px">Ouverture</div>
+            <input class="ai" type="number" min="0" max="30" value="${s.open!=null?s.open:''}" placeholder="ex: 12"
+              oninput="DATA.schedule[${i}].services[${si}].open=this.value===''?null:parseFloat(this.value);renderAll()"></div>
+          <div style="flex:1"><div style="font-size:10px;color:var(--text3);margin-bottom:2px">Fermeture</div>
+            <input class="ai" type="number" min="0" max="30" value="${s.close!=null?s.close:''}" placeholder="ex: 26"
+              oninput="DATA.schedule[${i}].services[${si}].close=this.value===''?null:parseFloat(this.value);renderAll()"></div>
+        </div>
+      </div>`;
+    });
+    h+=`<button class="aadd" onclick="DATA.schedule[${i}].services.push({label:'',open:null,close:null});renderAll();renderAdminSection('__global')">+ Service</button>
     </div>`;
   });
   h+=`</div>`;
@@ -926,8 +1037,13 @@ function renderAdminGlobal(){
     <label class="admin-toggle"><input type="checkbox" ${(DATA.homeTab&&DATA.homeTab.active)?'checked':''} onchange="if(!DATA.homeTab)DATA.homeTab={};DATA.homeTab.active=this.checked;toggleHomeTab();renderAll();renderAdminSection('__global')"><label>Activer l'onglet Accueil (en premier)</label></label>
     <div class="af"><label class="al">Photo principale (4:3)</label>
       <input class="ai" value="${(DATA.homeTab&&DATA.homeTab.photo)||''}" placeholder="https://... .jpg ou .webp"
-        oninput="if(!DATA.homeTab)DATA.homeTab={};DATA.homeTab.photo=this.value.trim();renderAll()">
-      <div style="font-size:11px;color:var(--text3);font-family:Jost,sans-serif;margin-top:4px">Format recommandé : 4:3, min 800px de large.</div>
+        oninput="if(!DATA.homeTab)DATA.homeTab={};DATA.homeTab.photo=this.value.trim();DATA.homeTab.video='';renderAll()">
+      <div style="font-size:11px;color:var(--text3);font-family:Jost,sans-serif;margin-top:4px">Format recommandé : 4:3, min 800px. La vidéo a la priorité si renseignée.</div>
+    </div>
+    <div class="af"><label class="al">Vidéo (YouTube ou Vimeo) — optionnel</label>
+      <input class="ai" value="${(DATA.homeTab&&DATA.homeTab.video)||''}" placeholder="https://youtube.com/watch?v=... ou youtu.be/..."
+        oninput="if(!DATA.homeTab)DATA.homeTab={};DATA.homeTab.video=this.value.trim();renderAll()">
+      <div style="font-size:11px;color:var(--text3);font-family:Jost,sans-serif;margin-top:4px">Si renseignée, la vidéo remplace la photo.</div>
     </div>
   </div>`;
 
@@ -938,6 +1054,7 @@ function renderAdminGlobal(){
   const soc=DATA.social||{};
   h+=`<div class="admin-section"><div class="admin-sect-title">Présentation (page d'accueil)</div>
     <label class="admin-toggle"><input type="checkbox" ${DATA.intro.active?'checked':''} onchange="DATA.intro.active=this.checked;renderAll();renderAdminSection('__global')"><label>Activer le bloc présentation</label></label>
+    ${!(DATA.homeTab&&DATA.homeTab.active)?`<div style="font-size:11px;color:var(--text3);font-family:Jost,sans-serif;padding:6px 10px;background:#fffbf0;border-radius:6px;border:1px solid #f0e6c0">⚠ La description s'affiche uniquement quand l'onglet Accueil est activé.</div>`:''}
     `+biInput('Texte de présentation', DATA.intro.text.fr||'', DATA.intro.text[adminLang]||'', `DATA.intro.text[adminLang]=this.value;renderAll()`)+`
     <div class="admin-sect-title" style="margin-top:14px;padding-top:12px">Réseaux sociaux</div>
     <div class="af"><label class="al">Instagram</label>
