@@ -671,6 +671,20 @@
               "img": "https://drevicioyster.com/wp-content/uploads/2026/05/Huitres-04d.webp",
               "spicy": false,
               "vegan": false
+            },
+            {
+              "name": {
+                "fr": "Duo champagne",
+                "en": "New dish"
+              },
+              "desc": {
+                "fr": "12 huîtres N°3, 2 coupes de champagne",
+                "en": ""
+              },
+              "price": "48€",
+              "img": "https://drevicioyster.com/wp-content/uploads/2026/05/Huitres-04d.webp",
+              "spicy": false,
+              "vegan": false
             }
           ]
         }
