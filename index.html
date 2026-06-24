@@ -11,19 +11,19 @@
 body{background:var(--bg);font-family:'Jost',sans-serif;font-weight:400;font-size:14px}
 
 /* ── LIGHTBOX ── */
-.lb{position:fixed;inset:0;background:rgba(0,0,0,0.88);z-index:1000;display:none;flex-direction:column;align-items:center;justify-content:center;padding:20px 0 0}
+.lb{position:fixed;inset:0;background:rgba(0,0,0,0.88);z-index:1000;display:none;align-items:center;justify-content:center}
 .lb.open{display:flex}
-.lb-inner{position:relative;width:100%;max-width:680px;padding:0 16px;flex:1;display:flex;align-items:center}
-.lb img{width:100%;max-height:56vh;border-radius:12px;object-fit:cover;display:block}
-.lb-nav{position:absolute;top:50%;transform:translateY(-50%);background:rgba(255,255,255,0.18);border:none;color:#fff;width:38px;height:38px;border-radius:50%;cursor:pointer;font-size:22px;display:flex;align-items:center;justify-content:center;backdrop-filter:blur(6px);transition:background .15s;z-index:2}
-.lb-nav:hover{background:rgba(255,255,255,0.32)}
-.lb-prev{left:20px}.lb-next{right:20px}
-.lb-footer{width:100%;max-width:680px;background:#fff;border-radius:16px 16px 0 0;padding:18px 20px 32px;margin-top:14px}
-.lb-dish-name{font-family:'Cormorant Garamond',serif;font-size:22px;color:#1a1a1a;font-weight:700;margin-bottom:6px;line-height:1.2;text-align:center}
-.lb-dish-desc{font-size:13px;color:#777;font-family:'Jost',sans-serif;font-weight:300;line-height:1.6;margin-bottom:12px;text-align:left}
+.lb-card{position:relative;width:min(420px,92vw);border-radius:16px;overflow:hidden;background:#fff}
+.lb img{width:100%;height:52vw;max-height:340px;object-fit:cover;display:block}
+.lb-nav{position:absolute;top:50%;transform:translateY(-50%);background:rgba(0,0,0,0.28);border:none;color:#fff;width:38px;height:38px;border-radius:50%;cursor:pointer;font-size:24px;display:flex;align-items:center;justify-content:center;backdrop-filter:blur(4px);transition:background .15s;z-index:2}
+.lb-nav:hover{background:rgba(0,0,0,0.5)}
+.lb-prev{left:10px}.lb-next{right:10px}
+.lb-footer{background:#10285E;padding:16px 20px 20px}
+.lb-dish-name{font-family:'Cormorant Garamond',serif;font-size:20px;color:#fff;font-weight:700;line-height:1.2;text-align:center;margin-bottom:5px}
+.lb-dish-desc{font-size:12px;color:rgba(255,255,255,0.7);font-family:'Jost',sans-serif;font-weight:300;line-height:1.55;text-align:center;margin-bottom:10px}
 .lb-footer-row{display:flex;align-items:center;justify-content:center}
-.lb-count{font-size:11px;color:#bbb;letter-spacing:.12em;font-family:'Jost',sans-serif;text-align:center}
-.lb-close{position:absolute;top:14px;right:16px;background:rgba(255,255,255,0.15);border:none;color:#fff;font-size:18px;cursor:pointer;line-height:1;width:32px;height:32px;border-radius:50%;display:flex;align-items:center;justify-content:center;z-index:3}
+.lb-count{font-size:11px;color:#10285E;letter-spacing:.12em;font-family:'Jost',sans-serif;background:rgba(255,255,255,0.9);padding:2px 10px;border-radius:20px}
+.lb-close{position:absolute;top:10px;right:10px;background:rgba(0,0,0,0.35);border:none;color:#fff;font-size:16px;cursor:pointer;line-height:1;width:28px;height:28px;border-radius:50%;display:flex;align-items:center;justify-content:center;z-index:3;backdrop-filter:blur(4px)}
 
 /* ── LAYOUT ── */
 .page{background:var(--bg);min-height:100vh;padding-bottom:100px}
@@ -218,17 +218,19 @@ body{background:var(--bg);font-family:'Jost',sans-serif;font-weight:400;font-siz
 
 <!-- LIGHTBOX -->
 <div class="lb" id="lb">
-  <button class="lb-close" onclick="closeLb()">✕</button>
-  <div class="lb-inner">
-    <button class="lb-nav lb-prev" onclick="lbStep(-1)">&#8249;</button>
-    <img id="lbImg" src="" alt=""/>
-    <button class="lb-nav lb-next" onclick="lbStep(1)">&#8250;</button>
-  </div>
-  <div class="lb-footer">
-    <div class="lb-dish-name" id="lbName"></div>
-    <div class="lb-dish-desc" id="lbDesc"></div>
-    <div class="lb-footer-row">
-      <span class="lb-count" id="lbCount"></span>
+  <div class="lb-card">
+    <button class="lb-close" onclick="closeLb()">✕</button>
+    <div style="position:relative">
+      <button class="lb-nav lb-prev" onclick="lbStep(-1)">&#8249;</button>
+      <img id="lbImg" src="" alt=""/>
+      <button class="lb-nav lb-next" onclick="lbStep(1)">&#8250;</button>
+    </div>
+    <div class="lb-footer">
+      <div class="lb-dish-name" id="lbName"></div>
+      <div class="lb-dish-desc" id="lbDesc"></div>
+      <div class="lb-footer-row">
+        <span class="lb-count" id="lbCount"></span>
+      </div>
     </div>
   </div>
 </div>
@@ -445,7 +447,7 @@ function renderLbSlide(){
   document.getElementById('lbDesc').textContent=item.desc||'';
   document.getElementById('lbCount').textContent=(lbIdx+1)+' / '+lbImages.length;
 }
-document.getElementById('lb').addEventListener('click',e=>{ if(e.target===e.currentTarget) closeLb(); });
+document.getElementById('lb').addEventListener('click',e=>{ if(!e.target.closest('.lb-card')) closeLb(); });
 document.addEventListener('keydown',e=>{ const lb=document.getElementById('lb'); if(!lb.classList.contains('open'))return; if(e.key==='Escape')closeLb(); if(e.key==='ArrowLeft')lbStep(-1); if(e.key==='ArrowRight')lbStep(1); });
 
 // ═══════════════════════════════════════════
@@ -556,7 +558,8 @@ function renderTabContent(tab,lbOffset){
   const priceStr=sizes.length>0?sizes.map(s=>(s.cl?s.cl+'cl':'')+(s.cl&&s.price?' — ':'')+(s.price?s.price+'€':'')).join(' / '):(item.price||'');
   html+=`<div class="bev-row"><div><span class="bev-name">${t(item.name)}</span>${t(item.desc)?`<div class="dish-desc" style="margin-top:2px">${t(item.desc)}</div>`:''}</div><span class="bev-price">${priceStr}</span></div>`;
 });
-      } else if(card.type==='variants'){
+        h+=`<button class="aadd" style="margin-top:4px" onclick="addBev(${ti},${ci})">+ Boisson</button>`;
+    } else if(card.type==='variants'){
         // Render as dish row: name in navy + all flavours as description
         const flavours=(card.variants||[]).map(v=>t(v.name)).join(' · ');
         const price=card.variants&&card.variants[0]?card.variants[0].price:'';
@@ -767,7 +770,7 @@ function renderAdminTab(ti){
 
   // Cards
   tab.cards.forEach((card,ci)=>{
-    const canDelCard=card.type==='bevs'&&tab.cards.length>1;
+    const canDelCard=tab.cards.length>1;
     h+=`<div class="admin-section"><div class="admin-sect-title" style="display:flex;justify-content:space-between;align-items:center"><span>Carte — ${t(card.label)}</span>${canDelCard?`<button class="adel" style="font-size:11px;padding:2px 8px" onclick="askConfirm('Supprimer cette carte ?',()=>{DATA.tabs[${ti}].cards.splice(${ci},1);renderAll();renderAdminSection(DATA.tabs[${ti}].id)})">✕ Suppr.</button>`:''}</div>`;
     h+=`<div class="admin-card">`;
     h+=biInput('Titre de section', card.label.fr||'', card.label[adminLang]||'', `DATA.tabs[${ti}].cards[${ci}].label[adminLang]=this.value;renderAll()`);
@@ -785,6 +788,7 @@ function renderAdminTab(ti){
           <button class="aadd" style="margin-top:2px" onclick="if(!Array.isArray(DATA.tabs[${ti}].cards[${ci}].items[${ii}].sizes)){DATA.tabs[${ti}].cards[${ci}].items[${ii}].sizes=[];}DATA.tabs[${ti}].cards[${ci}].items[${ii}].sizes.push({cl:'',price:''});renderAll();renderAdminSection(DATA.tabs[${ti}].id)">+ Taille</button>
         </div>`;
       });
+      h+=`<button class="aadd" style="margin-top:4px" onclick="addBev(${ti},${ci})">+ Boisson</button>`;
     } else if(card.type==='variants'){
       h+=`<div class="af"><label class="al">Image URL</label><input class="ai" value="${card.img||''}" oninput="DATA.tabs[${ti}].cards[${ci}].img=this.value;renderAll()"></div>`;
       (card.variants||[]).forEach((v,vi)=>{
@@ -896,8 +900,9 @@ async function loadFromGitHub(){
     if(json.intro) DATA.intro=json.intro;
     if(Array.isArray(json.specials)) DATA.specials=json.specials;
     if(Array.isArray(json.pinnedDishes)) DATA.pinnedDishes=json.pinnedDishes;
-    if(DATA.tabs.length && !DATA.tabs.find(tb=>tb.id===currentTabId)) currentTabId=DATA.tabs[0].id;
-    console.log('✓ GitHub loaded — tabs:'+DATA.tabs.length+' specials:'+DATA.specials.filter(s=>s.active).length+' intro:'+DATA.intro.active);
+    // Always reset to first tab after load to avoid stale tab ID
+    currentTabId=DATA.tabs[0]?.id||'huitres';
+    console.log('✓ GitHub — tabs:'+DATA.tabs.length+', specials:'+DATA.specials.filter(s=>s.active).length+', intro:'+DATA.intro.active);
   }catch(e){ console.warn('GitHub load failed:', e.message); }
 }
 
@@ -914,7 +919,9 @@ async function publishToGitHub(){
     const getR=await fetch(apiBase+'?t='+Date.now(),{headers});
     if(getR.ok){ const meta=await getR.json(); sha=meta.sha||null; }
     // Encode — use TextEncoder for full Unicode support
-    const jsonStr=JSON.stringify(DATA,null,2);
+    // Deep clone to get clean serializable object (no DOM refs)
+    const cleanData=JSON.parse(JSON.stringify(DATA));
+    const jsonStr=JSON.stringify(cleanData,null,2);
     const bytes=new TextEncoder().encode(jsonStr);
     let bin=''; bytes.forEach(b=>bin+=String.fromCharCode(b));
     const content=btoa(bin);
