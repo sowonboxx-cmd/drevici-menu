@@ -104,7 +104,7 @@ body{background:var(--bg);font-family:'Jost',sans-serif;font-weight:400;font-siz
 .featured-item{border-radius:8px;overflow:hidden;border:1px solid var(--border)}
 .featured-item-img{width:100%;aspect-ratio:1;object-fit:cover;display:block;background:#ece8e1}
 .featured-item-body{padding:8px 10px 10px}
-.featured-item-name{font-family:'Cormorant Garamond',serif;font-size:14px;font-weight:600;color:var(--navy);line-height:1.2}
+.featured-item-name{font-family:'Open Sans',sans-serif;font-size:12px;font-weight:600;color:var(--navy);line-height:1.2}
 .featured-item-price{font-size:11px;font-weight:500;color:var(--gold);margin-top:3px}
 
 /* ── CARD ── */
@@ -508,6 +508,30 @@ function collectLbImages(){
     });
   });
 }
+// Mini lightbox for pinned dishes on home tab
+let pinLbDishes=[], pinLbIdx=0;
+function openPinLb(idx){
+  const pins=DATA.pinnedDishes||[];
+  pinLbDishes=pins.map(p=>{ const tb=DATA.tabs.find(tb=>tb.id===p.tabId); if(!tb)return null; const card=tb.cards[p.cardIdx]; if(!card||!card.dishes)return null; return card.dishes[p.dishIdx]; }).filter(Boolean).slice(0,4);
+  if(!pinLbDishes.length) return;
+  pinLbIdx=idx;
+  renderPinLb();
+  document.getElementById('lb').classList.add('open');
+}
+function renderPinLb(){
+  const d=pinLbDishes[pinLbIdx];
+  if(!d) return;
+  document.getElementById('lbImg').src=d.img||'';
+  document.getElementById('lbName').textContent=t(d.name);
+  document.getElementById('lbDesc').textContent=t(d.desc)||'';
+  document.getElementById('lbCount').textContent=(pinLbIdx+1)+' / '+pinLbDishes.length;
+  const catEl=document.getElementById('lbCat'); if(catEl) catEl.textContent='Incontournables';
+}
+function stepPinLb(dir){
+  pinLbIdx=(pinLbIdx+dir+pinLbDishes.length)%pinLbDishes.length;
+  renderPinLb();
+}
+
 function openLb(idx){ collectLbImages(); lbIdx=idx; renderLbSlide(); document.getElementById('lb').classList.add('open'); document.body.style.overflow='hidden'; }
 function closeLb(){ document.getElementById('lb').classList.remove('open'); document.body.style.overflow=''; }
 function lbStep(d){ lbIdx=(lbIdx+d+lbImages.length)%lbImages.length; renderLbSlide(); }
@@ -670,15 +694,7 @@ function renderTabContent(tab,lbOffset){
     // 1. Description first
     if(DATA.intro.active){
       const soc=DATA.social||{};
-      const ig=soc.instagram?`<a class="social-icon" href="https://instagram.com/${soc.instagram.replace('@','')}" target="_blank" title="Instagram"><svg viewBox="0 0 24 24"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/></svg></a>`:'';
-      const tk=soc.tiktok?`<a class="social-icon" href="https://tiktok.com/@${soc.tiktok.replace('@','')}" target="_blank" title="TikTok"><svg viewBox="0 0 24 24"><path d="M19.59 6.69a4.83 4.83 0 01-3.77-4.25V2h-3.45v13.67a2.89 2.89 0 01-2.88 2.5 2.89 2.89 0 01-2.89-2.89 2.89 2.89 0 012.89-2.89c.28 0 .54.04.79.1V9.01a6.33 6.33 0 00-.79-.05 6.34 6.34 0 00-6.34 6.34 6.34 6.34 0 006.34 6.34 6.34 6.34 0 006.33-6.34V8.69a8.18 8.18 0 004.78 1.52V6.76a4.85 4.85 0 01-1.01-.07z"/></svg></a>`:'';
-      const fb=soc.facebook?`<a class="social-icon" href="https://facebook.com/${soc.facebook.replace('@','')}" target="_blank" title="Facebook"><svg viewBox="0 0 24 24"><path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/></svg></a>`:'';
-      const sLinks=[];
-      if(soc.instagram) sLinks.push(`<a class="social-link-txt" href="https://instagram.com/${soc.instagram.replace('@','')}" target="_blank">INSTAGRAM</a>`);
-      if(soc.tiktok) sLinks.push(`<a class="social-link-txt" href="https://tiktok.com/@${soc.tiktok.replace('@','')}" target="_blank">TIKTOK</a>`);
-      if(soc.facebook) sLinks.push(`<a class="social-link-txt" href="https://facebook.com/${soc.facebook.replace('@','')}" target="_blank">FACEBOOK</a>`);
-      const socRow=sLinks.length?`<div class="social-links-bar">${sLinks.join('<span class="social-link-sep">·</span>')}</div>`:'';
-      html+=`<div class="intro-card"><div class="intro-card-label">À propos</div><div class="intro-card-text">${t(DATA.intro.text)}</div></div>${socRow}`;
+      html+=`<div class="intro-card"><div class="intro-card-label">À propos</div><div class="intro-card-text">${t(DATA.intro.text)}</div></div>`;
     }
     // 2. Media (photo or video)
     if(DATA.homeTab&&DATA.homeTab.video){
@@ -702,13 +718,27 @@ function renderTabContent(tab,lbOffset){
     if(DATA.infoBanner&&DATA.infoBanner.active&&(DATA.infoBanner.showHome!==false)){
       html+=renderInfoBanner(DATA.infoBanner);
     }
-        // Pinned dishes on home tab
+    // Pinned dishes on home tab — own mini lightbox
     const pins2=DATA.pinnedDishes||[];
-    const pinDishes2=pins2.map(p=>{ const tb=DATA.tabs.find(tb=>tb.id===p.tabId); if(!tb)return null; const card=tb.cards[p.cardIdx]; if(!card||!card.dishes)return null; const d=card.dishes[p.dishIdx]; return d?{...d}:null; }).filter(Boolean);
+    const pinDishes2=pins2.map(p=>{ const tb=DATA.tabs.find(tb=>tb.id===p.tabId); if(!tb)return null; const card=tb.cards[p.cardIdx]; if(!card||!card.dishes)return null; const d=card.dishes[p.dishIdx]; return d?{...d}:null; }).filter(Boolean).slice(0,4);
     if(pinDishes2.length>0&&(DATA.pinnedShowHome!==false)){
-      html+=`<div class="featured-card"><div class="featured-label">⭐ Nos incontournables</div><div class="featured-grid">`;
-      pinDishes2.slice(0,4).forEach((d,idx)=>{ const lbIdx=lbImages.findIndex(img=>img.src===d.img); html+=`<div class="featured-item" style="cursor:pointer" onclick="openLb(${lbIdx>=0?lbIdx:0})">${d.img?`<img class="featured-item-img" src="${d.img}" alt="" loading="lazy">`:'<div class="featured-item-img"></div>'}<div class="featured-item-body"><div class="featured-item-name">${t(d.name)}</div><div class="featured-item-price">${d.price}</div></div></div>`; });
-      html+=`</div></div>`;
+      if(view==='grid'){
+        html+=`<div class="featured-card"><div class="featured-label">⭐ Nos incontournables</div><div class="featured-grid">`;
+        pinDishes2.forEach((d,idx)=>{ html+=`<div class="featured-item" style="cursor:pointer" onclick="openPinLb(${idx})">${d.img?`<img class="featured-item-img" src="${d.img}" alt="" loading="lazy">`:'<div class="featured-item-img"></div>'}<div class="featured-item-body"><div class="featured-item-name">${t(d.name)}</div><div class="featured-item-price">${d.price}</div></div></div>`; });
+        html+=`</div></div>`;
+      } else {
+        // list view
+        html+=`<div class="card"><div class="card-hdr"><span class="card-label">⭐ Nos incontournables</span></div><div class="card-body">`;
+        pinDishes2.forEach((d,idx)=>{
+          html+=`<div class="dish-row dish-row-clickable" onclick="openPinLb(${idx})">`;
+          if(d.img) html+=`<img class="dish-img" src="${d.img}" alt="" loading="lazy">`;
+          html+=`<div class="dish-text"><div class="dish-name-row"><span class="dish-name">${t(d.name)}</span></div>`;
+          if(t(d.desc)) html+=`<div class="dish-desc">${t(d.desc)}</div>`;
+          if(d.price) html+=`<div class="dish-price">${d.price}</div>`;
+          html+=`</div></div>`;
+        });
+        html+=`</div></div>`;
+      }
     }
     // Schedule widget rendered in subheader (renderViewBar)
     html+='</div>';
@@ -720,15 +750,7 @@ function renderTabContent(tab,lbOffset){
     // intro only if no dedicated home tab
     if(DATA.intro.active && !DATA.tabs.some(tb=>tb.id==='__home')){
       const soc=DATA.social||{};
-      const ig=soc.instagram?`<a class="social-icon" href="https://instagram.com/${soc.instagram.replace('@','')}" target="_blank" title="Instagram"><svg viewBox="0 0 24 24"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/></svg></a>`:'';
-      const tk=soc.tiktok?`<a class="social-icon" href="https://tiktok.com/@${soc.tiktok.replace('@','')}" target="_blank" title="TikTok"><svg viewBox="0 0 24 24"><path d="M19.59 6.69a4.83 4.83 0 01-3.77-4.25V2h-3.45v13.67a2.89 2.89 0 01-2.88 2.5 2.89 2.89 0 01-2.89-2.89 2.89 2.89 0 012.89-2.89c.28 0 .54.04.79.1V9.01a6.33 6.33 0 00-.79-.05 6.34 6.34 0 00-6.34 6.34 6.34 6.34 0 006.34 6.34 6.34 6.34 0 006.33-6.34V8.69a8.18 8.18 0 004.78 1.52V6.76a4.85 4.85 0 01-1.01-.07z"/></svg></a>`:'';
-      const fb=soc.facebook?`<a class="social-icon" href="https://facebook.com/${soc.facebook.replace('@','')}" target="_blank" title="Facebook"><svg viewBox="0 0 24 24"><path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/></svg></a>`:'';
-      const sLinks=[];
-      if(soc.instagram) sLinks.push(`<a class="social-link-txt" href="https://instagram.com/${soc.instagram.replace('@','')}" target="_blank">INSTAGRAM</a>`);
-      if(soc.tiktok) sLinks.push(`<a class="social-link-txt" href="https://tiktok.com/@${soc.tiktok.replace('@','')}" target="_blank">TIKTOK</a>`);
-      if(soc.facebook) sLinks.push(`<a class="social-link-txt" href="https://facebook.com/${soc.facebook.replace('@','')}" target="_blank">FACEBOOK</a>`);
-      const socRow=sLinks.length?`<div class="social-links-bar">${sLinks.join('<span class="social-link-sep">·</span>')}</div>`:'';
-      html+=`<div class="intro-card"><div class="intro-card-label">À propos</div><div class="intro-card-text">${t(DATA.intro.text)}</div></div>${socRow}`;
+      html+=`<div class="intro-card"><div class="intro-card-label">À propos</div><div class="intro-card-text">${t(DATA.intro.text)}</div></div>`;
     }
     // specials on first tab
     DATA.specials.forEach(sp=>{
