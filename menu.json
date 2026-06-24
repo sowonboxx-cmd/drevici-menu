@@ -488,29 +488,53 @@
               ]
             },
             {
-              "name": "Chablis 1er cru",
-              "price": "12€"
-            },
-            {
-              "name": "Picpoul de Pinet",
-              "price": "8€",
+              "name": {
+                "fr": "Chardonnay"
+              },
+              "price": "12€",
               "sizes": [
                 {
-                  "cl": "",
-                  "price": ""
+                  "cl": "25",
+                  "price": "5.50"
                 },
                 {
-                  "cl": "",
-                  "price": ""
+                  "cl": "50",
+                  "price": "30"
                 }
               ]
             },
             {
               "name": {
-                "fr": "Nouvelle boisson",
+                "fr": "Viognier"
+              },
+              "price": "8€",
+              "sizes": [
+                {
+                  "cl": "25",
+                  "price": "6.50"
+                },
+                {
+                  "cl": "75",
+                  "price": "35.5"
+                }
+              ]
+            },
+            {
+              "name": {
+                "fr": "Chablis",
                 "en": "New drink"
               },
-              "price": ""
+              "price": "",
+              "sizes": [
+                {
+                  "cl": "25",
+                  "price": "6.50"
+                },
+                {
+                  "cl": "75",
+                  "price": "36"
+                }
+              ]
             }
           ]
         },
