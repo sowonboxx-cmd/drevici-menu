@@ -551,7 +551,7 @@ function renderTabContent(tab,lbOffset){
       const tk=soc.tiktok?`<a class="social-icon" href="https://tiktok.com/@${soc.tiktok.replace('@','')}" target="_blank" title="TikTok"><svg viewBox="0 0 24 24"><path d="M19.59 6.69a4.83 4.83 0 01-3.77-4.25V2h-3.45v13.67a2.89 2.89 0 01-2.88 2.5 2.89 2.89 0 01-2.89-2.89 2.89 2.89 0 012.89-2.89c.28 0 .54.04.79.1V9.01a6.33 6.33 0 00-.79-.05 6.34 6.34 0 00-6.34 6.34 6.34 6.34 0 006.34 6.34 6.34 6.34 0 006.33-6.34V8.69a8.18 8.18 0 004.78 1.52V6.76a4.85 4.85 0 01-1.01-.07z"/></svg></a>`:'';
       const fb=soc.facebook?`<a class="social-icon" href="https://facebook.com/${soc.facebook.replace('@','')}" target="_blank" title="Facebook"><svg viewBox="0 0 24 24"><path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/></svg></a>`:'';
       const socRow=(ig||tk||fb)?`<div class="social-icons">${ig}${tk}${fb}</div>`:'';
-      html+=\`<div class="intro-card"><div class="intro-card-label">Le restaurant</div><div class="intro-card-text">\${t(DATA.intro.text)}</div>\${socRow}</div>\`;
+      html+=`<div class="intro-card"><div class="intro-card-label">Le restaurant</div><div class="intro-card-text">${t(DATA.intro.text)}</div>${socRow}</div>`;
     }
     // then specials
     DATA.specials.forEach(sp=>{
@@ -1053,15 +1053,15 @@ function applyRestaurantBranding(){
 function restaurantSettingHtml(){
   const name=getRestaurantName();
   const logo=getRestaurantLogo();
-  return \`<div class="admin-section"><div class="admin-sect-title">🏪 Mon établissement</div>
+  return `<div class="admin-section"><div class="admin-sect-title">🏪 Mon établissement</div>
     <div class="af"><label class="al">Nom de l'établissement</label>
-      <input class="ai" value="\${name}" placeholder="Nom du restaurant" oninput="setRestaurantName(this.value);document.getElementById('logoText').textContent=this.value||'Mon Restaurant'">
+      <input class="ai" value="${name}" placeholder="Nom du restaurant" oninput="setRestaurantName(this.value);document.getElementById('logoText').textContent=this.value||'Mon Restaurant'">
     </div>
     <div class="af"><label class="al">Logo (URL image)</label>
-      <input class="ai" value="\${logo}" placeholder="https://... .png ou .svg" oninput="setRestaurantLogo(this.value.trim())">
+      <input class="ai" value="${logo}" placeholder="https://... .png ou .svg" oninput="setRestaurantLogo(this.value.trim())">
       <div style="font-size:11px;color:var(--text3);font-family:Jost,sans-serif;margin-top:4px">Laissez vide pour afficher le nom en texte. Logo centré dans le header, hauteur max 40px.</div>
     </div>
-  </div>\`;
+  </div>`;
 }
 
 function ghSectionHtml(){
