@@ -87,7 +87,7 @@ body{background:var(--bg);font-family:'Jost',sans-serif;font-weight:400;font-siz
 /* ── INTRO CARD ── */
 .intro-card{background:#fff;border-radius:var(--r);border:1px solid var(--border);padding:18px 20px}
 .intro-card-label{font-size:10px;font-weight:500;letter-spacing:.14em;text-transform:uppercase;color:var(--text3);font-family:'Jost',sans-serif;margin-bottom:8px}
-.intro-card-text{font-family:'Open Sans',sans-serif;font-size:14px;color:var(--text);line-height:1.7}
+.intro-card-text{font-family:'Open Sans',sans-serif;font-size:12px;color:var(--text);line-height:1.7}
 .social-icons{display:flex;gap:14px;align-items:center;margin-top:14px;padding-top:12px;border-top:1px solid rgba(0,0,0,0.06)}
 .social-icon{display:flex;align-items:center;justify-content:center;width:30px;height:30px;border-radius:50%;border:1px solid var(--border);color:var(--text3);text-decoration:none;transition:all .15s;font-size:13px}
 .social-icon:hover{border-color:var(--navy);color:var(--navy)}
@@ -117,10 +117,10 @@ body{background:var(--bg);font-family:'Jost',sans-serif;font-weight:400;font-siz
 .dish-row:last-child{border-bottom:none;padding-bottom:0}
 .dish-text{flex:1;min-width:0}
 .dish-name-row{display:flex;align-items:center;gap:6px;flex-wrap:wrap}
-.dish-name{font-family:'Open Sans',sans-serif;font-size:16px;font-weight:600;color:var(--navy);line-height:1.2}
+.dish-name{font-family:'Open Sans',sans-serif;font-size:14px;font-weight:600;color:var(--navy);line-height:1.2}
 .dish-badges{display:flex;gap:4px;align-items:center}
 .badge-icon{width:18px;height:18px;object-fit:contain;display:inline-block}
-.dish-desc{font-size:13px;font-weight:300;color:var(--text2);line-height:1.55;margin-top:2px;display:-webkit-box;-webkit-line-clamp:3;-webkit-box-orient:vertical;overflow:hidden}
+.dish-desc{font-size:12px;font-family:'Open Sans',sans-serif;font-weight:300;color:var(--text2);line-height:1.55;margin-top:2px;display:-webkit-box;-webkit-line-clamp:3;-webkit-box-orient:vertical;overflow:hidden}
 .dish-price{font-size:13px;font-weight:500;color:var(--gold);margin-top:6px}
 .dish-img{width:80px;height:80px;border-radius:8px;object-fit:cover;flex:none;background:#ece8e1;cursor:pointer;transition:opacity .15s}
 .dish-img:hover{opacity:.82}
@@ -154,10 +154,33 @@ body{background:var(--bg);font-family:'Jost',sans-serif;font-weight:400;font-siz
 .special-banner-text{font-size:12px;font-weight:300;color:rgba(255,255,255,0.65);line-height:1.6}
 .special-banner-price{font-size:15px;font-weight:500;color:var(--gold);margin-top:8px}
 
+/* ── HOME TAB ── */
+.home-photo{width:100%;aspect-ratio:4/3;object-fit:cover;border-radius:var(--r);display:block;margin-bottom:0}
+.home-photo-wrap{border-radius:var(--r);overflow:hidden;border:1px solid var(--border);margin-bottom:0}
+.home-schedule-row{display:flex;align-items:center;justify-content:space-between;padding:10px 14px;background:#fff;border-radius:var(--r);border:1px solid var(--border)}
+.home-schedule-label{font-size:10px;font-weight:500;letter-spacing:.14em;text-transform:uppercase;color:var(--text3);font-family:'Jost',sans-serif}
+
+/* ── SCHEDULE WIDGET (from shared code) ── */
+@keyframes pulse{0%,100%{opacity:1;transform:scale(1)}50%{opacity:.5;transform:scale(.85)}}
+.resto-dot{width:8px;height:8px;border-radius:50%;flex-shrink:0}
+.resto-dot.open{background:#22c55e;animation:pulse 2s ease-in-out infinite}
+.resto-dot.closed{background:#ef4444}
+.resto-dot.soon{background:#f97316;animation:pulse 2s ease-in-out infinite}
+.resto-badge{display:inline-flex;align-items:center;gap:7px;padding:5px 12px;border-radius:999px;font-size:13px;font-weight:500;border:1px solid var(--border);background:var(--bg);color:var(--navy);cursor:pointer;position:relative;user-select:none}
+.resto-popup{visibility:hidden;opacity:0;pointer-events:none;position:absolute;bottom:calc(100% + 10px);left:50%;transform:translateX(-50%) translateY(4px);transition:opacity .18s ease,transform .18s ease;background:rgba(15,25,50,.96);border:.5px solid rgba(255,255,255,.2);border-radius:12px;padding:14px 18px;min-width:210px;z-index:1000}
+.resto-popup.visible{visibility:visible;opacity:1;pointer-events:auto;transform:translateX(-50%) translateY(0)}
+.resto-popup-arrow{position:absolute;bottom:-5px;left:50%;width:10px;height:10px;background:rgba(15,25,50,.96);border-right:.5px solid rgba(255,255,255,.2);border-bottom:.5px solid rgba(255,255,255,.2);transform:translateX(-50%) rotate(45deg)}
+.resto-popup-title{font-size:11px;font-weight:600;letter-spacing:.08em;text-transform:uppercase;margin-bottom:10px;color:#fff}
+.resto-popup-row{display:flex;justify-content:space-between;padding:5px 0;font-size:13px;color:rgba(255,255,255,.75);border-bottom:.5px solid rgba(255,255,255,.07)}
+.resto-popup-row:last-child{border-bottom:none}
+.resto-popup-row.today{color:#fff;font-weight:600}
+.resto-popup-row .rday{color:rgba(255,255,255,.5);font-size:12px}
+.resto-popup-row.today .rday{color:rgba(255,255,255,.85)}
+
 /* ── STICKY RESERVE ── */
 .sticky-reserve{position:sticky;bottom:0;z-index:100;padding:10px 0 14px;background:linear-gradient(to top,var(--bg) 70%,transparent)}
 .sticky-reserve .container{display:block}
-.reserve-btn{display:block;width:100%;padding:15px;background:var(--navy);color:#fff;border:none;border-radius:10px;font-size:14px;font-weight:500;font-family:'Jost',sans-serif;letter-spacing:.06em;cursor:pointer;text-align:center;text-decoration:none}
+.reserve-btn{display:block;width:100%;padding:15px;background:var(--navy);color:#fff;border:none;border-radius:10px;font-size:13px;font-weight:500;font-family:'Jost',sans-serif;letter-spacing:.06em;cursor:pointer;text-align:center;text-decoration:none}
 @media(max-width:640px){
   .sticky-reserve{position:fixed;bottom:0;left:0;right:0;z-index:100;padding:10px 0 env(safe-area-inset-bottom,14px);background:linear-gradient(to top,var(--bg) 80%,transparent)}
   .sticky-reserve .container{padding:0 0}
@@ -359,6 +382,16 @@ let DATA = {
   hero: { fr:'Fruits de mer · Bretagne · Paris', en:'Seafood · Brittany · Paris', es:'Mariscos · Bretaña · París', it:'Frutti di mare · Bretagna · Parigi', kr:'해산물 · 브르타뉴 · 파리', jp:'シーフード · ブルターニュ · パリ' },
   intro: { active:false, text:{fr:'Bienvenue chez Drevici Oyster, un bar à huîtres breton au cœur de Paris.',en:'Welcome to Drevici Oyster, a Breton oyster bar in the heart of Paris.'} },
   social: { instagram:'', tiktok:'', facebook:'' },
+  homeTab: { active:false, photo:'' },
+  schedule: [
+    { day:'Lundi',    open:null, close:null },
+    { day:'Mardi',    open:17,   close:26 },
+    { day:'Mercredi', open:17,   close:26 },
+    { day:'Jeudi',    open:17,   close:26 },
+    { day:'Vendredi', open:17,   close:26 },
+    { day:'Samedi',   open:17,   close:26 },
+    { day:'Dimanche', open:null, close:null }
+  ],
   specials: [
     { id:'jour', active:false, label:{fr:'Menu du jour',en:'Today\'s menu'}, title:{fr:'Menu du Jour',en:'Today\'s menu'}, desc:{fr:'',en:''}, price:''},
     { id:'midi', active:false, label:{fr:'Menu midi',en:'Lunch menu'}, title:{fr:'Menu Midi',en:'Lunch menu'}, desc:{fr:'',en:''}, price:''},
@@ -551,7 +584,31 @@ function renderTabContent(tab,lbOffset){
   let imgIdx=lbOffset;
   let html='<div class="cards-stack">';
 
-  // HOME: specials + intro + featured
+  // ACTUAL HOME TAB
+  if(tab.id==='__home'){
+    if(DATA.homeTab&&DATA.homeTab.photo){
+      html+=`<div class="home-photo-wrap"><img class="home-photo" src="${DATA.homeTab.photo}" alt="Photo restaurant" loading="lazy"></div>`;
+    }
+    if(DATA.intro.active){
+      const soc=DATA.social||{};
+      const ig=soc.instagram?`<a class="social-icon" href="https://instagram.com/${soc.instagram.replace('@','')}" target="_blank" title="Instagram"><svg viewBox="0 0 24 24"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/></svg></a>`:'';
+      const tk=soc.tiktok?`<a class="social-icon" href="https://tiktok.com/@${soc.tiktok.replace('@','')}" target="_blank" title="TikTok"><svg viewBox="0 0 24 24"><path d="M19.59 6.69a4.83 4.83 0 01-3.77-4.25V2h-3.45v13.67a2.89 2.89 0 01-2.88 2.5 2.89 2.89 0 01-2.89-2.89 2.89 2.89 0 012.89-2.89c.28 0 .54.04.79.1V9.01a6.33 6.33 0 00-.79-.05 6.34 6.34 0 00-6.34 6.34 6.34 6.34 0 006.34 6.34 6.34 6.34 0 006.33-6.34V8.69a8.18 8.18 0 004.78 1.52V6.76a4.85 4.85 0 01-1.01-.07z"/></svg></a>`:'';
+      const fb=soc.facebook?`<a class="social-icon" href="https://facebook.com/${soc.facebook.replace('@','')}" target="_blank" title="Facebook"><svg viewBox="0 0 24 24"><path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/></svg></a>`:'';
+      const socRow=(ig||tk||fb)?`<div class="social-icons">${ig}${tk}${fb}</div>`:'';
+      html+=`<div class="intro-card"><div class="intro-card-label">Le restaurant</div><div class="intro-card-text">${t(DATA.intro.text)}</div>${socRow}</div>`;
+    }
+    DATA.specials.forEach(sp=>{
+      if(sp.active){
+        html+=`<div class="special-banner"><div class="special-banner-label">${t(sp.label)}</div><div class="special-banner-title">${t(sp.title)}</div><div class="special-banner-text">${t(sp.desc)}</div>${sp.price?`<div class="special-banner-price">${sp.price}</div>`:''}</div>`;
+      }
+    });
+    // Schedule widget
+    html+=renderScheduleWidget();
+    html+='</div>';
+    return html;
+  }
+
+  // OLD HOME: specials + intro + featured
   if(tab.isHome){
     // intro FIRST
     if(DATA.intro.active){
@@ -638,6 +695,115 @@ function renderTabContent(tab,lbOffset){
 }
 
 // ═══════════════════════════════════════════
+// SCHEDULE WIDGET
+// ═══════════════════════════════════════════
+function renderScheduleWidget(){
+  const sch = DATA.schedule||[];
+  const now = new Date();
+  let today = now.getDay(); // 0=Sun
+  let hour = now.getHours() + now.getMinutes()/60;
+  if(hour < 6){ today=(today+6)%7; hour+=24; }
+  // Map JS getDay() to our array (0=Lundi index)
+  const dayIdx = today===0 ? 6 : today-1;
+  const s = sch[dayIdx]||{};
+  let state, label;
+  if(!s.open){ state='closed'; label='Fermé aujourd'hui'; }
+  else if(hour>=s.open && hour<s.close){ state='open'; label='Ouvert jusqu'à '+(s.close%24)+'h'; }
+  else if(hour<s.open){ state='soon'; label='Ouvre à '+s.open+'h'; }
+  else { state='closed'; label='Fermé'; }
+
+  const rows = sch.map((d,i)=>{
+    const isToday=(i===dayIdx);
+    const h=d.open?(d.open+'h – '+(d.close%24)+'h'):'Fermé';
+    return `<div class="resto-popup-row${isToday?' today':''}"><span class="rday">${d.day}</span><span>${h}</span></div>`;
+  }).join('');
+
+  return `<div class="home-schedule-row">
+    <span class="home-schedule-label">Horaires</span>
+    <div class="resto-badge" id="schedBadge" onclick="document.getElementById('schedPopup').classList.toggle('visible');event.stopPropagation()">
+      <span class="resto-dot ${state}"></span>
+      <span>${label}</span>
+      <div class="resto-popup" id="schedPopup">
+        <div class="resto-popup-arrow"></div>
+        <div class="resto-popup-title" style="color:${state==='open'?'#22c55e':state==='soon'?'#f97316':'#ef4444'}">Horaires d'ouverture</div>
+        ${rows}
+      </div>
+    </div>
+  </div>`;
+}
+
+// Close schedule popup on outside click
+document.addEventListener('click', function(){
+  const p=document.getElementById('schedPopup');
+  if(p) p.classList.remove('visible');
+});
+
+// ═══════════════════════════════════════════
+// TAB REORDER
+// ═══════════════════════════════════════════
+function renderTabReorder(){
+  let h=`<div class="admin-section"><div class="admin-sect-title">↕ Ordre des onglets</div>`;
+  h+=`<div style="font-size:11px;color:var(--text3);font-family:Jost,sans-serif;margin-bottom:10px;line-height:1.5">Glissez les onglets pour changer leur ordre d'affichage.</div>`;
+  h+=`<div id="tabReorderList">`;
+  DATA.tabs.forEach((tab,ti)=>{
+    h+=`<div class="admin-card" style="display:flex;align-items:center;gap:10px;background:#fff;margin-bottom:6px;cursor:grab"
+          draggable="true"
+          ondragstart="onDragTab(event,${ti})"
+          ondragend="onDragEnd(event)"
+          ondragover="onDragOver(event,0,0,${ti})"
+          ondragleave="onDragLeave(event)"
+          ondrop="onDropTab(event,${ti})">
+      <span class="drag-handle" style="font-size:18px">⠿</span>
+      <span style="font-family:Jost,sans-serif;font-size:13px;font-weight:500;color:var(--navy);flex:1">${t(tab.label)}</span>
+      <span style="font-size:10px;color:var(--text3)">${ti+1}</span>
+    </div>`;
+  });
+  h+=`</div></div>`;
+  return h;
+}
+
+let dragTabSrc=null;
+function onDragTab(e,ti){ dragTabSrc=ti; e.currentTarget.classList.add('dragging'); e.dataTransfer.effectAllowed='move'; }
+function onDropTab(e,ti){
+  e.preventDefault(); e.currentTarget.classList.remove('drag-over');
+  if(dragTabSrc===null||dragTabSrc===ti) return;
+  const tabs=DATA.tabs;
+  const [moved]=tabs.splice(dragTabSrc,1);
+  tabs.splice(ti,0,moved);
+  dragTabSrc=null;
+  currentTabId=DATA.tabs[0]?.id;
+  renderAll();
+  renderAdminTabDd();
+  renderAdminSection('__reorder');
+  showToast('Ordre mis à jour');
+}
+
+// ═══════════════════════════════════════════
+// SCHEDULE ADMIN
+// ═══════════════════════════════════════════
+function renderScheduleAdmin(){
+  const sch=DATA.schedule||[];
+  let h=`<div class="admin-section"><div class="admin-sect-title">🕐 Horaires d'ouverture</div>`;
+  h+=`<div style="font-size:11px;color:var(--text3);font-family:Jost,sans-serif;margin-bottom:10px">Laissez vide = fermé ce jour-là. Heures en format 24h (ex: 17 = 17h, 26 = 2h du matin)</div>`;
+  sch.forEach((d,i)=>{
+    h+=`<div class="admin-card" style="background:#fff;margin-bottom:6px">
+      <div style="font-size:12px;font-weight:500;color:var(--navy);font-family:Jost,sans-serif;margin-bottom:6px">${d.day}</div>
+      <div class="ai-row">
+        <div style="flex:1"><div style="font-size:10px;color:var(--text3);margin-bottom:3px">Ouverture (h)</div>
+          <input class="ai" type="number" min="0" max="30" value="${d.open!==null?d.open:''}" placeholder="Fermé"
+            oninput="DATA.schedule[${i}].open=this.value===''?null:parseFloat(this.value);renderAll()"></div>
+        <div style="flex:1"><div style="font-size:10px;color:var(--text3);margin-bottom:3px">Fermeture (h)</div>
+          <input class="ai" type="number" min="0" max="30" value="${d.close!==null?d.close:''}" placeholder="—"
+            oninput="DATA.schedule[${i}].close=this.value===''?null:parseFloat(this.value);renderAll()"></div>
+      </div>
+    </div>`;
+  });
+  h+=`</div>`;
+  return h;
+}
+
+
+// ═══════════════════════════════════════════
 // LANG
 // ═══════════════════════════════════════════
 const reserveMap={fr:'Réserver une table',en:'Book a table',es:'Reservar mesa',it:'Prenota un tavolo',kr:'테이블 예약',jp:'テーブルを予約'};
@@ -658,12 +824,14 @@ function renderAdminTabDd(){
   const dd=document.getElementById('adminTabDd');
   dd.innerHTML='<option value="__global">⚙️ Global & Accueil</option>'
     +DATA.tabs.map(tb=>`<option value="${tb.id}"${tb.id===adminCurrentTab?' selected':''}>${t(tb.label)}</option>`).join('')
+    +'<option value="__reorder">↕ Réordonner les tabs</option>'
     +'<option value="__addtab">+ Nouvelle tab</option>';
   dd.value=adminCurrentTab;
 }
 
 function adminGoTab(val){
   if(val==='__addtab'){ addNewTab(); return; }
+  if(val==='__reorder'){ adminCurrentTab='__reorder'; renderAdminSection('__reorder'); return; }
   adminCurrentTab=val;
   renderAdminSection(val);
 }
@@ -672,6 +840,8 @@ function renderAdminSection(tid){
   const body=document.getElementById('adminBody');
   if(tid==='__global'){
     body.innerHTML=renderAdminGlobal();
+  } else if(tid==='__reorder'){
+    body.innerHTML=renderTabReorder();
   } else {
     const ti=DATA.tabs.findIndex(tb=>tb.id===tid);
     if(ti<0){body.innerHTML='';return;}
@@ -750,6 +920,19 @@ function renderAdminGlobal(){
   h+=`<div class="admin-section"><div class="admin-sect-title">En-tête</div>
     `+biInput('Sous-titre', DATA.hero.fr||'', DATA.hero[adminLang]||'', `DATA.hero[adminLang]=this.value;renderAll()`)+`
   </div>`;
+
+  // Home tab
+  h+=`<div class="admin-section"><div class="admin-sect-title">🏠 Onglet Accueil</div>
+    <label class="admin-toggle"><input type="checkbox" ${(DATA.homeTab&&DATA.homeTab.active)?'checked':''} onchange="if(!DATA.homeTab)DATA.homeTab={};DATA.homeTab.active=this.checked;toggleHomeTab();renderAll();renderAdminSection('__global')"><label>Activer l'onglet Accueil (en premier)</label></label>
+    <div class="af"><label class="al">Photo principale (4:3)</label>
+      <input class="ai" value="${(DATA.homeTab&&DATA.homeTab.photo)||''}" placeholder="https://... .jpg ou .webp"
+        oninput="if(!DATA.homeTab)DATA.homeTab={};DATA.homeTab.photo=this.value.trim();renderAll()">
+      <div style="font-size:11px;color:var(--text3);font-family:Jost,sans-serif;margin-top:4px">Format recommandé : 4:3, min 800px de large.</div>
+    </div>
+  </div>`;
+
+  // Schedule
+  h+=renderScheduleAdmin();
 
   // Intro
   const soc=DATA.social||{};
@@ -909,6 +1092,18 @@ function addCard(ti){
   else DATA.tabs[ti].cards.push({label:{fr:'Nouvelle carte',en:'New section'},dishes:[]});
   renderAll(); renderAdminSection(DATA.tabs[ti].id);
 }
+function toggleHomeTab(){
+  if(!DATA.homeTab) DATA.homeTab={active:false,photo:''};
+  const hasHome=DATA.tabs.some(t=>t.id==='__home');
+  if(DATA.homeTab.active && !hasHome){
+    DATA.tabs.unshift({id:'__home',label:{fr:'Accueil',en:'Home',es:'Inicio',it:'Casa',kr:'홈',jp:'ホーム'},cards:[]});
+    currentTabId='__home';
+  } else if(!DATA.homeTab.active && hasHome){
+    DATA.tabs=DATA.tabs.filter(t=>t.id!=='__home');
+    currentTabId=DATA.tabs[0]?.id||'huitres';
+  }
+}
+
 function addNewTab(){
   const id='tab_'+Date.now();
   DATA.tabs.push({id,label:{fr:'Nouvelle tab',en:'New tab'},cards:[{label:{fr:'À la carte',en:'À la carte'},dishes:[]}]});
@@ -990,6 +1185,13 @@ async function loadFromGitHub(){
     if(Array.isArray(json.specials) && json.specials.length>0) DATA.specials=json.specials;
     if(Array.isArray(json.pinnedDishes)) DATA.pinnedDishes=json.pinnedDishes;
     if(json.social && typeof json.social==='object') DATA.social=json.social;
+    if(json.homeTab && typeof json.homeTab==='object') DATA.homeTab=json.homeTab;
+    if(Array.isArray(json.schedule) && json.schedule.length>0) DATA.schedule=json.schedule;
+    // Restore home tab if it was active
+    if(DATA.homeTab&&DATA.homeTab.active){
+      const hasHome=DATA.tabs.some(t=>t.id==='__home');
+      if(!hasHome) DATA.tabs.unshift({id:'__home',label:{fr:'Accueil',en:'Home',es:'Inicio',it:'Casa',kr:'홈',jp:'ホーム'},cards:[]});
+    }
     currentTabId=DATA.tabs[0]?.id||'huitres';
     console.log('✓ Chargé depuis GitHub API — tabs:'+DATA.tabs.length+', specials actifs:'+DATA.specials.filter(s=>s.active).length+', intro:'+DATA.intro.active);
   }catch(e){ console.warn('GitHub load failed:', e.message); }
