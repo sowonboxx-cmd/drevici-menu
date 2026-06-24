@@ -205,7 +205,7 @@
                 "fr": "",
                 "en": ""
               },
-              "price": "67€",
+              "price": "",
               "img": "https://drevicioyster.com/wp-content/uploads/2026/06/IMG_3058-1-scaled.webp",
               "spicy": false,
               "vegan": true
@@ -292,6 +292,20 @@
               "img": "https://drevicioyster.com/wp-content/uploads/2026/06/bulots-hero2.webp",
               "spicy": false,
               "vegan": true
+            },
+            {
+              "name": {
+                "fr": "Baka",
+                "en": "New dish"
+              },
+              "desc": {
+                "fr": "",
+                "en": ""
+              },
+              "price": "66€",
+              "img": "https://drevicioyster.com/wp-content/uploads/2026/06/bulots-hero2.webp",
+              "spicy": false,
+              "vegan": false
             }
           ]
         }
