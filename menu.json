@@ -701,6 +701,42 @@
               "vegan": true
             }
           ]
+        },
+        {
+          "label": {
+            "fr": "Plaisir solitaire ",
+            "en": "New section"
+          },
+          "dishes": [
+            {
+              "name": {
+                "fr": "Solo champagne",
+                "en": "New dish"
+              },
+              "desc": {
+                "fr": "6 huîtres N°3, 1 coupe de champagne",
+                "en": ""
+              },
+              "price": "24€",
+              "img": "",
+              "spicy": false,
+              "vegan": false
+            },
+            {
+              "name": {
+                "fr": "Maître ",
+                "en": "New dish"
+              },
+              "desc": {
+                "fr": "6 huîtres N°3, 4 gambas",
+                "en": ""
+              },
+              "price": "22€",
+              "img": "",
+              "spicy": false,
+              "vegan": false
+            }
+          ]
         }
       ]
     }
