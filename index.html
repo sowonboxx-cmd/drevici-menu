@@ -890,24 +890,44 @@ const GH_BRANCH = 'main';
 
 function getToken(){ return localStorage.getItem('drevici_gh_token')||''; }
 function saveToken(v){ if(v) localStorage.setItem('drevici_gh_token',v); else localStorage.removeItem('drevici_gh_token'); }
+function getSha(){ return localStorage.getItem('drevici_gh_sha')||null; }
+function saveSha(s){ if(s) localStorage.setItem('drevici_gh_sha',s); }
 
+// ── Load from GitHub API (not CDN — always fresh, no 5min cache) ──
 async function loadFromGitHub(){
+  const token=getToken();
+  if(!token){ console.log('No token — mode local'); return; }
   try{
-    const url=`https://raw.githubusercontent.com/${GH_USER}/${GH_REPO}/${GH_BRANCH}/${GH_FILE}?t=${Date.now()}`;
-    const r=await fetch(url);
-    if(!r.ok){ console.log('menu.json absent — mode local'); return; }
-    const json=await r.json();
-    if(Array.isArray(json.tabs)){ DATA.tabs=json.tabs; DATA.tabs[0].isHome=true; }
-    if(json.hero) DATA.hero=json.hero;
-    if(json.intro) DATA.intro=json.intro;
-    if(Array.isArray(json.specials)) DATA.specials=json.specials;
+    const apiBase=`https://api.github.com/repos/${GH_USER}/${GH_REPO}/contents/${GH_FILE}`;
+    const headers={'Authorization':'token '+token,'Accept':'application/vnd.github.v3+json'};
+    const r=await fetch(apiBase+'?ref='+GH_BRANCH,{headers});
+    if(!r.ok){
+      if(r.status===404){ console.log('menu.json absent — premier lancement'); return; }
+      throw new Error('HTTP '+r.status);
+    }
+    const meta=await r.json();
+    // Save SHA for next publish (avoids a redundant GET)
+    if(meta.sha) saveSha(meta.sha);
+    // Decode base64 content → JSON
+    const raw=atob(meta.content.replace(/\n/g,''));
+    const bytes=Uint8Array.from(raw,ch=>ch.charCodeAt(0));
+    const jsonStr=new TextDecoder().decode(bytes);
+    const json=JSON.parse(jsonStr);
+    // Apply everything
+    if(Array.isArray(json.tabs) && json.tabs.length>0){
+      DATA.tabs=json.tabs;
+      DATA.tabs[0].isHome=true;
+    }
+    if(json.hero && typeof json.hero==='object') DATA.hero=json.hero;
+    if(json.intro && typeof json.intro==='object') DATA.intro=json.intro;
+    if(Array.isArray(json.specials) && json.specials.length>0) DATA.specials=json.specials;
     if(Array.isArray(json.pinnedDishes)) DATA.pinnedDishes=json.pinnedDishes;
-    // Always reset to first tab after load to avoid stale tab ID
     currentTabId=DATA.tabs[0]?.id||'huitres';
-    console.log('✓ GitHub — tabs:'+DATA.tabs.length+', specials:'+DATA.specials.filter(s=>s.active).length+', intro:'+DATA.intro.active);
+    console.log('✓ Chargé depuis GitHub API — tabs:'+DATA.tabs.length+', specials actifs:'+DATA.specials.filter(s=>s.active).length+', intro:'+DATA.intro.active);
   }catch(e){ console.warn('GitHub load failed:', e.message); }
 }
 
+// ── Publish to GitHub (always gets fresh SHA, stores it for next time) ──
 async function publishToGitHub(){
   const token=getToken();
   if(!token){ showToast('⚠️ Token GitHub manquant'); renderAdminSection('__global'); return; }
@@ -916,22 +936,38 @@ async function publishToGitHub(){
   try{
     const apiBase=`https://api.github.com/repos/${GH_USER}/${GH_REPO}/contents/${GH_FILE}`;
     const headers={'Authorization':'token '+token,'Content-Type':'application/json','Accept':'application/vnd.github.v3+json'};
-    // Get SHA
+
+    // Always get a fresh SHA from the API (never use stale cache)
     let sha=null;
-    const getR=await fetch(apiBase+'?t='+Date.now(),{headers});
-    if(getR.ok){ const meta=await getR.json(); sha=meta.sha||null; }
-    // Encode — use TextEncoder for full Unicode support
-    // Deep clone to get clean serializable object (no DOM refs)
-    const cleanData=JSON.parse(JSON.stringify(DATA));
-    const jsonStr=JSON.stringify(cleanData,null,2);
+    const getR=await fetch(apiBase+'?ref='+GH_BRANCH+'&t='+Date.now(),{headers,cache:'no-store'});
+    if(getR.ok){ const meta=await getR.json(); sha=meta.sha||null; saveSha(sha); }
+    else if(getR.status!==404){ throw new Error('Erreur SHA: HTTP '+getR.status); }
+
+    // Deep-clone DATA, serialize to JSON, encode to base64 (Unicode-safe)
+    const clean=JSON.parse(JSON.stringify(DATA));
+    const jsonStr=JSON.stringify(clean,null,2);
     const bytes=new TextEncoder().encode(jsonStr);
     let bin=''; bytes.forEach(b=>bin+=String.fromCharCode(b));
     const content=btoa(bin);
-    const body={message:'Menu update '+new Date().toLocaleString('fr-FR'),content,branch:GH_BRANCH};
+
+    const body={message:'Menu update — '+new Date().toLocaleString('fr-FR'),content,branch:GH_BRANCH};
     if(sha) body.sha=sha;
-    const putR=await fetch(apiBase,{method:'PUT',headers,body:JSON.stringify(body)});
-    if(!putR.ok){ const err=await putR.json(); throw new Error(err.message||'HTTP '+putR.status); }
-    showToast('✅ Publié sur GitHub !');
+
+    const putR=await fetch(apiBase,{method:'PUT',headers,body:JSON.stringify(body),cache:'no-store'});
+    if(!putR.ok){
+      const err=await putR.json();
+      // SHA conflict → retry with fresh SHA
+      if(putR.status===409||putR.status===422){
+        showToast('⏳ Conflit SHA, nouvelle tentative…');
+        setTimeout(publishToGitHub,1000);
+        return;
+      }
+      throw new Error(err.message||'HTTP '+putR.status);
+    }
+    const putData=await putR.json();
+    // Store the new SHA immediately so next publish doesn't need a GET
+    if(putData?.content?.sha) saveSha(putData.content.sha);
+    showToast('✅ Publié ! En ligne dans ~30s');
   }catch(e){
     console.error('Publish error:',e);
     showToast('❌ '+e.message);
