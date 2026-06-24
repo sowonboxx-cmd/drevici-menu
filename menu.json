@@ -111,41 +111,7 @@
         "en": "Today's menu"
       },
       "desc": {
-        "fr": "Huîtres gratinées • Duo Champagne • Rillettes à la truite de Bretagne",
-        "en": ""
-      },
-      "price": ""
-    },
-    {
-      "id": "midi",
-      "active": false,
-      "label": {
-        "fr": "Menu midi",
-        "en": "Lunch menu"
-      },
-      "title": {
-        "fr": "Menu Midi",
-        "en": "Lunch menu"
-      },
-      "desc": {
-        "fr": "",
-        "en": ""
-      },
-      "price": ""
-    },
-    {
-      "id": "soir",
-      "active": false,
-      "label": {
-        "fr": "Menu soir",
-        "en": "Evening menu"
-      },
-      "title": {
-        "fr": "Menu Soir",
-        "en": "Evening menu"
-      },
-      "desc": {
-        "fr": "",
+        "fr": "Huîtres gratinées • Duo Champagne • Rillettes à la truite",
         "en": ""
       },
       "price": ""
