@@ -654,7 +654,7 @@
       "cards": [
         {
           "label": {
-            "fr": "Magnifiques et savoureux",
+            "fr": "À partager ",
             "en": "À la carte"
           },
           "dishes": [
@@ -685,6 +685,20 @@
               "img": "https://drevicioyster.com/wp-content/uploads/2026/05/Huitres-04d.webp",
               "spicy": false,
               "vegan": false
+            },
+            {
+              "name": {
+                "fr": "Drevici ",
+                "en": "New dish"
+              },
+              "desc": {
+                "fr": "12 huîtres N°3, charcuterie bretonne, gambas, bulots, tartinade",
+                "en": ""
+              },
+              "price": "65€",
+              "img": "",
+              "spicy": false,
+              "vegan": true
             }
           ]
         }
