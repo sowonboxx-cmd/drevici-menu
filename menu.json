@@ -8,7 +8,7 @@
     "jp": "シーフード · ブルターニュ · パリ"
   },
   "intro": {
-    "active": true,
+    "active": false,
     "text": {
       "fr": "Bienvenue chez Drevici Oyster, un bar à huîtres breton au cœur de Paris.",
       "en": "Welcome to Drevici Oyster, a Breton oyster bar in the heart of Paris."
@@ -167,6 +167,20 @@
               "img": "https://drevicioyster.com/wp-content/uploads/2026/06/huitres-6-02apres.webp",
               "spicy": false,
               "vegan": true
+            },
+            {
+              "name": {
+                "fr": "Moussaillon",
+                "en": "New dish"
+              },
+              "desc": {
+                "fr": "Plateau exception",
+                "en": ""
+              },
+              "price": "53€",
+              "img": "https://drevicioyster.com/wp-content/uploads/2026/06/IMG_3058-1-scaled.webp",
+              "spicy": false,
+              "vegan": false
             }
           ]
         }
@@ -250,29 +264,8 @@
               "img": "https://drevicioyster.com/wp-content/uploads/2026/06/bulots-hero2.webp",
               "spicy": false,
               "vegan": true
-            },
-            {
-              "name": {
-                "fr": "Soupe de poisson",
-                "en": "New dish"
-              },
-              "desc": {
-                "fr": "Déclicieuse et naturelle",
-                "en": ""
-              },
-              "price": "43€",
-              "img": "https://drevicioyster.com/wp-content/uploads/2026/05/compo.webp",
-              "spicy": true,
-              "vegan": true
             }
           ]
-        },
-        {
-          "label": {
-            "fr": "Nouvelle carte",
-            "en": "New section"
-          },
-          "dishes": []
         }
       ]
     },
@@ -446,7 +439,21 @@
             },
             {
               "name": "Picpoul de Pinet",
-              "price": "8€"
+              "price": "8€",
+              "sizes": [
+                {
+                  "cl": "",
+                  "price": ""
+                },
+                {
+                  "cl": "",
+                  "price": ""
+                },
+                {
+                  "cl": "1",
+                  "price": ""
+                }
+              ]
             },
             {
               "name": {
@@ -523,13 +530,19 @@
                 "kr": "커피",
                 "jp": "コーヒー"
               },
-              "price": "2€"
+              "price": "2€",
+              "sizes": [
+                {
+                  "cl": "",
+                  "price": ""
+                }
+              ]
             }
           ]
         },
         {
           "label": {
-            "fr": "Vins Rouges",
+            "fr": "",
             "en": "New section"
           },
           "dishes": []
