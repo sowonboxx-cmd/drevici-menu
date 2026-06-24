@@ -115,7 +115,8 @@
         "en": ""
       },
       "price": "",
-      "showHome": false
+      "showHome": false,
+      "showFirst": false
     }
   ],
   "infoBanner": {
