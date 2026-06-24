@@ -13,14 +13,14 @@ body{background:var(--bg);font-family:'Jost',sans-serif;font-weight:400;font-siz
 /* ── LIGHTBOX ── */
 .lb{position:fixed;inset:0;background:rgba(0,0,0,0.88);z-index:1000;display:none;align-items:center;justify-content:center}
 .lb.open{display:flex}
-.lb-card{position:relative;width:min(420px,92vw);border-radius:16px;overflow:hidden;background:#fff}
-.lb img{width:100%;height:52vw;max-height:340px;object-fit:cover;display:block}
+.lb-card{position:relative;width:min(420px,92vw);border-radius:16px;overflow:hidden;background:#10285E}
+.lb img{width:100%;aspect-ratio:1/1;object-fit:cover;display:block}
 .lb-nav{position:absolute;top:50%;transform:translateY(-50%);background:rgba(0,0,0,0.28);border:none;color:#fff;width:38px;height:38px;border-radius:50%;cursor:pointer;font-size:24px;display:flex;align-items:center;justify-content:center;backdrop-filter:blur(4px);transition:background .15s;z-index:2}
 .lb-nav:hover{background:rgba(0,0,0,0.5)}
 .lb-prev{left:10px}.lb-next{right:10px}
 .lb-footer{background:#10285E;padding:16px 20px 20px}
-.lb-dish-name{font-family:'Cormorant Garamond',serif;font-size:20px;color:#fff;font-weight:700;line-height:1.2;text-align:center;margin-bottom:5px}
-.lb-dish-desc{font-size:12px;color:rgba(255,255,255,0.7);font-family:'Jost',sans-serif;font-weight:300;line-height:1.55;text-align:center;margin-bottom:10px}
+.lb-dish-name{font-family:'Cormorant Garamond',serif;font-size:22px;color:#fff;font-weight:700;line-height:1.2;text-align:center;margin-bottom:5px}
+.lb-dish-desc{font-size:14px;color:rgba(255,255,255,0.75);font-family:'Jost',sans-serif;font-weight:300;line-height:1.55;text-align:center;margin-bottom:10px}
 .lb-footer-row{display:flex;align-items:center;justify-content:center}
 .lb-count{font-size:11px;color:#10285E;letter-spacing:.12em;font-family:'Jost',sans-serif;background:rgba(255,255,255,0.9);padding:2px 10px;border-radius:20px}
 .lb-close{position:absolute;top:10px;right:10px;background:rgba(0,0,0,0.35);border:none;color:#fff;font-size:16px;cursor:pointer;line-height:1;width:28px;height:28px;border-radius:50%;display:flex;align-items:center;justify-content:center;z-index:3;backdrop-filter:blur(4px)}
@@ -127,6 +127,7 @@ body{background:var(--bg);font-family:'Jost',sans-serif;font-weight:400;font-siz
 .variant-name{font-family:'Cormorant Garamond',serif;font-size:15px;font-weight:400;color:var(--text)}
 .variant-price{font-size:12px;font-weight:500;color:var(--gold)}
 .bev-row{display:flex;justify-content:space-between;align-items:center;padding:10px 0;border-bottom:1px solid rgba(0,0,0,0.05)}
+.bev-sizes{font-size:12px;font-weight:300;color:var(--text2);font-family:'Jost',sans-serif;margin-top:2px}
 .bev-row:last-child{border-bottom:none;padding-bottom:0}
 .bev-name{font-family:'Cormorant Garamond',serif;font-size:16px;font-weight:400;color:var(--text)}
 .bev-price{font-size:12px;font-weight:500;color:var(--gold)}
@@ -554,12 +555,13 @@ function renderTabContent(tab,lbOffset){
 
       if(card.type==='bevs'){
         (card.items||[]).forEach(item=>{
-  const sizes=item.sizes||[];
-  const priceStr=sizes.length>0?sizes.map(s=>(s.cl?s.cl+'cl':'')+(s.cl&&s.price?' — ':'')+(s.price?s.price+'€':'')).join(' / '):(item.price||'');
-  html+=`<div class="bev-row"><div><span class="bev-name">${t(item.name)}</span>${t(item.desc)?`<div class="dish-desc" style="margin-top:2px">${t(item.desc)}</div>`:''}</div><span class="bev-price">${priceStr}</span></div>`;
-});
-        h+=`<button class="aadd" style="margin-top:4px" onclick="addBev(${ti},${ci})">+ Boisson</button>`;
-    } else if(card.type==='variants'){
+          const sizes=item.sizes||[];
+          // sizes display: "25cl / 50cl" in name area, "5€ / 17€" in price area
+          const clStr=sizes.length>0?sizes.filter(s=>s.cl).map(s=>s.cl+'cl').join(' / '):'';
+          const priceStr=sizes.length>0?sizes.filter(s=>s.price).map(s=>s.price+'€').join(' / '):(item.price||'');
+          html+=`<div class="bev-row"><div><span class="bev-name">${t(item.name)}</span>${clStr?`<div class="bev-sizes">${clStr}</div>`:''}</div><span class="bev-price">${priceStr}</span></div>`;
+        });
+      } else if(card.type==='variants'){
         // Render as dish row: name in navy + all flavours as description
         const flavours=(card.variants||[]).map(v=>t(v.name)).join(' · ');
         const price=card.variants&&card.variants[0]?card.variants[0].price:'';
@@ -782,7 +784,7 @@ function renderAdminTab(ti){
         h+=`<div class="admin-card" style="background:#fff;margin-top:4px" draggable="true" ondragstart="onDragBev(event,${ti},${ci},${ii})" ondragend="onDragEnd(event)" ondragover="onDragOver(event,${ti},${ci},${ii})" ondragleave="onDragLeave(event)" ondrop="onDropBev(event,${ti},${ci},${ii})">
           <div class="admin-card-hdr"><span class="drag-handle">⠿</span><span class="admin-card-num">Boisson ${ii+1}</span><button class="adel" onclick="askConfirm('Supprimer cette boisson ?',()=>delBev(${ti},${ci},${ii}))">×</button></div>
           <input class="ai" style="margin-bottom:4px" placeholder="${adminLang!=='fr'&&typeof item.name==='object'?item.name.fr||'Nom':'Nom'}" value="${typeof item.name==='object'?(item.name[adminLang]||''):item.name||''}" oninput="if(typeof DATA.tabs[${ti}].cards[${ci}].items[${ii}].name!=='object'){DATA.tabs[${ti}].cards[${ci}].items[${ii}].name={fr:DATA.tabs[${ti}].cards[${ci}].items[${ii}].name};}DATA.tabs[${ti}].cards[${ci}].items[${ii}].name[adminLang]=this.value;renderAll()">
-          <input class="ai" style="margin-bottom:6px" placeholder="${adminLang!=='fr'&&item.desc&&typeof item.desc==='object'?item.desc.fr||'Description':'Description (optionnel)'}" value="${item.desc?(typeof item.desc==='object'?item.desc[adminLang]||'':(item.desc||'')):''}" oninput="if(!Array.isArray(DATA.tabs[${ti}].cards[${ci}].items[${ii}].desc)&&typeof DATA.tabs[${ti}].cards[${ci}].items[${ii}].desc!=='object'){DATA.tabs[${ti}].cards[${ci}].items[${ii}].desc={fr:''};} if(typeof DATA.tabs[${ti}].cards[${ci}].items[${ii}].desc!=='object'){DATA.tabs[${ti}].cards[${ci}].items[${ii}].desc={fr:''};} DATA.tabs[${ti}].cards[${ci}].items[${ii}].desc[adminLang]=this.value;renderAll()">
+
           <div style="font-size:10px;letter-spacing:.1em;text-transform:uppercase;color:var(--text3);font-family:Jost,sans-serif;margin-bottom:4px">Tailles & prix</div>
           ${sizeRows}
           <button class="aadd" style="margin-top:2px" onclick="if(!Array.isArray(DATA.tabs[${ti}].cards[${ci}].items[${ii}].sizes)){DATA.tabs[${ti}].cards[${ci}].items[${ii}].sizes=[];}DATA.tabs[${ti}].cards[${ci}].items[${ii}].sizes.push({cl:'',price:''});renderAll();renderAdminSection(DATA.tabs[${ti}].id)">+ Taille</button>
