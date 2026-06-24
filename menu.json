@@ -644,6 +644,37 @@
           ]
         }
       ]
+    },
+    {
+      "id": "tab_1782264697487",
+      "label": {
+        "fr": "Plateaux",
+        "en": "New tab"
+      },
+      "cards": [
+        {
+          "label": {
+            "fr": "Magnifiques et savoureux",
+            "en": "À la carte"
+          },
+          "dishes": [
+            {
+              "name": {
+                "fr": "Capitaine",
+                "en": "New dish"
+              },
+              "desc": {
+                "fr": "12 huîtres N°3, 200gr de bulots, 6 gambas",
+                "en": ""
+              },
+              "price": "45€",
+              "img": "https://drevicioyster.com/wp-content/uploads/2026/05/Huitres-04d.webp",
+              "spicy": false,
+              "vegan": false
+            }
+          ]
+        }
+      ]
     }
   ]
 }
