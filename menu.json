@@ -193,7 +193,7 @@
               },
               "price": "67€",
               "img": "https://drevicioyster.com/wp-content/uploads/2026/05/ChatGPT-Image-May-7-2026-01_26_35-PM.png",
-              "spicy": true,
+              "spicy": false,
               "vegan": false
             }
           ]
@@ -278,20 +278,6 @@
               "img": "https://drevicioyster.com/wp-content/uploads/2026/06/bulots-hero2.webp",
               "spicy": false,
               "vegan": true
-            },
-            {
-              "name": {
-                "fr": "plateau de l'arnaque",
-                "en": "New dish"
-              },
-              "desc": {
-                "fr": "",
-                "en": ""
-              },
-              "price": "76€",
-              "img": "https://drevicioyster.com/wp-content/uploads/2026/06/IMG_3058-1-scaled.webp",
-              "spicy": false,
-              "vegan": false
             }
           ]
         }
