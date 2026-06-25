@@ -383,97 +383,48 @@
               "img": "https://drevicioyster.com/wp-content/uploads/2026/06/ALG02-1000x1000.webp",
               "spicy": false,
               "vegan": false
-            }
-          ]
-        },
-        {
-          "label": {
-            "fr": "Rillettes",
-            "en": "Rillettes (Groix & Nature)",
-            "es": "Rillettes (Groix & Nature)",
-            "it": "Rillettes (Groix & Nature)",
-            "kr": "리예트 (Groix & Nature)",
-            "jp": "リエット (Groix & Nature)"
-          },
-          "type": "variants",
-          "img": "https://drevicioyster.com/wp-content/uploads/2026/06/rillettes-2.webp",
-          "variants": [
-            {
-              "name": {
-                "fr": "Sardine",
-                "en": "Sardine",
-                "es": "Sardina",
-                "it": "Sardina",
-                "kr": "정어리",
-                "jp": "イワシ"
-              },
-              "price": "9€"
             },
             {
               "name": {
-                "fr": "Saint-Jacques",
-                "en": "Scallop",
-                "es": "Vieira",
-                "it": "Capasanta",
-                "kr": "가리비",
-                "jp": "ホタテ"
+                "fr": "Nature",
+                "en": ""
               },
-              "price": "9€"
+              "desc": {
+                "fr": "La version au naturel se suffit à elle-même sur un toast, elle est excellente avec du fromage ou à consommer directement dans une huître!",
+                "en": ""
+              },
+              "price": "9€",
+              "img": "",
+              "spicy": false,
+              "vegan": false
             },
             {
               "name": {
-                "fr": "Homard bleu",
-                "en": "Blue lobster",
-                "es": "Bogavante azul",
-                "it": "Astice blu",
-                "kr": "블루 랍스터",
-                "jp": "ブルーロブスター"
+                "fr": "Pomme et Miel",
+                "en": ""
               },
-              "price": "9€"
+              "desc": {
+                "fr": "Ce tartare sucré iodé original est parfait pour accompagner des toasts de chèvre chaud, avec tomme de brebis, avec une galette de blé noir, dans un camembert chaud.",
+                "en": ""
+              },
+              "price": "9€",
+              "img": "",
+              "spicy": false,
+              "vegan": false
             },
             {
               "name": {
-                "fr": "Truite",
-                "en": "Trout",
-                "es": "Trucha",
-                "it": "Trota",
-                "kr": "송어",
-                "jp": "トラウト"
+                "fr": "Caviar de nori",
+                "en": ""
               },
-              "price": "9€"
-            },
-            {
-              "name": {
-                "fr": "Maquereau",
-                "en": "Mackerel",
-                "es": "Caballa",
-                "it": "Sgombro",
-                "kr": "고등어",
-                "jp": "サバ"
+              "desc": {
+                "fr": "La Nori est l'or noir breton! C'est une algue d'une finesse imcomparable, difficile à récolter et à sécher",
+                "en": ""
               },
-              "price": "9€"
-            },
-            {
-              "name": {
-                "fr": "Ormeaux",
-                "en": "Abalone",
-                "es": "Orejo de mar",
-                "it": "Orecchie di mare",
-                "kr": "전복",
-                "jp": "アワビ"
-              },
-              "price": "9€"
-            },
-            {
-              "name": {
-                "fr": "Daurade",
-                "en": "Sea bream",
-                "es": "Dorada",
-                "it": "Orata",
-                "kr": "도미",
-                "jp": "タイ"
-              },
-              "price": "9€"
+              "price": "9€",
+              "img": "",
+              "spicy": false,
+              "vegan": false
             }
           ]
         },
@@ -564,6 +515,20 @@
               },
               "price": "9€",
               "img": "https://domainerosalina.com/wp-content/uploads/2026/06/rillettes-ormeaux.webp",
+              "spicy": false,
+              "vegan": false
+            },
+            {
+              "name": {
+                "fr": "Dorade Combava & Gingembre",
+                "en": ""
+              },
+              "desc": {
+                "fr": "Riches en chair de Dorade (35%) issue de la Pêche Bretonne, ces rillettes sont cuisinées au combava et gingembre pour retrouver en bouche ce goût si frais et légèrement citronné",
+                "en": ""
+              },
+              "price": "9€",
+              "img": "https://domainerosalina.com/wp-content/uploads/2026/06/rillettes-daurade.webp",
               "spicy": false,
               "vegan": false
             }
