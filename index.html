@@ -158,6 +158,43 @@ body{background:var(--bg);font-family:'Jost',sans-serif;font-weight:400;font-siz
 .special-banner-text{font-size:12px;font-weight:400;font-family:'Open Sans',sans-serif;color:rgba(255,255,255,0.7);line-height:1.6}
 .special-banner-price{font-size:15px;font-weight:500;color:var(--gold);margin-top:8px}
 
+/* ── SOCIAL TEMPLATES ── */
+.soc-tabs{display:flex;gap:8px;margin-bottom:16px;flex-wrap:wrap}
+.soc-tab-btn{padding:7px 14px;border-radius:20px;border:1px solid var(--border);background:#fff;font-size:12px;font-weight:500;cursor:pointer;color:var(--text2);transition:all .15s;font-family:Jost,sans-serif}
+.soc-tab-btn.active{background:var(--navy);color:#fff;border-color:var(--navy)}
+.soc-preview-wrap{display:flex;gap:16px;align-items:flex-start;flex-wrap:wrap;margin-bottom:16px}
+.soc-canvas-wrap{flex:1;min-width:260px}
+.soc-canvas-label{font-size:10px;font-weight:600;letter-spacing:.12em;text-transform:uppercase;color:var(--text3);margin-bottom:6px;font-family:Jost,sans-serif}
+.soc-frame{width:100%;border-radius:var(--r);overflow:hidden;border:1px solid var(--border);position:relative}
+.soc-frame.ratio-1{aspect-ratio:1}
+.soc-frame.ratio-916{aspect-ratio:9/16}
+.soc-controls{flex:1;min-width:220px}
+.soc-caption-box{background:#f7f7f5;border-radius:var(--r);border:1px solid var(--border);padding:14px;margin-top:12px;position:relative}
+.soc-caption-text{font-size:12px;line-height:1.7;color:var(--text);font-family:Jost,sans-serif;white-space:pre-wrap}
+.soc-copy-btn{position:absolute;top:10px;right:10px;background:var(--navy);color:#fff;border:none;border-radius:6px;font-size:10px;padding:4px 10px;cursor:pointer;font-family:Jost,sans-serif}
+.soc-dl-row{display:flex;gap:8px;margin-top:10px}
+.soc-dl-btn{flex:1;padding:11px;border:none;border-radius:var(--rs);font-size:12px;font-weight:600;cursor:pointer;font-family:Jost,sans-serif;letter-spacing:.04em}
+.soc-dl-btn.post{background:var(--navy);color:#fff}
+.soc-dl-btn.story{background:var(--gold);color:#fff}
+
+/* Template internals */
+.st-wrap{width:100%;height:100%;position:relative;overflow:hidden;display:flex;flex-direction:column}
+.st-bg-navy{background:#10285E}
+.st-bg-red{background:#B31217}
+.st-bg-dark{background:#0a1a2e}
+.st-bg-cream{background:#F7F4EF}
+.st-logo{max-height:36px;width:auto;object-fit:contain;display:block}
+.st-logo-sm{max-height:24px;width:auto;object-fit:contain;display:block;opacity:.7}
+.st-title{font-family:"Cormorant Garamond",serif;font-weight:700;color:#fff;line-height:1.1}
+.st-sub{font-family:"Open Sans",sans-serif;color:rgba(255,255,255,.75);line-height:1.5}
+.st-gold{color:#C6A24A}
+.st-badge{display:inline-block;background:#C6A24A;color:#fff;font-family:"Open Sans",sans-serif;font-weight:600;letter-spacing:.1em;text-transform:uppercase}
+.st-divider{width:40px;height:2px;background:#C6A24A}
+.st-overlay{position:absolute;inset:0;background:linear-gradient(to top,rgba(10,26,46,.95) 0%,rgba(10,26,46,.4) 60%,transparent 100%)}
+.st-photo{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
+.st-content{position:relative;z-index:1;display:flex;flex-direction:column;height:100%}
+.st-hashtags{font-family:"Open Sans",sans-serif;color:rgba(255,255,255,.45);font-size:.65em;letter-spacing:.06em}
+
 /* ── HOME TAB ── */
 .home-photo{width:100%;aspect-ratio:4/3;object-fit:cover;border-radius:var(--r);display:block;margin-bottom:0}
 .home-photo-wrap{border-radius:var(--r);overflow:hidden;border:1px solid var(--border);margin-bottom:0}
@@ -1059,6 +1096,7 @@ function renderAdminTabDd(){
   const dd=document.getElementById('adminTabDd');
   dd.innerHTML='<option value="__global">⚙️ Global</option>'
     +DATA.tabs.map(tb=>`<option value="${tb.id}"${tb.id===adminCurrentTab?' selected':''}>${t(tb.label)}</option>`).join('')
+    +'<option value="__social">📲 Réseaux sociaux</option>'
     +'<option value="__reorder">↕ Réordonner les tabs</option>'
     +'<option value="__addtab">+ Nouvelle tab</option>';
   dd.value=adminCurrentTab;
@@ -1067,6 +1105,7 @@ function renderAdminTabDd(){
 function adminGoTab(val){
   if(val==='__addtab'){ addNewTab(); return; }
   if(val==='__reorder'){ adminCurrentTab='__reorder'; renderAdminSection('__reorder'); return; }
+  if(val==='__social'){ adminCurrentTab='__social'; renderAdminSection('__social'); return; }
   adminCurrentTab=val;
   renderAdminSection(val);
 }
@@ -1084,6 +1123,8 @@ function renderAdminSection(tid){
     body.innerHTML=renderAdminGlobal()+adminSaveBar();
   } else if(tid==='__home'){
     body.innerHTML=renderAdminHomeTab()+adminSaveBar();
+  } else if(tid==='__social'){
+    body.innerHTML=renderSocialSection()+adminSaveBar();
   } else if(tid==='__reorder'){
     body.innerHTML=renderTabReorder();
   } else {
@@ -1478,6 +1519,283 @@ async function loadFromGitHub(){
 }
 
 // ── Publish to GitHub (always gets fresh SHA, stores it for next time) ──
+// ═══════════════════════════════════════════
+// SOCIAL TEMPLATES
+// ═══════════════════════════════════════════
+
+const SOCIAL_TEMPLATES = [
+  { id:'arrivage', label:'🦪 Arrivage' },
+  { id:'plat',     label:'🍽 Plat / Menu' },
+  { id:'event',    label:'🎵 Événement' },
+  { id:'info',     label:'ℹ️ Info / Fermeture' },
+];
+
+let socState = {
+  tplId: 'arrivage',
+  titre: '',
+  desc: '',
+  extra: '',   // prix, date selon template
+  photo: '',
+  format: 'post', // post | story
+};
+
+function renderSocialSection(){
+  const s = socState;
+  const tabBtns = SOCIAL_TEMPLATES.map(tp=>
+    `<button class="soc-tab-btn${s.tplId===tp.id?' active':''}" onclick="socPickTpl('${tp.id}')">${tp.label}</button>`
+  ).join('');
+
+  const extraField = s.tplId==='plat'
+    ? `<div class="af"><label class="al">Prix (optionnel)</label><input class="ai ai-sm" value="${s.extra}" placeholder="26€ / pers." oninput="socState.extra=this.value;renderSocPreview()"></div>`
+    : s.tplId==='event'
+    ? `<div class="af"><label class="al">Date & heure</label><input class="ai ai-sm" value="${s.extra}" placeholder="Samedi 28 juin · 19h" oninput="socState.extra=this.value;renderSocPreview()"></div>`
+    : '';
+
+  const caption = buildCaption();
+
+  return `<div class="admin-section"><div class="admin-sect-title">📲 Créer un visuel réseaux sociaux</div>
+    <div class="soc-tabs">${tabBtns}</div>
+
+    <div class="soc-preview-wrap">
+      <div class="soc-controls">
+        <div class="af"><label class="al">Titre</label>
+          <input class="ai" value="${s.titre}" placeholder="${tplPlaceholder(s.tplId,'titre')}" oninput="socState.titre=this.value;renderSocPreview()">
+        </div>
+        <div class="af"><label class="al">Description</label>
+          <textarea class="ai" rows="3" style="-webkit-appearance:none;resize:vertical" placeholder="${tplPlaceholder(s.tplId,'desc')}" oninput="socState.desc=this.value;renderSocPreview()">${s.desc}</textarea>
+        </div>
+        ${extraField}
+        <div class="af"><label class="al">Photo (URL ou upload)</label>
+          <input class="ai" value="${s.photo}" placeholder="https://... ou coller une URL image" oninput="socState.photo=this.value;renderSocPreview()">
+          <input type="file" accept="image/*" style="margin-top:6px;font-size:12px;font-family:Jost,sans-serif" onchange="socLoadFile(this)">
+        </div>
+        <div class="af"><label class="al">Format</label>
+          <div style="display:flex;gap:8px">
+            <label style="display:flex;align-items:center;gap:5px;font-size:12px;cursor:pointer"><input type="radio" name="socfmt" value="post" ${s.format==='post'?'checked':''} onchange="socState.format='post';renderSocPreview()"> Post (1:1)</label>
+            <label style="display:flex;align-items:center;gap:5px;font-size:12px;cursor:pointer"><input type="radio" name="socfmt" value="story" ${s.format==='story'?'checked':''} onchange="socState.format='story';renderSocPreview()"> Story (9:16)</label>
+          </div>
+        </div>
+      </div>
+
+      <div class="soc-canvas-wrap">
+        <div class="soc-canvas-label">Aperçu</div>
+        <div class="soc-frame ratio-${s.format==='story'?'916':'1'}" id="socFrame">
+          ${buildTplHTML(s.tplId, s.titre, s.desc, s.extra, s.photo, s.format)}
+        </div>
+        <div class="soc-dl-row">
+          <button class="soc-dl-btn post" onclick="downloadSocImg('post')">⬇ Post 1:1</button>
+          <button class="soc-dl-btn story" onclick="downloadSocImg('story')">⬇ Story 9:16</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="soc-caption-box">
+      <div class="soc-canvas-label" style="margin-bottom:8px">Caption générée</div>
+      <div class="soc-caption-text" id="socCaption">${caption}</div>
+      <button class="soc-copy-btn" onclick="navigator.clipboard.writeText(document.getElementById('socCaption').textContent);showToast('Caption copiée !')">Copier</button>
+    </div>
+  </div>`;
+}
+
+function tplPlaceholder(id, field){
+  const map = {
+    arrivage: { titre:'Arrivage du jour', desc:'Fraîches, iodées, directement du Morbihan…' },
+    plat:     { titre:'Huîtres Spéciales N°2', desc:'Élevées 4 ans en eau claire, goût de noisette…' },
+    event:    { titre:'DJ Set · Nuit Bretonne', desc:"Venez découvrir notre sélection d'huîtres en musique…" },
+    info:     { titre:'Fermeture exceptionnelle', desc:'Nous serons fermés le 14 juillet. À très vite !' },
+  };
+  return map[id]?.[field] || '';
+}
+
+function buildTplHTML(id, titre, desc, extra, photo, format){
+  const isStory = format === 'story';
+  const restName = getRestaurantName() || 'Drevici Oyster';
+  const logoUrl = getRestaurantLogo() || 'https://drevicioyster.com/wp-content/uploads/2026/06/Logo-transparent.png';
+  const hs = getScheduleSummary();
+  const fs = isStory ? '1.4' : '1'; // scale factor for story
+
+  if(id === 'arrivage'){
+    return `<div class="st-wrap st-bg-navy" style="padding:${isStory?'8%':'6%'};justify-content:space-between">
+      <div style="display:flex;justify-content:center;padding-bottom:${isStory?'6%':'4%'}">
+        <img class="st-logo" src="${logoUrl}" style="max-height:${isStory?'48px':'36px'}" onerror="this.style.display='none'">
+      </div>
+      ${photo?`<div style="position:relative;border-radius:10px;overflow:hidden;aspect-ratio:1;width:100%;max-height:${isStory?'45%':'50%'}"><img src="${photo}" style="width:100%;height:100%;object-fit:cover"><div style="position:absolute;inset:0;background:linear-gradient(to top,rgba(13,43,77,.6),transparent)"></div></div>`:'<div style="flex:1;background:rgba(255,255,255,.06);border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:3em;opacity:.4">🦪</div>'}
+      <div style="padding-top:${isStory?'6%':'4%'}">
+        <div class="st-badge" style="font-size:${isStory?'.65em':'.55em'};padding:3px 10px;border-radius:4px;margin-bottom:8px">ARRIVAGE DU JOUR</div>
+        <div class="st-divider" style="margin-bottom:10px"></div>
+        <div class="st-title st-gold" style="font-size:${isStory?'1.8em':'1.5em'};margin-bottom:8px">${titre||'Nos Huîtres du Jour'}</div>
+        <div class="st-sub" style="font-size:${isStory?'.75em':'.65em'};margin-bottom:12px">${desc||'Fraîches · Directement du Morbihan'}</div>
+        <div class="st-hashtags" style="font-size:${isStory?'.6em':'.52em'}">#huitres #paris #morbihan #${restName.toLowerCase().replace(/[^a-z]/g,'')}</div>
+      </div>
+      <div style="display:flex;justify-content:space-between;align-items:center;padding-top:${isStory?'4%':'3%'};border-top:1px solid rgba(255,255,255,.15);margin-top:${isStory?'4%':'3%'}">
+        <div style="font-size:${isStory?'.6em':'.52em'};color:rgba(255,255,255,.5);font-family:'Open Sans',sans-serif">${hs}</div>
+      </div>
+    </div>`;
+  }
+
+  if(id === 'plat'){
+    return `<div class="st-wrap st-bg-dark" style="position:relative;justify-content:flex-end">
+      ${photo?`<img class="st-photo" src="${photo}"><div class="st-overlay"></div>`:'<div style="position:absolute;inset:0;background:radial-gradient(circle at 50% 30%,rgba(198,162,74,.15),transparent 70%)"></div>'}
+      <div class="st-content" style="padding:${isStory?'8%':'6%'};justify-content:flex-end">
+        <div style="display:flex;justify-content:flex-end;margin-bottom:auto;padding-top:${isStory?'4%':'3%'}">
+          <img class="st-logo-sm" src="${logoUrl}" style="max-height:${isStory?'28px':'22px'}" onerror="this.style.display='none'">
+        </div>
+        <div>
+          <div class="st-badge" style="font-size:${isStory?'.6em':'.52em'};padding:2px 8px;border-radius:3px;margin-bottom:10px">À LA CARTE</div>
+          <div class="st-title" style="font-size:${isStory?'2em':'1.6em'};margin-bottom:8px">${titre||'Fine de Claire'}</div>
+          <div class="st-sub" style="font-size:${isStory?'.75em':'.65em'};margin-bottom:${extra?'12px':'0'}">${desc||'Élevées en eau claire · Goût de noisette'}</div>
+          ${extra?`<div style="font-family:'Cormorant Garamond',serif;font-size:${isStory?'2em':'1.6em'};font-weight:700;color:#C6A24A;margin-bottom:8px">${extra}</div>`:''}
+          <div class="st-divider" style="margin-bottom:10px"></div>
+          <div class="st-hashtags" style="font-size:${isStory?'.6em':'.52em'}">#huitres #finedeclaire #paris #morbihan</div>
+        </div>
+      </div>
+    </div>`;
+  }
+
+  if(id === 'event'){
+    return `<div class="st-wrap st-bg-red" style="padding:${isStory?'8%':'6%'};justify-content:space-between;align-items:center;text-align:center">
+      <div>
+        <img class="st-logo" src="${logoUrl}" style="max-height:${isStory?'44px':'32px'};margin:0 auto" onerror="this.style.display='none'">
+      </div>
+      <div>
+        <div style="font-family:'Open Sans',sans-serif;font-size:${isStory?'.65em':'.55em'};letter-spacing:.2em;text-transform:uppercase;color:rgba(255,255,255,.7);margin-bottom:12px">ÉVÉNEMENT</div>
+        <div class="st-title" style="font-size:${isStory?'2em':'1.7em'};margin-bottom:16px">${titre||'Soirée Spéciale'}</div>
+        ${extra?`<div class="st-badge" style="font-size:${isStory?'.75em':'.65em'};padding:6px 16px;border-radius:20px;margin-bottom:14px">${extra}</div>`:''}
+        <div class="st-divider" style="margin:0 auto 14px"></div>
+        <div class="st-sub" style="font-size:${isStory?'.75em':'.65em'}">${desc||'Une soirée unique au cœur de Paris'}</div>
+      </div>
+      <div style="text-align:center">
+        <div style="font-size:${isStory?'.6em':'.52em'};color:rgba(255,255,255,.6);font-family:'Open Sans',sans-serif;margin-bottom:4px">${restName}</div>
+        <div class="st-hashtags" style="font-size:${isStory?'.58em':'.5em'}">#drevicioyster #paris #evenement #huitres</div>
+      </div>
+    </div>`;
+  }
+
+  // info / fermeture
+  return `<div class="st-wrap st-bg-navy" style="padding:${isStory?'8%':'6%'};justify-content:center;align-items:center;text-align:center">
+    <div>
+      <img class="st-logo" src="${logoUrl}" style="max-height:${isStory?'52px':'40px'};margin:0 auto ${isStory?'10%':'8%'}" onerror="this.style.display='none'">
+      <div class="st-divider" style="margin:0 auto ${isStory?'8%':'6%'}"></div>
+      <div class="st-title" style="font-size:${isStory?'1.7em':'1.4em'};margin-bottom:${isStory?'6%':'5%'}">${titre||'Information importante'}</div>
+      <div class="st-sub" style="font-size:${isStory?'.8em':'.68em'};margin-bottom:${isStory?'8%':'6%'}">${desc||'Nous vous informons de...'}</div>
+      <div class="st-divider" style="margin:0 auto ${isStory?'6%':'5%'}"></div>
+      <div style="font-size:${isStory?'.62em':'.54em'};color:rgba(255,255,255,.5);font-family:'Open Sans',sans-serif;line-height:1.6">${hs}<br>${restName}</div>
+    </div>
+  </div>`;
+}
+
+function getScheduleSummary(){
+  const sch = DATA.schedule||[];
+  const open = sch.filter(d=>(d.services||[]).length>0||(d.open!=null));
+  if(!open.length) return '';
+  const names = open.map(d=>d.day.substring(0,3)).join(' · ');
+  const firstSvc = (open[0].services||[])[0] || open[0];
+  if(!firstSvc||firstSvc.open==null) return '';
+  return `${names} · ${firstSvc.open}h – ${firstSvc.close>12?firstSvc.close-24||firstSvc.close:firstSvc.close}h`;
+}
+
+function buildCaption(){
+  const s = socState;
+  const restName = getRestaurantName() || 'Drevici Oyster';
+  const hs = getScheduleSummary();
+  const hashtags = '#huitres #paris #morbihan #fruitsdemer #drevicioyster #directproducteur';
+
+  if(!s.titre && !s.desc) return '← Remplissez le titre et la description pour générer la caption.';
+
+  if(s.tplId === 'arrivage'){
+    return `🦪 ${s.titre||'Arrivage du jour'}
+
+${s.desc||''}
+
+Fraîches, iodées, directement de nos parcs en Morbihan. Élevées à la main, livrées à Paris le jour même.
+
+📍 ${restName} · Paris
+🕐 ${hs||'Mar–Sam · 17h–2h'}
+📩 Réservation via le lien en bio
+
+${hashtags}`;
+  }
+  if(s.tplId === 'plat'){
+    return `✨ ${s.titre||'À la carte'}${s.extra?' — '+s.extra:''}
+
+${s.desc||''}
+
+Découvrez notre sélection d'huîtres et fruits de mer, directement de nos producteurs bretons.
+
+📍 ${restName} · Paris
+🕐 ${hs||'Mar–Sam · 17h–2h'}
+🔗 Réservez via le lien en bio
+
+${hashtags} #finedeclaire`;
+  }
+  if(s.tplId === 'event'){
+    const extraLine = s.extra ? '\u{1F4C5} '+s.extra+'\n' : '';
+    return `\u{1F389} ${s.titre||'\u00C9v\u00E9nement'}\n${extraLine}\n${s.desc||''}\n\nR\u00E9servez vite votre table \u2014 places limit\u00E9es !\n\n\u{1F4CD} ${restName} \u00B7 Paris\n\u{1F517} Lien en bio\n\n${hashtags} #evenement #soireeparis`;
+  }
+  return `ℹ️ ${s.titre||'Information'}
+
+${s.desc||''}
+
+Merci de votre compréhension. Nous avons hâte de vous retrouver !
+
+📍 ${restName} · Paris
+🕐 ${hs||'Mar–Sam · 17h–2h'}
+
+${hashtags}`;
+}
+
+function socPickTpl(id){
+  socState.tplId = id;
+  socState.extra = '';
+  renderAdminSection('__social');
+}
+
+function socLoadFile(input){
+  if(!input.files||!input.files[0]) return;
+  const reader = new FileReader();
+  reader.onload = e => { socState.photo = e.target.result; renderSocPreview(); };
+  reader.readAsDataURL(input.files[0]);
+}
+
+function renderSocPreview(){
+  const frame = document.getElementById('socFrame');
+  const cap   = document.getElementById('socCaption');
+  if(frame){
+    frame.className = 'soc-frame ratio-'+(socState.format==='story'?'916':'1');
+    frame.innerHTML = buildTplHTML(socState.tplId, socState.titre, socState.desc, socState.extra, socState.photo, socState.format);
+  }
+  if(cap) cap.textContent = buildCaption();
+}
+
+function downloadSocImg(fmt){
+  const s = socState;
+  const prevFmt = s.format;
+  s.format = fmt;
+
+  // Create offscreen div
+  const size = fmt==='story' ? {w:1080,h:1920} : {w:1080,h:1080};
+  const div = document.createElement('div');
+  div.style.cssText = `position:fixed;left:-9999px;top:0;width:${size.w}px;height:${size.h}px;overflow:hidden;z-index:-1`;
+  div.innerHTML = buildTplHTML(s.tplId, s.titre, s.desc, s.extra, s.photo, fmt);
+  document.body.appendChild(div);
+
+  // Use html2canvas if available, else fallback message
+  if(typeof html2canvas !== 'undefined'){
+    html2canvas(div, {width:size.w, height:size.h, scale:1, useCORS:true, allowTaint:true}).then(canvas=>{
+      const a = document.createElement('a');
+      a.href = canvas.toDataURL('image/png');
+      a.download = `drevici-${s.tplId}-${fmt}.png`;
+      a.click();
+      document.body.removeChild(div);
+      s.format = prevFmt;
+    }).catch(()=>{ document.body.removeChild(div); showToast('Erreur export — vérifiez les CORS des images'); });
+  } else {
+    document.body.removeChild(div);
+    s.format = prevFmt;
+    showToast('⚠ html2canvas non chargé — ajoutez le script');
+  }
+}
+
 // ═══════════════════════════════════════════
 // EXPORT CSV & PDF
 // ═══════════════════════════════════════════
