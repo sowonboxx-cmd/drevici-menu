@@ -524,6 +524,20 @@
               "img": "https://domainerosalina.com/wp-content/uploads/2026/06/rillettes-homard.webp",
               "spicy": false,
               "vegan": false
+            },
+            {
+              "name": {
+                "fr": "Maquereau au Poivre de Sichuan",
+                "en": ""
+              },
+              "desc": {
+                "fr": "Associée au Poivre de Sichuan, un poivre très aromatique, cette recette riche en filets de Maquereau (56%) vous fera voyager le temps d'un apéritif.",
+                "en": ""
+              },
+              "price": "9€",
+              "img": "https://domainerosalina.com/wp-content/uploads/2026/06/rillettes-maquerau-e1782420706820.webp",
+              "spicy": false,
+              "vegan": false
             }
           ]
         }
