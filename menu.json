@@ -364,7 +364,7 @@
           "dishes": [
             {
               "name": {
-                "fr": "Tartare d'algues (Begood Alg)",
+                "fr": "Tartare d'algues",
                 "en": "Seaweed tartare (Begood Alg)",
                 "es": "Tartar de algas (Begood Alg)",
                 "it": "Tartare di alghe (Begood Alg)",
@@ -388,7 +388,7 @@
         },
         {
           "label": {
-            "fr": "Rillettes (Groix & Nature)",
+            "fr": "Rillettes",
             "en": "Rillettes (Groix & Nature)",
             "es": "Rillettes (Groix & Nature)",
             "it": "Rillettes (Groix & Nature)",
