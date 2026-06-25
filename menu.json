@@ -479,7 +479,7 @@
         },
         {
           "label": {
-            "fr": "Rillettes de poissons",
+            "fr": "Rillettes de poissons (Groix & Nature)",
             "en": "New section"
           },
           "dishes": [
@@ -492,7 +492,21 @@
                 "fr": "Élaborée à partir de truites élevées, filetées et fumées en Bretagne",
                 "en": ""
               },
-              "price": "",
+              "price": "9€",
+              "img": "",
+              "spicy": false,
+              "vegan": false
+            },
+            {
+              "name": {
+                "fr": "Saint-Jacques à la bretonne",
+                "en": ""
+              },
+              "desc": {
+                "fr": "Exquise de rillettes de Noix Saint Jacques cuisinées à la bretonne.",
+                "en": ""
+              },
+              "price": "9€",
               "img": "",
               "spicy": false,
               "vegan": false
