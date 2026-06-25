@@ -390,7 +390,7 @@
                 "en": ""
               },
               "desc": {
-                "fr": "La version au naturel se suffit à elle-même sur un toast, elle est excellente avec du fromage ou à consommer directement dans une huître!",
+                "fr": "La version au naturel est excellente avec du fromage ou à consommer directement dans une huître",
                 "en": ""
               },
               "price": "9€",
@@ -555,7 +555,7 @@
                 "en": "New dish"
               },
               "desc": {
-                "fr": "12 huîtres N°3, 200gr de bulots, 6 gambas de Madagascar",
+                "fr": "12 huîtres N°3, 200gr de bulots, 6 gambas",
                 "en": ""
               },
               "price": "45€",
@@ -589,7 +589,7 @@
               "price": "65€",
               "img": "https://domainerosalina.com/wp-content/uploads/2026/06/illus-poto.webp",
               "spicy": false,
-              "vegan": false
+              "vegan": true
             }
           ]
         },
@@ -615,29 +615,29 @@
             },
             {
               "name": {
-                "fr": "Mousaillon",
-                "en": ""
+                "fr": "Maître ",
+                "en": "New dish"
               },
               "desc": {
-                "fr": "3 huîtres N°3, 50gr de bulots, 3 gambas de Madagascar",
+                "fr": "6 huîtres N°3, 4 gambas",
                 "en": ""
               },
               "price": "22€",
-              "img": "",
+              "img": "https://domainerosalina.com/wp-content/uploads/2026/06/illus-espresso.webp",
               "spicy": false,
               "vegan": false
             },
             {
               "name": {
-                "fr": "Matelot",
-                "en": "New dish"
-              },
-              "desc": {
-                "fr": "6 huîtres N°3, 4 gambas de Madagascar",
+                "fr": "Miam",
                 "en": ""
               },
-              "price": "15€",
-              "img": "https://domainerosalina.com/wp-content/uploads/2026/06/illus-espresso.webp",
+              "desc": {
+                "fr": "On va boiire",
+                "en": ""
+              },
+              "price": "78€",
+              "img": "",
               "spicy": false,
               "vegan": false
             }
