@@ -354,7 +354,7 @@
       "cards": [
         {
           "label": {
-            "fr": "À tartiner",
+            "fr": "Tartare d'algues",
             "en": "To spread",
             "es": "Para untar",
             "it": "Da spalmare",
@@ -364,7 +364,7 @@
           "dishes": [
             {
               "name": {
-                "fr": "Tartare d'algues",
+                "fr": "Soleil (Poivrons grillés et paprika)",
                 "en": "Seaweed tartare (Begood Alg)",
                 "es": "Tartar de algas (Begood Alg)",
                 "it": "Tartare di alghe (Begood Alg)",
@@ -372,7 +372,7 @@
                 "jp": "海藻タルタル (Begood Alg)"
               },
               "desc": {
-                "fr": "Pomme et miel · Poivrons grillés et paprika · Caviar de nori · Soleil",
+                "fr": "Tartare d'algues (4 algues) poivrons grillés et paprika.",
                 "en": "Apple & honey · Roasted pepper & paprika · Nori caviar · Sun",
                 "es": "Manzana y miel · Pimientos y páprika · Caviar nori · Sol",
                 "it": "Mela e miele · Peperoni e paprika · Caviale nori · Sole",
