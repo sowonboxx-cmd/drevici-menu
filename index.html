@@ -1792,27 +1792,41 @@ function downloadSocImg(fmt){
   const prevFmt = s.format;
   s.format = fmt;
 
-  // Create offscreen div
   const size = fmt==='story' ? {w:1080,h:1920} : {w:1080,h:1080};
+
+  // Render at preview size (matches the visible frame) then scale up
+  // Preview frame is ~800px wide max, we render at that width and scale to 1080
+  const renderW = fmt==='story' ? 405 : 400; // 9:16 → 405×720, 1:1 → 400×400
+  const renderH = fmt==='story' ? 720 : 400;
+  const scaleF  = size.w / renderW; // ~2.7x → produces 1080px output
+
   const div = document.createElement('div');
-  div.style.cssText = `position:fixed;left:-9999px;top:0;width:${size.w}px;height:${size.h}px;overflow:hidden;z-index:-1`;
+  div.style.cssText = `position:fixed;left:-9999px;top:0;width:${renderW}px;height:${renderH}px;overflow:hidden;z-index:-1;font-size:16px`;
   div.innerHTML = buildTplHTML(s.tplId, s.titre, s.desc, s.extra, s.photo, fmt);
   document.body.appendChild(div);
 
-  // Use html2canvas if available, else fallback message
   if(typeof html2canvas !== 'undefined'){
-    html2canvas(div, {width:size.w, height:size.h, scale:1, useCORS:true, allowTaint:true}).then(canvas=>{
+    showToast('Export en cours…');
+    html2canvas(div, {
+      width: renderW,
+      height: renderH,
+      scale: scaleF,
+      useCORS: true,
+      allowTaint: true,
+      logging: false
+    }).then(canvas=>{
       const a = document.createElement('a');
       a.href = canvas.toDataURL('image/png');
       a.download = `drevici-${s.tplId}-${fmt}.png`;
       a.click();
       document.body.removeChild(div);
       s.format = prevFmt;
-    }).catch(()=>{ document.body.removeChild(div); showToast('Erreur export — vérifiez les CORS des images'); });
+      showToast('✓ Image exportée !');
+    }).catch(()=>{ document.body.removeChild(div); s.format=prevFmt; showToast('Erreur export'); });
   } else {
     document.body.removeChild(div);
     s.format = prevFmt;
-    showToast('⚠ html2canvas non chargé — ajoutez le script');
+    showToast('⚠ html2canvas non chargé');
   }
 }
 
