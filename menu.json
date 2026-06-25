@@ -404,7 +404,7 @@
                 "en": ""
               },
               "desc": {
-                "fr": "Ce tartare sucré iodé original est parfait pour accompagner des toasts de chèvre chaud, avec tomme de brebis, avec une galette de blé noir, dans un camembert chaud.",
+                "fr": "Parfait pour accompagner des toasts de chèvre chaud, avec tomme de brebis",
                 "en": ""
               },
               "price": "9€",
@@ -422,7 +422,7 @@
                 "en": ""
               },
               "price": "9€",
-              "img": "",
+              "img": "https://domainerosalina.com/wp-content/uploads/2026/06/algue-nori.webp",
               "spicy": false,
               "vegan": false
             }
