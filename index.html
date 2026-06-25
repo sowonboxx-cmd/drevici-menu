@@ -1189,9 +1189,9 @@ function renderAdminSection(tid, _skipScroll){
   restoreAdminOpenSections(prevStates);
   if(!_skipScroll) body.scrollTop=prevScroll;
   // bind inputs
+  bindImgFields(body);
   body.querySelectorAll('.ai[data-bind]').forEach(input=>input.addEventListener('input',()=>applyBind(input)));
   body.querySelectorAll('.ai[data-bind]').forEach(input=>input.addEventListener('change',()=>applyBind(input)));
-  // paste handled inline via onpaste attribute in imgFieldHtml
 }
 
 function applyBind(input){
@@ -2147,14 +2147,40 @@ renderAdminGlobal=function(){ return ghSectionHtml()+restaurantSettingHtml()+ren
 // ═══════════════════════════════════════════
 function imgFieldHtml(val, onchangeJs, placeholder){
   const uid='imgf'+Math.random().toString(36).slice(2,8);
-  // Extract the data-save part (everything before renderAll) so we can save without re-rendering
-  // onchange (blur equivalent) → save + renderAll to update preview
-  // onpaste → wait for browser to insert text, then save + renderAll
-  const saveAndRender=onchangeJs; // e.g. "DATA.tabs[0].cards[0].dishes[0].img=this.value;renderAll()"
-  // For oninput: only save the value, don't call renderAll (avoids destroying the field mid-type)
-  const saveOnly=onchangeJs.replace(/;?renderAll\(\)/g,'');
-  const pasteJs=`setTimeout(function(){var el=document.getElementById('${uid}');if(el){var ev=new Event('change',{bubbles:true});el.dispatchEvent(ev);}},50)`;
-  return `<div class="af"><div class="ai-img-wrap"><input class="ai" id="${uid}" value="${val||''}" placeholder="${placeholder||'Image URL'}" oninput="${saveOnly}" onchange="${saveAndRender}" onpaste="${pasteJs}"><label class="ai-upload-btn" title="Uploader une image"><input type="file" accept="image/*" style="display:none" onchange="(function(e){const r=new FileReader();r.onload=ev=>{const el=document.getElementById('${uid}');if(el){el.value=ev.target.result;el.dispatchEvent(new Event('change',{bubbles:true}));}};r.readAsDataURL(e.target.files[0])})(event)"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="16 16 12 12 8 16"></polyline><line x1="12" y1="12" x2="12" y2="21"></line><path d="M20.39 18.39A5 5 0 0 0 18 9h-1.26A8 8 0 1 0 3 16.3"></path></svg></label></div></div>`;
+  // Store the full callback as a data attribute, bind via JS after render
+  // This avoids all inline event issues (paste, mobile, etc.)
+  // The callback index is stored globally so we can retrieve it
+  if(!window._imgCallbacks) window._imgCallbacks={};
+  window._imgCallbacks[uid]=onchangeJs;
+  return `<div class="af"><div class="ai-img-wrap"><input class="ai img-url-field" id="${uid}" data-cb="${uid}" value="${val||''}" placeholder="${placeholder||'Image URL'}"><label class="ai-upload-btn" title="Uploader une image"><input type="file" accept="image/*" style="display:none" data-upload-for="${uid}"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="16 16 12 12 8 16"></polyline><line x1="12" y1="12" x2="12" y2="21"></line><path d="M20.39 18.39A5 5 0 0 0 18 9h-1.26A8 8 0 1 0 3 16.3"></path></svg></label></div></div>`;
+}
+
+function bindImgFields(root){
+  (root||document).querySelectorAll('.img-url-field').forEach(input=>{
+    const uid=input.dataset.cb;
+    if(!uid||!window._imgCallbacks||!window._imgCallbacks[uid]) return;
+    const cbStr=window._imgCallbacks[uid];
+    // Save data on every input (no renderAll)
+    const saveOnly=new Function('el', cbStr.replace(/;?renderAll\(\)/g,'').replace(/this\.value/g,'el.value'));
+    // Save + render on blur or Enter
+    const saveAndRender=new Function('el', cbStr.replace(/this\.value/g,'el.value'));
+    input.addEventListener('input',()=>{ try{saveOnly(input);}catch(e){} });
+    input.addEventListener('change',()=>{ try{saveAndRender(input);}catch(e){} });
+    input.addEventListener('blur',()=>{ try{saveAndRender(input);}catch(e){} });
+    input.addEventListener('keydown',e=>{ if(e.key==='Enter'){e.preventDefault();try{saveAndRender(input);}catch(ex){}} });
+    input.addEventListener('paste',()=>{ setTimeout(()=>{ try{saveAndRender(input);}catch(e){} },100); });
+    // File upload
+    const fileInput=input.closest('.ai-img-wrap')?.querySelector('input[type=file]');
+    if(fileInput){
+      fileInput.addEventListener('change',e=>{
+        const file=e.target.files[0];
+        if(!file) return;
+        const r=new FileReader();
+        r.onload=ev=>{ input.value=ev.target.result; try{saveAndRender(input);}catch(ex){} };
+        r.readAsDataURL(file);
+      });
+    }
+  });
 }
 
 function toggleAdminSection(el){
