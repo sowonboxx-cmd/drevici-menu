@@ -1244,6 +1244,9 @@ function renderAdminGlobal(){
   </div>`;
   h+=`</div>`;
 
+  // Export
+  h+=renderExportSection();
+
   // Pinned / featured
   h+=`<div class="admin-section"><div class="admin-sect-title">⭐ Plats à la une (max 4)</div>
     <div style="display:flex;gap:12px;margin-bottom:10px">
@@ -1475,6 +1478,125 @@ async function loadFromGitHub(){
 }
 
 // ── Publish to GitHub (always gets fresh SHA, stores it for next time) ──
+// ═══════════════════════════════════════════
+// EXPORT CSV & PDF
+// ═══════════════════════════════════════════
+
+function exportTabCSV(tabId){
+  const tab = tabId === '__all'
+    ? null
+    : DATA.tabs.find(tb => tb.id === tabId);
+  const tabs = tab ? [tab] : DATA.tabs;
+  const rows = [['Onglet','Carte','Nom','Description','Prix','Épicé','Vegan']];
+  tabs.forEach(tb => {
+    tb.cards.forEach(card => {
+      const cardLabel = t(card.label) || '';
+      const tabLabel  = t(tb.label)  || '';
+      if(card.dishes){
+        card.dishes.forEach(d => {
+          rows.push([
+            tabLabel, cardLabel,
+            t(d.name)||'', t(d.desc)||'', d.price||'',
+            d.spicy?'Oui':'', d.vegan?'Oui':''
+          ]);
+        });
+      } else if(card.type==='variants'){
+        (card.variants||[]).forEach(v => {
+          rows.push([tabLabel, cardLabel, t(v.name)||'', '', v.price||'','','']);
+        });
+      } else if(card.type==='bevs'){
+        (card.items||[]).forEach(item => {
+          const sizes = (item.sizes||[]).map(s=>s.cl+'cl '+s.price+'€').join(' / ');
+          rows.push([tabLabel, cardLabel, t(item.name)||'', t(item.desc)||'', sizes||item.price||'','','']);
+        });
+      }
+    });
+  });
+  const csv = rows.map(r => r.map(v => '"'+String(v).replace(/"/g,'""')+'"').join(',')).join('\n');
+  const bom  = '﻿';
+  const blob = new Blob([bom+csv], {type:'text/csv;charset=utf-8;'});
+  const url  = URL.createObjectURL(blob);
+  const a    = document.createElement('a');
+  const name = tab ? t(tab.label).toLowerCase().replace(/\s+/g,'-') : 'menu-complet';
+  a.href=url; a.download='menu-'+name+'.csv'; a.click();
+  URL.revokeObjectURL(url);
+  showToast('CSV exporté — '+rows.length+' lignes');
+}
+
+function exportMenuPDF(){
+  // Build a clean print page with all tabs
+  const lines = [];
+  const restName = getRestaurantName() || 'Menu';
+  lines.push(`<!DOCTYPE html><html><head><meta charset="UTF-8">
+<title>${restName}</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;600;700&family=Open+Sans:wght@300;400;600&display=swap');
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{font-family:"Open Sans",sans-serif;color:#1a1a1a;background:#fff;padding:32px;max-width:700px;margin:0 auto}
+  h1{font-family:"Cormorant Garamond",serif;font-size:32px;font-weight:700;text-align:center;margin-bottom:4px}
+  .sub{text-align:center;font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:#888;margin-bottom:32px}
+  h2{font-family:"Cormorant Garamond",serif;font-size:20px;font-weight:600;color:#10285E;margin:24px 0 12px;padding-bottom:4px;border-bottom:1px solid #e0e0e0}
+  h3{font-size:12px;font-weight:600;text-transform:uppercase;letter-spacing:.12em;color:#aaa;margin:16px 0 8px}
+  .dish{display:flex;justify-content:space-between;align-items:baseline;margin-bottom:8px;gap:12px}
+  .dish-name{font-size:13px;font-weight:600}
+  .dish-desc{font-size:11px;color:#666;margin-top:2px}
+  .dish-price{font-size:13px;font-weight:600;color:#C6A24A;flex-shrink:0}
+  .dish-wrap{margin-bottom:10px}
+  @media print{body{padding:16px}h2{page-break-before:auto}}
+</style>
+</head><body>`);
+  lines.push(`<h1>${restName}</h1>`);
+  if(DATA.heroActive && DATA.hero) lines.push(`<div class="sub">${t(DATA.hero)}</div>`);
+  DATA.tabs.filter(tb=>tb.id!=='__home').forEach(tb=>{
+    lines.push(`<h2>${t(tb.label)}</h2>`);
+    tb.cards.forEach(card=>{
+      if(t(card.label)) lines.push(`<h3>${t(card.label)}</h3>`);
+      if(card.dishes){
+        card.dishes.forEach(d=>{
+          lines.push(`<div class="dish-wrap"><div class="dish"><span class="dish-name">${t(d.name)||''}</span><span class="dish-price">${d.price||''}</span></div>${t(d.desc)?`<div class="dish-desc">${t(d.desc)}</div>`:''}</div>`);
+        });
+      } else if(card.type==='variants'){
+        (card.variants||[]).forEach(v=>{
+          lines.push(`<div class="dish-wrap"><div class="dish"><span class="dish-name">${t(v.name)||''}</span><span class="dish-price">${v.price||''}</span></div></div>`);
+        });
+      } else if(card.type==='bevs'){
+        (card.items||[]).forEach(item=>{
+          const sizes=(item.sizes||[]).map(s=>s.cl+'cl — '+s.price+'€').join(' · ');
+          lines.push(`<div class="dish-wrap"><div class="dish"><span class="dish-name">${t(item.name)||''}</span><span class="dish-price">${sizes||item.price||''}</span></div>${t(item.desc)?`<div class="dish-desc">${t(item.desc)}</div>`:''}</div>`);
+        });
+      }
+    });
+  });
+  lines.push(`</body></html>`);
+  const win = window.open('','_blank');
+  win.document.write(lines.join('\n'));
+  win.document.close();
+  setTimeout(()=>win.print(), 400);
+}
+
+function renderExportSection(){
+  const tabOpts = DATA.tabs.filter(tb=>tb.id!=='__home')
+    .map(tb=>`<option value="${tb.id}">${t(tb.label)}</option>`).join('');
+  return `<div class="admin-section"><div class="admin-sect-title">📥 Exporter le menu</div>
+    <div style="font-size:11px;color:var(--text3);font-family:Jost,sans-serif;margin-bottom:10px;line-height:1.6">
+      Exportez vos menus en CSV (Excel, Google Sheets) ou en PDF prêt à imprimer / uploader sur Google Business.
+    </div>
+    <div class="af"><label class="al">CSV par onglet</label>
+      <div style="display:flex;gap:8px;align-items:center;flex-wrap:wrap">
+        <select class="ai" id="csvTabSel" style="flex:1;min-width:120px">
+          <option value="__all">Tout le menu</option>
+          ${tabOpts}
+        </select>
+        <button class="aadd" style="white-space:nowrap;padding:9px 14px" onclick="exportTabCSV(document.getElementById('csvTabSel').value)">⬇ CSV</button>
+      </div>
+    </div>
+    <div class="af"><label class="al">PDF menu complet</label>
+      <button class="aadd" style="width:100%;padding:10px" onclick="exportMenuPDF()">🖨 Générer PDF / Imprimer</button>
+      <div style="font-size:10px;color:var(--text3);margin-top:4px">Une fenêtre d'aperçu s'ouvre — utilisez "Enregistrer en PDF" dans la boîte d'impression.</div>
+    </div>
+  </div>`;
+}
+
 async function publishToGitHub(){
   const token=getToken();
   if(!token){ showToast('⚠️ Token GitHub manquant'); renderAdminSection('__global'); return; }
