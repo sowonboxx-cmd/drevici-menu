@@ -476,6 +476,28 @@
               "price": "9€"
             }
           ]
+        },
+        {
+          "label": {
+            "fr": "Rillettes de poissons",
+            "en": "New section"
+          },
+          "dishes": [
+            {
+              "name": {
+                "fr": "Truite de Bretagne",
+                "en": ""
+              },
+              "desc": {
+                "fr": "Élaborée à partir de truites élevées, filetées et fumées en Bretagne",
+                "en": ""
+              },
+              "price": "",
+              "img": "",
+              "spicy": false,
+              "vegan": false
+            }
+          ]
         }
       ]
     },
