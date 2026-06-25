@@ -716,13 +716,6 @@
                   "price": "36"
                 }
               ]
-            },
-            {
-              "name": {
-                "fr": "Nouvelle boisson",
-                "en": "New drink"
-              },
-              "price": ""
             }
           ]
         },
@@ -758,6 +751,19 @@
                 "jp": "クレマン ダルザス"
               },
               "price": "9€"
+            },
+            {
+              "name": {
+                "fr": "Breitz Cola Fanta",
+                "en": "New drink"
+              },
+              "price": "",
+              "sizes": [
+                {
+                  "cl": "100",
+                  "price": "56"
+                }
+              ]
             }
           ]
         },
