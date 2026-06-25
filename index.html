@@ -269,6 +269,9 @@ body{background:var(--bg);font-family:'Jost',sans-serif;font-weight:400;font-siz
 .apin{background:none;border:none;cursor:pointer;font-size:16px;line-height:1;padding:2px 4px;border-radius:4px;color:var(--text3)}
 .apin.pinned{color:var(--gold)}
 .apin:hover{background:rgba(198,162,74,0.1)}
+.pdf-tpl-btn{padding:9px 8px;font-size:12px;font-family:'Jost',sans-serif;border:1px solid var(--border);border-radius:6px;background:#fff;color:var(--text2);cursor:pointer;transition:all .15s}
+.pdf-tpl-btn.active{background:var(--navy);color:#fff;border-color:var(--navy)}
+.pdf-tpl-btn:hover{border-color:var(--navy)}
 .aadd{width:100%;padding:9px;border:1.5px dashed var(--border);border-radius:var(--rs);background:none;color:var(--text3);font-size:12px;font-family:'Jost',sans-serif;cursor:pointer;transition:all .15s;margin-top:4px}
 .aadd:hover{border-color:var(--navy);color:var(--navy)}
 .asave{width:100%;padding:12px;background:var(--navy);color:#fff;border:none;border-radius:50px;font-size:13px;font-weight:500;font-family:'Jost',sans-serif;cursor:pointer;margin-top:6px;letter-spacing:.04em}
@@ -1191,6 +1194,7 @@ function renderAdminSection(tid, _skipScroll){
   // bind inputs
   body.querySelectorAll('.ai[data-bind]').forEach(input=>input.addEventListener('input',()=>applyBind(input)));
   body.querySelectorAll('.ai[data-bind]').forEach(input=>input.addEventListener('change',()=>applyBind(input)));
+  if(document.getElementById('pdfPreviewFrame')) setTimeout(()=>{ if(typeof updatePdfPreview==='function') updatePdfPreview(); }, 100);
 }
 
 function applyBind(input){
@@ -1939,6 +1943,271 @@ function exportTabCSV(tabId){
   showToast('CSV exporté — '+rows.length+' lignes');
 }
 
+// ═══════════════════════════════════════════════════════════════════════════
+// PDF STYLE SYSTEM — templates, couleurs, déco nautique, preview, A4 + Google Business
+// ═══════════════════════════════════════════════════════════════════════════
+
+// Décor SVG nautique (inliné, recolorable via currentColor)
+const PDF_SVG = {anchor:"<svg version=\"1.0\" xmlns=\"http://www.w3.org/2000/svg\"   viewBox=\"0 0 340.000000 362.000000\" preserveAspectRatio=\"xMidYMid meet\"> <g transform=\"translate(0.000000,362.000000) scale(0.100000,-0.100000)\" fill=\"currentColor\" stroke=\"none\"> <path d=\"M1585 3280 c-59 -23 -143 -94 -167 -141 -50 -100 -53 -114 -52 -204 0 -81 3 -96 33 -155 43 -85 72 -115 154 -156 l67 -34 0 -106 0 -106 -189 4 c-163 3 -192 5 -208 21 -23 20 -72 23 -95 5 -53 -44 -66 -139 -25 -199 33 -49 62 -56 119 -30 42 19 65 21 222 21 l176 0 0 -654 0 -655 -22 -15 c-29 -20 -107 -21 -202 -1 -180 37 -350 164 -451 335 -47 81 -98 204 -88 214 4 3 22 6 40 6 35 0 73 15 73 28 0 4 -18 30 -41 57 -70 86 -87 108 -145 185 -64 86 -94 120 -105 120 -22 0 -119 -450 -105 -485 9 -24 31 -18 77 20 28 24 45 33 52 26 6 -6 18 -41 28 -78 52 -201 128 -340 259 -473 114 -116 190 -163 380 -236 168 -64 207 -84 246 -126 32 -34 84 -122 84 -142 0 -6 4 -17 9 -25 8 -12 12 -12 25 -2 9 8 16 22 16 33 0 30 38 96 78 135 36 34 123 83 150 83 21 0 224 82 262 105 19 12 55 34 80 48 64 36 191 160 245 240 54 81 105 188 130 272 10 33 25 84 34 112 l16 53 35 -24 c48 -33 76 -40 84 -21 11 31 -38 346 -66 423 -31 83 -43 76 -183 -113 -33 -44 -79 -104 -103 -134 -40 -50 -42 -54 -25 -67 10 -7 39 -14 66 -14 26 0 47 -2 47 -5 0 -23 -51 -145 -88 -209 -88 -153 -253 -286 -410 -330 -88 -24 -241 -34 -253 -15 -10 15 -11 993 -2 1207 l5 122 169 0 c130 0 178 -4 208 -16 54 -21 99 -15 123 17 43 58 40 140 -8 190 -33 35 -70 37 -133 9 -37 -17 -65 -20 -207 -20 l-164 0 1 101 1 100 37 22 c20 12 49 29 64 37 37 18 92 87 117 146 30 69 37 176 16 249 -34 119 -134 224 -241 252 -73 19 -190 16 -250 -7z m238 -188 c102 -69 104 -238 4 -312 -33 -25 -51 -30 -94 -30 -30 0 -66 6 -81 14 -62 32 -112 113 -112 178 1 72 66 160 128 174 15 3 32 7 37 9 25 6 83 -10 118 -33z\"/> </g> </svg>",waves:"<svg version=\"1.0\" xmlns=\"http://www.w3.org/2000/svg\"   viewBox=\"0 0 348.000000 244.000000\" preserveAspectRatio=\"xMidYMid meet\"> <g transform=\"translate(0.000000,244.000000) scale(0.100000,-0.100000)\" fill=\"currentColor\" stroke=\"none\"> <path d=\"M930 1710 c-71 -15 -130 -40 -200 -86 -88 -58 -118 -90 -104 -112 20 -31 56 -25 114 18 30 22 79 53 110 68 49 24 66 27 155 27 113 0 121 -3 263 -98 48 -32 106 -61 144 -72 139 -40 293 -14 409 71 98 73 153 97 235 102 97 6 165 -16 266 -85 142 -96 242 -125 366 -103 162 28 296 131 221 171 -18 9 -26 7 -48 -10 -14 -12 -54 -36 -89 -53 -53 -26 -75 -31 -140 -31 -100 -1 -137 12 -252 89 -124 83 -190 106 -300 106 -104 1 -165 -21 -270 -93 -101 -69 -138 -87 -209 -98 -114 -18 -182 3 -330 104 -114 77 -233 107 -341 85z\"/> <path d=\"M849 1256 c-77 -27 -215 -118 -225 -149 -7 -21 17 -47 42 -47 6 0 43 21 80 47 102 70 164 92 254 93 101 0 137 -12 228 -74 136 -93 198 -116 318 -116 97 0 185 29 270 88 116 82 148 95 246 100 106 5 154 -9 244 -73 35 -25 94 -60 131 -77 144 -68 343 -43 462 58 62 52 17 114 -48 66 -65 -48 -136 -75 -207 -80 -98 -6 -164 15 -271 88 -109 75 -185 100 -297 100 -106 0 -176 -23 -284 -96 -99 -67 -171 -94 -250 -94 -85 0 -142 21 -247 90 -51 34 -121 70 -155 81 -88 27 -206 25 -291 -5z\"/> <path d=\"M924 860 c-70 -13 -130 -40 -218 -99 -84 -57 -90 -63 -81 -91 12 -38 43 -35 114 14 99 69 171 95 257 96 97 0 150 -18 259 -90 111 -73 189 -100 290 -100 98 0 185 28 271 88 111 78 150 95 236 100 108 6 164 -10 270 -80 144 -96 164 -103 298 -103 110 0 118 2 187 34 84 39 126 78 121 112 -5 35 -40 35 -88 0 -66 -47 -140 -71 -223 -71 -89 1 -149 24 -263 102 -194 133 -357 128 -569 -15 -92 -63 -158 -86 -242 -87 -90 0 -140 19 -261 98 -51 33 -113 67 -139 76 -63 20 -156 27 -219 16z\"/> </g> </svg>",seashell:"<svg version=\"1.0\" xmlns=\"http://www.w3.org/2000/svg\"   viewBox=\"0 0 512.000000 512.000000\" preserveAspectRatio=\"xMidYMid meet\"> <g transform=\"translate(0.000000,512.000000) scale(0.100000,-0.100000)\" fill=\"currentColor\" stroke=\"none\"> <path d=\"M2000 5105 c-213 -45 -393 -170 -502 -346 -21 -34 -36 -49 -51 -49 -46 0 -238 -50 -313 -81 -220 -92 -413 -283 -506 -501 -16 -40 -34 -74 -39 -76 -41 -16 -176 -118 -238 -180 -172 -172 -273 -385 -302 -637 -10 -87 -5 -212 11 -287 6 -28 1 -60 -18 -130 -24 -85 -26 -110 -26 -293 -1 -214 8 -279 61 -450 57 -182 195 -413 325 -543 35 -34 189 -167 343 -295 l280 -232 110 -405 c65 -239 120 -421 134 -443 33 -54 106 -114 167 -137 54 -20 73 -20 1114 -20 1041 0 1060 0 1114 20 64 25 137 85 172 145 16 27 64 188 130 432 58 213 108 391 112 394 4 3 142 118 307 254 165 136 326 275 357 309 123 131 256 362 306 532 74 248 83 547 21 762 -10 35 -16 68 -14 72 16 26 25 212 15 307 -35 324 -203 605 -462 773 -78 50 -87 60 -108 110 -120 288 -369 500 -672 569 -46 11 -103 22 -128 26 -42 6 -47 10 -85 71 -55 91 -175 201 -272 252 -131 67 -191 84 -338 89 -153 6 -251 -13 -372 -72 l-73 -36 -72 35 c-40 19 -100 42 -133 51 -83 22 -273 28 -355 10z m330 -194 c36 -11 80 -30 98 -41 l32 -20 -1 -2132 c-1 -1173 -3 -2126 -5 -2118 -3 8 -190 915 -418 2015 l-413 2000 26 40 c90 141 207 226 366 267 90 23 224 18 315 -11z m785 14 c137 -35 285 -143 352 -256 l31 -54 -423 -2050 c-233 -1127 -426 -2059 -428 -2070 -2 -11 -4 963 -3 2164 l1 2184 54 30 c30 17 82 39 115 48 77 22 222 24 301 4z m-1252 -2367 c224 -1084 406 -1973 404 -1974 -1 -2 -338 765 -748 1704 l-746 1707 14 40 c37 107 144 246 255 331 99 76 263 142 408 163 3 1 189 -886 413 -1971z m1897 1951 c77 -15 180 -55 258 -101 122 -72 272 -250 316 -376 l14 -39 -746 -1706 c-410 -939 -747 -1706 -748 -1704 -1 1 180 889 404 1973 334 1621 409 1970 422 1968 8 -1 44 -8 80 -15z m-2398 -2316 c400 -917 726 -1669 724 -1670 -2 -2 -416 542 -921 1209 -702 926 -920 1222 -928 1253 -15 64 -11 252 7 329 48 202 163 385 317 501 34 25 64 45 67 45 4 -1 334 -751 734 -1667z m3230 1592 c208 -173 326 -469 298 -743 l-10 -90 -911 -1203 c-501 -662 -917 -1211 -926 -1219 -19 -20 -91 -186 712 1650 384 877 706 1614 716 1638 22 50 21 51 121 -33z m-3607 -2120 c395 -522 732 -968 749 -990 17 -21 24 -35 16 -30 -45 28 -1203 997 -1240 1038 -157 174 -263 394 -305 631 -15 91 -20 257 -9 339 l7 46 32 -42 c17 -23 355 -469 750 -992z m3944 854 c3 -307 -112 -611 -317 -836 -26 -29 -186 -168 -357 -308 -170 -141 -319 -264 -330 -273 -160 -134 -544 -450 -555 -457 -8 -5 35 56 96 136 60 79 411 542 779 1029 758 1000 682 921 684 709z m-3289 -2024 c151 -125 296 -248 322 -271 l47 -44 -245 0 c-270 0 -282 2 -328 62 -17 23 -44 107 -91 278 -36 135 -69 254 -72 265 -4 14 7 9 43 -21 27 -23 173 -143 324 -269z m2185 273 c-3 -7 -34 -121 -70 -253 -35 -132 -73 -251 -83 -265 -10 -14 -34 -35 -52 -48 -32 -21 -40 -22 -269 -22 l-236 1 50 46 c48 44 657 553 662 553 1 0 0 -6 -2 -12z\"/> </g> </svg>",oyster:"<svg version=\"1.0\" xmlns=\"http://www.w3.org/2000/svg\"   viewBox=\"0 0 314.000000 308.000000\" preserveAspectRatio=\"xMidYMid meet\"> <g transform=\"translate(0.000000,308.000000) scale(0.100000,-0.100000)\" fill=\"currentColor\" stroke=\"none\"> <path d=\"M1819 2560 c-25 -4 -79 -23 -120 -41 -69 -31 -84 -34 -214 -39 -125 -6 -146 -9 -196 -33 -33 -16 -75 -47 -99 -75 -23 -26 -54 -60 -69 -77 -15 -16 -56 -45 -91 -64 -126 -67 -223 -191 -251 -320 -8 -37 -24 -66 -56 -104 -65 -76 -74 -98 -82 -211 -7 -92 -12 -108 -50 -183 -67 -130 -66 -245 4 -399 19 -42 40 -106 45 -143 16 -102 36 -151 90 -221 28 -36 80 -109 116 -162 106 -158 164 -195 312 -205 75 -5 95 -3 135 15 62 28 150 112 249 239 43 57 104 124 135 150 123 106 148 131 200 201 46 61 65 78 125 108 94 47 158 109 233 224 35 52 93 131 130 175 84 101 103 138 125 244 12 59 29 106 55 148 28 47 38 77 42 122 7 77 2 96 -45 158 -36 48 -40 60 -45 133 -14 173 -99 251 -297 271 -81 9 -105 16 -165 49 -77 42 -140 53 -216 40z m184 -104 c74 -39 91 -44 172 -51 106 -8 158 -28 202 -78 38 -43 53 -91 53 -168 0 -49 5 -62 45 -119 37 -52 45 -72 45 -107 0 -43 -23 -100 -62 -155 -10 -15 -27 -67 -38 -117 -23 -111 -32 -127 -115 -227 -36 -43 -89 -116 -116 -160 -63 -103 -127 -167 -204 -206 -91 -46 -110 -63 -166 -144 -37 -53 -78 -96 -141 -145 -96 -76 -98 -73 -18 46 48 71 92 115 218 217 80 65 206 202 273 298 57 81 163 271 184 330 40 113 38 267 -5 381 -59 159 -260 270 -490 272 -163 1 -440 -75 -578 -158 -165 -100 -252 -191 -365 -381 -124 -212 -176 -420 -164 -659 10 -176 33 -275 104 -443 20 -45 34 -85 31 -87 -5 -5 -108 128 -127 162 -6 12 -20 66 -31 119 -11 54 -34 126 -50 161 -36 76 -49 130 -50 204 0 46 8 72 46 150 41 84 47 104 53 189 8 103 22 139 71 185 39 37 54 65 70 135 27 117 90 197 212 268 54 31 98 67 144 119 96 106 118 116 294 123 135 6 150 9 220 39 150 66 173 66 283 7z m-28 -201 c230 -60 335 -188 335 -408 0 -96 -24 -170 -101 -307 -114 -204 -231 -346 -402 -484 -51 -41 -106 -89 -123 -107 -48 -52 -132 -181 -180 -277 -24 -48 -43 -80 -43 -72 -1 22 113 253 146 297 15 21 94 103 174 183 152 151 202 217 289 383 77 146 96 249 65 353 -29 99 -112 177 -224 210 -68 20 -273 14 -391 -11 -153 -33 -340 -152 -449 -287 -93 -114 -195 -342 -227 -506 -21 -112 -16 -323 12 -427 5 -18 4 -18 -6 -2 -6 10 -23 61 -37 115 -21 82 -25 120 -26 247 -1 232 22 333 119 528 160 318 335 458 684 547 175 44 283 51 385 25z m-67 -282 c94 -28 171 -114 186 -209 16 -93 -59 -300 -159 -438 -24 -34 -109 -127 -188 -208 -169 -171 -177 -181 -258 -319 -33 -57 -58 -93 -54 -79 14 52 64 148 119 228 141 207 173 345 124 538 -27 106 -58 142 -147 169 -77 23 -140 17 -222 -22 -188 -88 -293 -232 -360 -491 -48 -187 -38 -384 26 -516 l25 -51 -29 32 c-52 56 -92 246 -92 438 0 96 5 139 24 215 97 370 328 631 621 700 171 41 279 44 384 13z m-396 -365 c62 -18 93 -55 117 -135 25 -84 27 -173 5 -256 -19 -75 -41 -118 -114 -227 -75 -112 -100 -163 -144 -297 -38 -115 -69 -165 -122 -202 -70 -48 -146 -32 -214 46 -30 34 -32 38 -15 42 11 2 26 -5 35 -16 46 -57 125 -70 186 -32 48 29 80 90 124 232 21 67 50 154 65 192 58 150 6 270 -122 282 -131 13 -272 -124 -309 -298 -15 -72 -15 -196 1 -244 4 -12 0 -9 -9 6 -44 76 -45 292 -1 444 63 217 169 361 324 438 79 40 125 46 193 25z m-162 -433 c68 -35 78 -109 31 -227 -16 -40 -45 -126 -65 -191 -44 -142 -84 -197 -143 -197 -44 0 -96 49 -112 105 -20 67 -25 179 -12 247 17 87 42 138 93 194 69 76 146 101 208 69z m-281 -741 c70 -46 183 -31 247 33 10 10 29 18 43 19 14 0 43 4 64 8 25 4 37 3 37 -4 0 -18 -60 -68 -145 -120 -73 -46 -85 -50 -142 -50 -80 0 -98 8 -166 70 -60 55 -63 62 -46 107 l10 28 29 -32 c16 -17 47 -44 69 -59z\"/> </g> </svg>"};
+
+function pdfCfg(){
+  if(!DATA.pdfStyle) DATA.pdfStyle = {};
+  const d = DATA.pdfStyle;
+  return {
+    template: d.template || 'classic',          // 'classic' | 'maritime'
+    titleColor: d.titleColor || '#10285E',
+    accentColor: d.accentColor || '#C6A24A',
+    showLogo: d.showLogo !== false,
+    footerAddress: d.footerAddress || '',
+    footerPhone: d.footerPhone || '',
+    footerShowDate: d.footerShowDate !== false,
+    format: d.format || 'a4'                     // 'a4' | 'gbiz'
+  };
+}
+function setPdfCfg(key, val){
+  if(!DATA.pdfStyle) DATA.pdfStyle = {};
+  DATA.pdfStyle[key] = val;
+  updatePdfPreview();
+}
+
+// Build the inner menu HTML (shared by preview + export)
+function buildPdfMenuHTML(cfg){
+  const restName = getRestaurantName() || 'Menu';
+  const logoUrl = 'https://drevicioyster.com/wp-content/uploads/2026/06/Logo-transparent.png';
+  let h = '';
+
+  // Header
+  h += `<div class="pdf-header">`;
+  if(cfg.showLogo) h += `<img src="${logoUrl}" class="pdf-logo" crossorigin="anonymous">`;
+  h += `<h1 class="pdf-title">${restName}</h1>`;
+  if(DATA.heroActive && DATA.hero) h += `<div class="pdf-sub">${t(DATA.hero)}</div>`;
+  if(cfg.template === 'maritime') h += `<div class="pdf-deco-divider">${PDF_SVG.waves}</div>`;
+  h += `</div>`;
+
+  // Tabs / sections
+  DATA.tabs.filter(tb=>tb.id!=='__home' && tb.visible!==false).forEach(tb=>{
+    h += `<div class="pdf-section">`;
+    h += `<h2 class="pdf-cat">`;
+    if(cfg.template === 'maritime') h += `<span class="pdf-cat-icon">${PDF_SVG.oyster}</span>`;
+    h += `${t(tb.label)}</h2>`;
+    tb.cards.forEach(card=>{
+      if(t(card.label) && tb.cards.length>1) h += `<h3 class="pdf-subcat">${t(card.label)}</h3>`;
+      const rows = [];
+      if(card.dishes){
+        card.dishes.forEach(d=>{
+          rows.push(`<div class="pdf-dish"><div class="pdf-dish-line"><span class="pdf-dish-name">${t(d.name)||''}</span><span class="pdf-dots"></span><span class="pdf-dish-price">${d.price||''}</span></div>${t(d.desc)?`<div class="pdf-dish-desc">${t(d.desc)}</div>`:''}</div>`);
+        });
+      } else if(card.type==='variants'){
+        (card.variants||[]).forEach(v=>{
+          rows.push(`<div class="pdf-dish"><div class="pdf-dish-line"><span class="pdf-dish-name">${t(v.name)||''}</span><span class="pdf-dots"></span><span class="pdf-dish-price">${v.price||''}</span></div></div>`);
+        });
+      } else if(card.type==='bevs'){
+        (card.items||[]).forEach(item=>{
+          const sizes=(item.sizes||[]).map(s=>s.cl+'cl — '+s.price+'€').join(' · ');
+          rows.push(`<div class="pdf-dish"><div class="pdf-dish-line"><span class="pdf-dish-name">${t(item.name)||''}</span><span class="pdf-dots"></span><span class="pdf-dish-price">${sizes||item.price||''}</span></div>${t(item.desc)?`<div class="pdf-dish-desc">${t(item.desc)}</div>`:''}</div>`);
+        });
+      }
+      h += rows.join('');
+    });
+    h += `</div>`;
+  });
+
+  // Footer
+  const footerBits = [];
+  if(cfg.footerAddress) footerBits.push(cfg.footerAddress);
+  if(cfg.footerPhone) footerBits.push(cfg.footerPhone);
+  if(cfg.footerShowDate){
+    const now = new Date();
+    footerBits.push('Mis à jour le ' + now.toLocaleDateString('fr-FR'));
+  }
+  if(footerBits.length || cfg.template==='maritime'){
+    h += `<div class="pdf-footer">`;
+    if(cfg.template === 'maritime') h += `<div class="pdf-deco-anchor">${PDF_SVG.anchor}</div>`;
+    if(footerBits.length) h += `<div class="pdf-footer-text">${footerBits.join('  ·  ')}</div>`;
+    h += `</div>`;
+  }
+  return h;
+}
+
+// CSS for a given config + format
+function buildPdfCSS(cfg){
+  const isGbiz = cfg.format === 'gbiz';
+  // A4 ~ 794px wide @96dpi; Google Business 3064x5447 → we render preview at scaled width
+  const pageW = isGbiz ? 612 : 700;   // preview px width (gbiz is portrait 9:16-ish)
+  const pad = isGbiz ? 70 : 40;
+  const maritime = cfg.template === 'maritime';
+  return `
+  @import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;600;700&family=Open+Sans:wght@300;400;600&display=swap');
+  *{box-sizing:border-box;margin:0;padding:0}
+  .pdf-page{font-family:'Open Sans',sans-serif;color:#1a1a1a;background:${maritime?'#fdfbf6':'#ffffff'};width:${pageW}px;padding:${pad}px;margin:0 auto;position:relative}
+  ${maritime?`.pdf-page::before{content:'';position:absolute;inset:14px;border:1.5px solid ${cfg.accentColor};opacity:.4;pointer-events:none}`:''}
+  .pdf-header{text-align:center;margin-bottom:${isGbiz?40:28}px;position:relative}
+  .pdf-logo{max-width:${isGbiz?160:120}px;max-height:${isGbiz?110:80}px;object-fit:contain;margin:0 auto 12px;display:block}
+  .pdf-title{font-family:'Cormorant Garamond',serif;font-size:${isGbiz?44:32}px;font-weight:700;color:${cfg.titleColor};line-height:1.1}
+  .pdf-sub{font-size:${isGbiz?13:11}px;letter-spacing:.16em;text-transform:uppercase;color:#999;margin-top:6px}
+  .pdf-deco-divider{width:${isGbiz?120:90}px;margin:14px auto 0;color:${cfg.accentColor}}
+  .pdf-deco-divider svg{width:100%;height:auto;display:block}
+  .pdf-section{margin-bottom:${isGbiz?30:22}px;break-inside:avoid;page-break-inside:avoid}
+  .pdf-cat{font-family:'Cormorant Garamond',serif;font-size:${isGbiz?26:20}px;font-weight:600;color:${cfg.titleColor};margin:${isGbiz?28:20}px 0 ${isGbiz?16:12}px;padding-bottom:6px;border-bottom:1.5px solid ${maritime?cfg.accentColor:'#e2e2e2'};display:flex;align-items:center;gap:10px}
+  .pdf-cat-icon{display:inline-block;width:${isGbiz?28:22}px;height:${isGbiz?28:22}px;color:${cfg.accentColor};flex:none}
+  .pdf-cat-icon svg{width:100%;height:100%;display:block}
+  .pdf-subcat{font-size:${isGbiz?13:11}px;font-weight:600;text-transform:uppercase;letter-spacing:.14em;color:${cfg.accentColor};margin:${isGbiz?18:14}px 0 ${isGbiz?10:8}px}
+  .pdf-dish{margin-bottom:${isGbiz?13:10}px;break-inside:avoid;page-break-inside:avoid}
+  .pdf-dish-line{display:flex;align-items:baseline;gap:6px}
+  .pdf-dish-name{font-size:${isGbiz?16:13}px;font-weight:600;white-space:nowrap}
+  .pdf-dots{flex:1;border-bottom:1px dotted #ccc;transform:translateY(-3px);min-width:18px}
+  .pdf-dish-price{font-size:${isGbiz?16:13}px;font-weight:600;color:${cfg.accentColor};white-space:nowrap;flex:none}
+  .pdf-dish-desc{font-size:${isGbiz?12:10.5}px;font-weight:300;color:#777;margin-top:2px;line-height:1.4;max-width:88%}
+  .pdf-footer{margin-top:${isGbiz?44:30}px;padding-top:${isGbiz?20:14}px;border-top:1px solid ${maritime?cfg.accentColor:'#e2e2e2'};text-align:center}
+  .pdf-deco-anchor{width:${isGbiz?40:30}px;margin:0 auto ${isGbiz?12:8}px;color:${cfg.accentColor}}
+  .pdf-deco-anchor svg{width:100%;height:auto;display:block}
+  .pdf-footer-text{font-size:${isGbiz?12:10}px;color:#999;letter-spacing:.04em;line-height:1.6}
+  @media print{
+    @page{size:A4;margin:14mm}
+    body{background:#fff!important}
+    .pdf-page{width:100%!important;padding:0!important;margin:0!important}
+    .pdf-page::before{display:none!important}
+  }`;
+}
+
+// Live preview into the admin iframe
+function updatePdfPreview(){
+  const frame = document.getElementById('pdfPreviewFrame');
+  if(!frame) return;
+  const cfg = pdfCfg();
+  const css = buildPdfCSS(cfg);
+  const menu = buildPdfMenuHTML(cfg);
+  const isGbiz = cfg.format === 'gbiz';
+  // For A4: overlay page-break guides every ~1040px (A4 ratio at 700px width)
+  const doc = `<!DOCTYPE html><html><head><meta charset="UTF-8"><style>${css}
+    body{background:#e8e8e8;padding:16px 0;margin:0}
+    .pdf-page{box-shadow:0 2px 12px rgba(0,0,0,.15)}
+    ${!isGbiz?`.pdf-page{position:relative}`:''}
+  </style></head><body><div class="pdf-page" id="pdfPageEl">${menu}</div>
+  <script>
+    // Draw page-break guide lines for A4 so user sees where pages cut
+    (function(){
+      var isGbiz=${isGbiz};
+      if(isGbiz) return;
+      var page=document.getElementById('pdfPageEl');
+      var w=page.offsetWidth;
+      var pageH=Math.round(w*297/210); // A4 ratio
+      var total=page.offsetHeight;
+      var n=Math.floor(total/pageH);
+      for(var i=1;i<=n;i++){
+        var line=document.createElement('div');
+        line.style.cssText='position:absolute;left:0;right:0;top:'+(i*pageH)+'px;border-top:2px dashed #d33;z-index:99;pointer-events:none';
+        var lbl=document.createElement('div');
+        lbl.textContent='— coupure page '+(i+1)+' —';
+        lbl.style.cssText='position:absolute;right:6px;top:'+(i*pageH+2)+'px;font:10px sans-serif;color:#d33;background:#fff;padding:1px 5px;z-index:100';
+        page.appendChild(line);page.appendChild(lbl);
+      }
+    })();
+  <\/script>
+  </body></html>`;
+  frame.srcdoc = doc;
+}
+
+// Export: A4 → print dialog; Google Business → PNG via html2canvas at 3064x5447
+function doPdfExport(){
+  const cfg = pdfCfg();
+  if(cfg.format === 'gbiz'){
+    exportGbizImage(cfg);
+  } else {
+    exportA4Print(cfg);
+  }
+}
+
+function exportA4Print(cfg){
+  const css = buildPdfCSS(cfg);
+  const menu = buildPdfMenuHTML(cfg);
+  const restName = getRestaurantName() || 'Menu';
+  const win = window.open('','_blank');
+  win.document.write(`<!DOCTYPE html><html><head><meta charset="UTF-8"><title>${restName}</title><style>${css}</style></head><body><div class="pdf-page">${menu}</div></body></html>`);
+  win.document.close();
+  setTimeout(()=>win.print(), 600);
+}
+
+function exportGbizImage(cfg){
+  if(typeof html2canvas === 'undefined'){ showToast('⚠ html2canvas non chargé'); return; }
+  showToast('Génération image en cours…');
+  // Render off-screen at preview width, then scale to 3064px wide
+  const css = buildPdfCSS(cfg);
+  const menu = buildPdfMenuHTML(cfg);
+  const holder = document.createElement('div');
+  holder.style.cssText = 'position:fixed;left:-99999px;top:0;';
+  holder.innerHTML = `<style>${css}</style><div class="pdf-page" id="gbizPage">${menu}</div>`;
+  document.body.appendChild(holder);
+  const pageEl = holder.querySelector('#gbizPage');
+  const previewW = pageEl.offsetWidth || 612;
+  const TARGET_W = 3064;
+  const scale = TARGET_W / previewW;
+  setTimeout(()=>{
+    html2canvas(pageEl, { scale: scale, useCORS: true, backgroundColor: cfg.template==='maritime'?'#fdfbf6':'#ffffff', logging:false })
+      .then(canvas => {
+        document.body.removeChild(holder);
+        const link = document.createElement('a');
+        link.download = (getRestaurantName()||'menu').replace(/\s+/g,'-').toLowerCase() + '-google-business.png';
+        link.href = canvas.toDataURL('image/png');
+        link.click();
+        showToast('✓ Image Google Business téléchargée');
+      })
+      .catch(err => {
+        document.body.removeChild(holder);
+        console.error(err);
+        showToast('⚠ Erreur génération image');
+      });
+  }, 400);
+}
+
+// Admin UI for the PDF style panel
+function renderPdfStyleSection(){
+  const cfg = pdfCfg();
+  const swatch = (label, key, val) => `
+    <div class="af"><label class="al">${label}</label>
+      <div style="display:flex;align-items:center;gap:8px">
+        <input type="color" value="${val}" oninput="setPdfCfg('${key}',this.value)" style="width:42px;height:34px;border:1px solid var(--border);border-radius:6px;padding:2px;cursor:pointer;background:#fff">
+        <input class="ai" value="${val}" oninput="setPdfCfg('${key}',this.value)" style="flex:1;font-family:monospace;font-size:12px">
+      </div>
+    </div>`;
+  return `<div class="admin-section collapsible collapsed"><div class="admin-sect-title" onclick="toggleAdminSection(this)">🎨 Style du PDF</div><div class="admin-sect-body">
+    <div style="font-size:11px;color:var(--text3);font-family:Jost,sans-serif;margin-bottom:12px;line-height:1.6">Personnalisez le menu imprimable, prévisualisez puis exportez en A4 (impression) ou en image Google Business.</div>
+
+    <div class="af"><label class="al">Modèle</label>
+      <div style="display:flex;gap:8px">
+        <button class="pdf-tpl-btn${cfg.template==='classic'?' active':''}" onclick="setPdfCfg('template','classic');renderAdminSection(adminCurrentTab)" style="flex:1">Épuré</button>
+        <button class="pdf-tpl-btn${cfg.template==='maritime'?' active':''}" onclick="setPdfCfg('template','maritime');renderAdminSection(adminCurrentTab)" style="flex:1">Maritime</button>
+      </div>
+    </div>
+
+    ${swatch('Couleur titre', 'titleColor', cfg.titleColor)}
+    ${swatch('Couleur prix / accent', 'accentColor', cfg.accentColor)}
+
+    <label class="admin-toggle" style="margin-top:8px"><input type="checkbox" ${cfg.showLogo?'checked':''} onchange="setPdfCfg('showLogo',this.checked)"><label>Afficher le logo</label></label>
+
+    <div class="admin-sect-title" style="margin-top:14px;font-size:12px">Pied de page</div>
+    <div class="af"><label class="al">Adresse</label><input class="ai" value="${cfg.footerAddress.replace(/"/g,'&quot;')}" placeholder="12 rue de la Mer, Paris" oninput="setPdfCfg('footerAddress',this.value)"></div>
+    <div class="af"><label class="al">Téléphone</label><input class="ai" value="${cfg.footerPhone.replace(/"/g,'&quot;')}" placeholder="01 23 45 67 89" oninput="setPdfCfg('footerPhone',this.value)"></div>
+    <label class="admin-toggle"><input type="checkbox" ${cfg.footerShowDate?'checked':''} onchange="setPdfCfg('footerShowDate',this.checked)"><label>Afficher la date de mise à jour</label></label>
+
+    <div class="admin-sect-title" style="margin-top:14px;font-size:12px">Format d'export</div>
+    <div class="af">
+      <div style="display:flex;gap:8px">
+        <button class="pdf-tpl-btn${cfg.format==='a4'?' active':''}" onclick="setPdfCfg('format','a4');renderAdminSection(adminCurrentTab)" style="flex:1">A4 (impression)</button>
+        <button class="pdf-tpl-btn${cfg.format==='gbiz'?' active':''}" onclick="setPdfCfg('format','gbiz');renderAdminSection(adminCurrentTab)" style="flex:1">Google Business</button>
+      </div>
+      <div style="font-size:10px;color:var(--text3);margin-top:4px">${cfg.format==='gbiz'?'Image PNG 3064×5447 px téléchargée.':"PDF A4 via la boîte d'impression."}</div>
+    </div>
+
+    <div class="af"><label class="al">Aperçu live</label>
+      <iframe id="pdfPreviewFrame" style="width:100%;height:420px;border:1px solid var(--border);border-radius:8px;background:#e8e8e8"></iframe>
+    </div>
+
+    <button class="aadd" style="width:100%;padding:11px;margin-top:6px" onclick="doPdfExport()">${cfg.format==='gbiz'?"⬇ Télécharger l'image":'🖨 Générer PDF / Imprimer'}</button>
+  </div></div>`;
+}
+
+
 function exportMenuPDF(){
   // Build a clean print page with all tabs
   const lines = [];
@@ -2006,11 +2275,7 @@ function renderExportSection(){
         <button class="aadd" style="white-space:nowrap;padding:9px 14px" onclick="exportTabCSV(document.getElementById('csvTabSel').value)">⬇ CSV</button>
       </div>
     </div>
-    <div class="af"><label class="al">PDF menu complet</label>
-      <button class="aadd" style="width:100%;padding:10px" onclick="exportMenuPDF()">🖨 Générer PDF / Imprimer</button>
-      <div style="font-size:10px;color:var(--text3);margin-top:4px">Une fenêtre d'aperçu s'ouvre — utilisez "Enregistrer en PDF" dans la boîte d'impression.</div>
-    </div>
-  </div></div>`;
+  </div></div>`+renderPdfStyleSection();
 }
 
 async function publishToGitHub(){
@@ -2176,6 +2441,9 @@ function uploadImgFile(fileInput){
 function toggleAdminSection(el){
   const sec=el.closest('.admin-section');
   if(sec) sec.classList.toggle('collapsed');
+  if(sec && !sec.classList.contains('collapsed') && sec.querySelector('#pdfPreviewFrame')){
+    setTimeout(()=>{ if(typeof updatePdfPreview==='function') updatePdfPreview(); }, 100);
+  }
 }
 function openFirstAdminSection(){
   const body=document.getElementById('adminBody');
