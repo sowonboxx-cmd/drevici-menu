@@ -674,7 +674,7 @@
               "price": "7€",
               "sizes": [
                 {
-                  "cl": "25",
+                  "cl": "12",
                   "price": "5"
                 },
                 {
@@ -690,11 +690,11 @@
               "price": "12€",
               "sizes": [
                 {
-                  "cl": "25",
+                  "cl": "12",
                   "price": "5.5"
                 },
                 {
-                  "cl": "50",
+                  "cl": "75",
                   "price": "30"
                 }
               ]
@@ -706,12 +706,12 @@
               "price": "8€",
               "sizes": [
                 {
-                  "cl": "25",
+                  "cl": "12",
                   "price": "6.5"
                 },
                 {
                   "cl": "75",
-                  "price": "35.5"
+                  "price": "36"
                 }
               ]
             },
@@ -723,7 +723,7 @@
               "price": "",
               "sizes": [
                 {
-                  "cl": "25",
+                  "cl": "12",
                   "price": "6.5"
                 },
                 {
@@ -915,6 +915,8 @@
   ],
   "pdfStyle": {
     "format": "a4",
-    "template": "maritime"
+    "template": "maritime",
+    "showLogo": false,
+    "footerShowDate": true
   }
 }
