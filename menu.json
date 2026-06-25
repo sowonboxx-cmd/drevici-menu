@@ -843,7 +843,17 @@
                 "fr": "Nouvelle boisson",
                 "en": "New drink"
               },
-              "price": ""
+              "price": "",
+              "sizes": [
+                {
+                  "cl": "",
+                  "price": "58"
+                },
+                {
+                  "cl": "",
+                  "price": ""
+                }
+              ]
             }
           ]
         }
