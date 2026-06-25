@@ -552,6 +552,20 @@
               "img": "https://domainerosalina.com/wp-content/uploads/2026/06/rillettes-sardine-e1782420880884.webp",
               "spicy": false,
               "vegan": false
+            },
+            {
+              "name": {
+                "fr": "Ormeaux de l'île de Groix",
+                "en": ""
+              },
+              "desc": {
+                "fr": "Recette subtile et unique, les saveurs incomparables de l’ormeau",
+                "en": ""
+              },
+              "price": "9€",
+              "img": "https://domainerosalina.com/wp-content/uploads/2026/06/rillettes-ormeaux.webp",
+              "spicy": false,
+              "vegan": false
             }
           ]
         }
