@@ -289,7 +289,7 @@
             },
             {
               "name": {
-                "fr": "6 gambas de Madagascar",
+                "fr": "Gambas de Madagascar",
                 "en": "6 Madagascar prawns",
                 "es": "6 gambas de Madagascar",
                 "it": "6 gamberi del Madagascar",
@@ -297,7 +297,7 @@
                 "jp": "マダガスカル海老 6尾"
               },
               "desc": {
-                "fr": "Gambas sauvages grillées à la plancha, beurre de corail, citron vert et fleur de sel",
+                "fr": "6 gambas sauvages grillées à la plancha, beurre de corail, citron vert et fleur de sel",
                 "en": "Wild prawns grilled on plancha, coral butter, lime and fleur de sel",
                 "es": "Gambas salvajes a la plancha, mantequilla coral, lima",
                 "it": "Gamberi selvatici alla piastra, burro di corallo, lime",
@@ -315,7 +315,7 @@
                 "en": "New dish"
               },
               "desc": {
-                "fr": "On va se régalade",
+                "fr": "Accompagnés de “mayonnalgue” maison",
                 "en": ""
               },
               "price": "9€",
@@ -329,7 +329,7 @@
                 "en": "New dish"
               },
               "desc": {
-                "fr": "Délicieuse et savoureuse",
+                "fr": "Délicieuse et savoureuse, servie avec du fromage et du pain",
                 "en": ""
               },
               "price": "8€",
