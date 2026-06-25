@@ -135,8 +135,8 @@ body{background:var(--bg);font-family:'Jost',sans-serif;font-weight:400;font-siz
 .gc-img{width:100%;aspect-ratio:1;object-fit:cover;display:block;background:#ece8e1;cursor:pointer;transition:opacity .15s}
 .gc-img:hover{opacity:.82}
 .gc-body{padding:10px 12px 12px}
-.gc-name{font-family:'Open Sans',sans-serif;font-size:12px;font-weight:600;color:var(--navy);margin-bottom:2px;line-height:1.2}
-.gc-desc{font-size:11px;font-weight:300;color:var(--text2);line-height:1.4;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+.gc-name{font-family:'Open Sans',sans-serif;font-size:14px;font-weight:600;color:var(--navy);margin-bottom:2px;line-height:1.2}
+.gc-desc{font-size:13px;font-weight:300;color:var(--text2);line-height:1.4;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
 .gc-price{font-size:12px;font-weight:500;color:var(--gold);margin-top:5px}
 
 /* ── VARIANTS / BEV ── */
@@ -152,7 +152,7 @@ body{background:var(--bg);font-family:'Jost',sans-serif;font-weight:400;font-siz
 .tag{display:inline-block;font-size:10px;padding:2px 7px;border-radius:20px;border:1px solid rgba(198,162,74,0.35);color:var(--gold);margin-left:6px;vertical-align:middle;font-family:'Jost',sans-serif;letter-spacing:.04em}
 
 /* ── SPECIALS BANNER (menu du jour/midi/soir) ── */
-.special-banner{background:var(--navy);border-radius:var(--r);padding:16px 18px;margin-bottom:4px}
+.special-banner{background:var(--navy);border-radius:var(--r);padding:16px 18px}
 .special-banner-label{font-size:10px;letter-spacing:.14em;text-transform:uppercase;color:rgba(255,255,255,0.45);font-family:'Jost',sans-serif;margin-bottom:4px;display:flex;align-items:center;justify-content:space-between}
 .special-banner-title{font-family:'Open Sans',sans-serif;font-size:14px;font-weight:600;color:#fff;margin-bottom:6px}
 .special-banner-text{font-size:12px;font-weight:400;font-family:'Open Sans',sans-serif;color:rgba(255,255,255,0.7);line-height:1.6}
@@ -196,8 +196,8 @@ body{background:var(--bg);font-family:'Jost',sans-serif;font-weight:400;font-siz
 .st-hashtags{font-family:"Open Sans",sans-serif;color:rgba(255,255,255,.45);font-size:.65em;letter-spacing:.06em}
 
 /* ── HOME TAB ── */
-.home-photo{width:100%;aspect-ratio:4/3;object-fit:cover;border-radius:var(--r);display:block;margin-bottom:0}
-.home-photo-wrap{border-radius:var(--r);overflow:hidden;border:1px solid var(--border);margin-bottom:0}
+.home-photo{width:100%;aspect-ratio:4/3;object-fit:cover;border-radius:var(--r);display:block}
+.home-photo-wrap{border-radius:var(--r);overflow:hidden;border:1px solid var(--border)}
 .home-schedule-row{display:flex;align-items:center;justify-content:space-between;padding:10px 14px;background:#fff;border-radius:var(--r);border:1px solid var(--border)}
 .home-schedule-label{font-size:10px;font-weight:500;letter-spacing:.14em;text-transform:uppercase;color:var(--text3);font-family:'Jost',sans-serif}
 
@@ -240,11 +240,20 @@ body{background:var(--bg);font-family:'Jost',sans-serif;font-weight:400;font-siz
 .admin-tab-dd{padding:5px 10px;border:1px solid var(--border);border-radius:6px;font-size:12px;font-family:'Jost',sans-serif;color:var(--text);background:#fff;cursor:pointer;outline:none;max-width:160px}
 .admin-close{background:none;border:1px solid var(--border);border-radius:6px;padding:5px 9px;cursor:pointer;font-size:17px;color:var(--text2);line-height:1}
 .admin-body{flex:1;overflow-y:auto;padding:16px}
-.admin-section{margin-bottom:20px}
-.admin-sect-title{font-size:10px;font-weight:500;letter-spacing:.14em;text-transform:uppercase;color:var(--text3);font-family:'Jost',sans-serif;margin-bottom:10px;padding-bottom:8px;border-bottom:1px solid var(--border)}
+.admin-section{margin-bottom:16px;border-radius:6px;overflow:hidden}
+.admin-section:has(>.admin-sect-title){border:1px solid rgba(16,40,94,0.18)}
+.admin-sect-title{font-size:11px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--navy);font-family:'Jost',sans-serif;margin-bottom:0;padding:8px 10px;background:rgba(16,40,94,0.09);border-radius:0;border:none}
+.admin-section.collapsible>.admin-sect-title{cursor:pointer;user-select:none;display:flex;justify-content:space-between;align-items:center}
+.admin-section.collapsible>.admin-sect-title::after{content:'▾';font-size:14px}
+.admin-section.collapsible.collapsed>.admin-sect-title::after{content:'▸'}
+.admin-section.collapsible.collapsed>.admin-sect-body{display:none}
+.admin-sect-body{padding:10px;background:#fff}
 .af{margin-bottom:9px}
 .al{font-size:11px;font-weight:500;color:var(--text2);font-family:'Jost',sans-serif;margin-bottom:3px;display:block;letter-spacing:.04em}
 .ai{width:100%;padding:7px 10px;border:1px solid var(--border);border-radius:var(--rs);font-size:13px;font-family:'Jost',sans-serif;color:var(--text);background:#fff;outline:none;transition:border-color .15s}
+.ai-img-wrap{position:relative;display:flex;align-items:center}
+.ai-img-wrap .ai{padding-right:34px}
+.ai-upload-btn{position:absolute;right:6px;top:50%;transform:translateY(-50%);display:flex;align-items:center;justify-content:center;width:26px;height:26px;cursor:pointer;color:var(--text3);background:none;border:none}
 .ai:focus{border-color:var(--navy)}
 .ai::placeholder{color:#ccc}
 .ai-row{display:flex;gap:6px}
@@ -358,7 +367,7 @@ body{background:var(--bg);font-family:'Jost',sans-serif;font-weight:400;font-siz
 <div class="admin-overlay" id="adminOverlay" onclick="closeAdmin()"></div>
 <aside class="admin-panel" id="adminPanel">
   <div class="admin-hdr">
-    <span class="admin-hdr-title">Back-office <span class="admin-badge">Admin</span></span>
+    <span class="admin-hdr-title"><span class="admin-badge">Administrateur</span></span>
     <div class="admin-hdr-right">
       <select class="admin-tab-dd" id="adminTabDd" onchange="adminGoTab(this.value)"></select>
       <select class="admin-tab-dd" id="adminLangDd" onchange="setAdminLang(this.value)" title="Langue d'édition" style="width:60px">
@@ -627,9 +636,14 @@ document.addEventListener('keydown',e=>{ const lb=document.getElementById('lb');
 // RENDER
 // ═══════════════════════════════════════════
 function renderAll(){
+  // If current tab was hidden, reset to first visible
+  if(!DATA.tabs.filter(t=>t.visible!==false).some(t=>t.id===currentTabId)){
+    const first=DATA.tabs.find(t=>t.visible!==false);
+    if(first) currentTabId=first.id;
+  }
   collectLbImages(); renderNav(); renderTabs(); renderViewBar();
   const subEl=document.getElementById('heroSubEl');
-  if(subEl){ subEl.textContent=(DATA.heroActive&&DATA.hero)?t(DATA.hero):''; subEl.style.display=DATA.heroActive?'block':'none'; }
+  if(subEl){ const st=DATA.hero?t(DATA.hero):''; subEl.textContent=st; subEl.style.display=st?'block':'none'; }
   applyRestaurantBranding();
   // Global social bar above reserve CTA
   const soc=DATA.social||{};
@@ -645,7 +659,7 @@ function renderAll(){
 
 function renderNav(){
   const nav=document.getElementById('nav'); nav.innerHTML='';
-  DATA.tabs.forEach(tab=>{
+  DATA.tabs.filter(tab=>tab.visible!==false).forEach(tab=>{
     const el=document.createElement('div');
     el.className='nav-tab'+(tab.id===currentTabId?' active':'');
     el.textContent=t(tab.label);
@@ -710,7 +724,7 @@ function renderTabs(){
   const container=document.getElementById('tabsContainer'); container.innerHTML='';
   collectLbImages();
   let lbCounter=0;
-  DATA.tabs.forEach(tab=>{
+  DATA.tabs.filter(tab=>tab.visible!==false).forEach(tab=>{
     const section=document.createElement('div');
     section.className='tab-content'+(tab.id===currentTabId?' active':'');
     section.id='tab-'+tab.id;
@@ -955,7 +969,7 @@ document.addEventListener('click', function(){
 // TAB REORDER
 // ═══════════════════════════════════════════
 function renderTabReorder(){
-  let h=`<div class="admin-section"><div class="admin-sect-title">↕ Ordre des onglets</div>`;
+  let h=`<div class="admin-section"><div class="admin-sect-title">Ordre des onglets</div>`;
   h+=`<div style="font-size:11px;color:var(--text3);font-family:Jost,sans-serif;margin-bottom:10px;line-height:1.5">Glissez les onglets pour changer leur ordre d'affichage.</div>`;
   h+=`<div id="tabReorderList">`;
   DATA.tabs.forEach((tab,ti)=>{
@@ -973,10 +987,7 @@ function renderTabReorder(){
     </div>`;
   });
   h+=`</div>
-  <div style="display:flex;gap:8px;margin-top:12px">
-    <button class="asave" style="flex:1;background:rgba(16,40,94,0.12);color:var(--navy)" onclick="renderAll();showToast('Aperçu mis à jour')">👁 Aperçu</button>
-    <button class="asave" style="flex:1" onclick="renderAll();publishToGitHub()">🚀 Publier</button>
-  </div></div>`;
+  </div>`;
   h+=adminSaveBar();
   return h;
 }
@@ -1059,7 +1070,7 @@ function onDropTab(e,ti){
 // ═══════════════════════════════════════════
 function renderScheduleAdmin(){
   const sch=DATA.schedule||[];
-  let h=`<div class="admin-section"><div class="admin-sect-title">🕐 Horaires d'ouverture</div>`;
+  let h=`<div class="admin-section"><div class="admin-sect-title">Horaires</div>`;
   h+=`<div style="font-size:11px;color:var(--text3);font-family:Jost,sans-serif;margin-bottom:10px;line-height:1.6">Format 24h standard. Ex: 12 = midi, 17 = 17h00, 2 = 2h du matin, 0 = minuit.<br>Vous pouvez ajouter plusieurs services par jour (midi, soir, brunch…).</div>`;
   sch.forEach((d,i)=>{
     // Compat: migrate old {open,close} to services[]
@@ -1114,11 +1125,14 @@ function closeAdmin(){ document.getElementById('adminOverlay').classList.remove(
 
 function renderAdminTabDd(){
   const dd=document.getElementById('adminTabDd');
-  dd.innerHTML='<option value="__global">⚙️ Global</option>'
-    +DATA.tabs.map(tb=>`<option value="${tb.id}"${tb.id===adminCurrentTab?' selected':''}>${t(tb.label)}</option>`).join('')
-    +'<option value="__social">📲 Réseaux sociaux</option>'
-    +'<option value="__reorder">↕ Réordonner les tabs</option>'
-    +'<option value="__addtab">+ Nouvelle tab</option>';
+  const tabOpts=DATA.tabs.filter(tb=>tb.id!=='__home'&&tb.visible!==false).map(tb=>`<option value="${tb.id}"${tb.id===adminCurrentTab?' selected':''}>${t(tb.label)}</option>`).join('');
+  dd.innerHTML='<option value="__global">Infos générales</option>'
+    +'<option value="__home">Accueil</option>'
+    +tabOpts
+    +'<option value="__addtab">+ Ajouter une tab</option>'
+    +'<option value="__reorder">Réordonner les tabs</option>'
+    +'<option disabled>──────────────</option>'
+    +'<option value="__social">Réseaux sociaux</option>';
   dd.value=adminCurrentTab;
 }
 
@@ -1132,8 +1146,8 @@ function adminGoTab(val){
 
 function adminSaveBar(){
   return `<div style="display:flex;gap:8px;margin-top:12px;padding:0 0 4px">
-    <button class="asave" style="flex:1;background:rgba(16,40,94,0.12);color:var(--navy)" onclick="renderAll();showToast('Aperçu mis à jour')">👁 Aperçu</button>
-    <button class="asave" style="flex:1" onclick="renderAll();publishToGitHub()">🚀 Publier</button>
+    <button class="asave" style="flex:1;background:rgba(16,40,94,0.12);color:var(--navy)" onclick="renderAll();showToast('Aperçu mis à jour')">Aperçu</button>
+    <button class="asave" style="flex:1" onclick="renderAll();publishToGitHub()">Publier</button>
   </div>`;
 }
 
@@ -1223,7 +1237,7 @@ function renderAdminHomeTab(){
   let h='';
   const soc=DATA.social||{};
   // Onglet Accueil
-  h+=`<div class="admin-section"><div class="admin-sect-title">🏠 Onglet Accueil</div>
+  h+=`<div class="admin-section"><div class="admin-sect-title">Onglet Accueil</div><div class="admin-sect-body">
     <label class="admin-toggle"><input type="checkbox" ${(DATA.homeTab&&DATA.homeTab.active)?'checked':''} onchange="if(!DATA.homeTab)DATA.homeTab={};DATA.homeTab.active=this.checked;toggleHomeTab();renderAll();renderAdminTabDd();renderAdminSection('__home')"><label>Activer l'onglet Accueil (en premier)</label></label>
     <div class="af"><label class="al">Photo principale (4:3)</label>
       <input class="ai" value="${(DATA.homeTab&&DATA.homeTab.photo)||''}" placeholder="https://... .jpg ou .webp"
@@ -1235,44 +1249,43 @@ function renderAdminHomeTab(){
         oninput="if(!DATA.homeTab)DATA.homeTab={};DATA.homeTab.video=this.value.trim();renderAll()">
       <div style="font-size:11px;color:var(--text3);font-family:Jost,sans-serif;margin-top:4px">Si renseignée, la vidéo remplace la photo.</div>
     </div>
-  </div>`;
+  </div></div>`;
   // Présentation
-  h+=`<div class="admin-section"><div class="admin-sect-title">📝 Présentation du restaurant</div>
+  h+=`<div class="admin-section"><div class="admin-sect-title">Présentation</div><div class="admin-sect-body">
     <label class="admin-toggle"><input type="checkbox" ${DATA.intro.active?'checked':''} onchange="DATA.intro.active=this.checked;renderAll();renderAdminSection('__home')"><label>Afficher la présentation</label></label>
     `+biInput('Texte de présentation', DATA.intro.text.fr||'', DATA.intro.text[adminLang]||'', `DATA.intro.text[adminLang]=this.value;renderAll()`)+`
-    <div class="admin-sect-title" style="margin-top:14px;padding-top:12px">Réseaux sociaux</div>
-    <div class="af"><label class="al">Instagram</label>
-      <div style="display:flex;align-items:center;gap:6px">
-        <span style="font-size:13px;color:var(--text3)">@</span>
-        <input class="ai" value="${soc.instagram||''}" placeholder="drevicioysterbar" oninput="if(!DATA.social)DATA.social={};DATA.social.instagram=this.value;renderAll()">
-      </div></div>
-    <div class="af"><label class="al">TikTok</label>
-      <div style="display:flex;align-items:center;gap:6px">
-        <span style="font-size:13px;color:var(--text3)">@</span>
-        <input class="ai" value="${soc.tiktok||''}" placeholder="drevicioyster" oninput="if(!DATA.social)DATA.social={};DATA.social.tiktok=this.value;renderAll()">
-      </div></div>
-    <div class="af"><label class="al">Facebook</label>
-      <div style="display:flex;align-items:center;gap:6px">
-        <span style="font-size:13px;color:var(--text3)">@</span>
-        <input class="ai" value="${soc.facebook||''}" placeholder="drevicioyster" oninput="if(!DATA.social)DATA.social={};DATA.social.facebook=this.value;renderAll()">
-      </div></div>
-    <div style="font-size:11px;color:var(--text3);font-family:Jost,sans-serif;margin-top:4px;line-height:1.5">Les icônes s'affichent sous la présentation si le champ est rempli.</div>
-  </div>`;
+  </div></div>`;
+  // Plats à la une
+  h+=`<div class="admin-section collapsible collapsed"><div class="admin-sect-title" onclick="toggleAdminSection(this)">Plats à la une</div><div class="admin-sect-body">
+    <div style="display:flex;gap:12px;margin-bottom:10px">
+      <label style="display:flex;align-items:center;gap:5px;font-size:11px;color:var(--text3);cursor:pointer"><input type="checkbox" ${DATA.pinnedShowHome!==false?'checked':''} onchange="DATA.pinnedShowHome=this.checked;renderAll()"> Onglet Accueil</label>
+      <label style="display:flex;align-items:center;gap:5px;font-size:11px;color:var(--text3);cursor:pointer"><input type="checkbox" ${DATA.pinnedShowFirst!==false?'checked':''} onchange="DATA.pinnedShowFirst=this.checked;renderAll()"> Première tab</label>
+    </div>`;
+  let pinCount=0;
+  DATA.tabs.forEach((tab,ti)=>{
+    tab.cards.forEach((card,ci)=>{
+      if(!card.dishes) return;
+      card.dishes.forEach((d,di)=>{
+        pinCount++;
+        const isPinned=(DATA.pinnedDishes||[]).some(p=>p.tabId===tab.id&&p.cardIdx===ci&&p.dishIdx===di);
+        h+=`<div class="admin-card" style="display:flex;align-items:center;gap:8px;background:${isPinned?'#fdf8ec':'var(--bg)'}">
+          ${d.img?`<img src="${d.img}" style="width:40px;height:40px;border-radius:6px;object-fit:cover;flex:none" loading="lazy">`:`<div style="width:40px;height:40px;border-radius:6px;background:#ddd;flex:none"></div>`}
+          <div style="flex:1;min-width:0"><div style="font-family:Cormorant Garamond,serif;font-size:14px;font-weight:600;color:var(--navy)">${t(d.name)}</div><div style="font-size:11px;color:var(--text3)">${t(tab.label)}</div></div>
+          <button class="apin${isPinned?' pinned':''}" onclick="togglePin('${tab.id}',${ci},${di})" title="${isPinned?'Retirer':'Épingler'}">${isPinned?'📌':'📍'}</button>
+        </div>`;
+      });
+    });
+  });
+  if(!pinCount) h+=`<div style="font-size:12px;color:var(--text3);font-family:Jost,sans-serif;padding:8px">Aucun plat dans le menu.</div>`;
+  h+=`</div></div>`;
   return h;
 }
 
 function renderAdminGlobal(){
   let h='';
   // Hero
-  h+=`<div class="admin-section"><div class="admin-sect-title">En-tête</div>
-    <label class="admin-toggle"><input type="checkbox" ${DATA.heroActive?'checked':''} onchange="DATA.heroActive=this.checked;renderAll()"><label>Afficher le sous-titre</label></label>
-    `+biInput('Sous-titre', DATA.hero.fr||'', DATA.hero[adminLang]||'', `DATA.hero[adminLang]=this.value;renderAll()`)+`
-  </div>`;
 
-  // Schedule moved to home tab admin
-
-  // Specials
-  h+=`<div class="admin-section"><div class="admin-sect-title">📋 Menu du jour</div>`;
+  h+=`<div class="admin-section collapsible collapsed"><div class="admin-sect-title" onclick="toggleAdminSection(this)">Menu du jour</div><div class="admin-sect-body">`;
   DATA.specials.forEach((sp,si)=>{
     h+=`<div class="admin-card">
       <div style="margin-bottom:8px">
@@ -1287,9 +1300,10 @@ function renderAdminGlobal(){
       <div class="af"><label class="al">Prix (chiffre seul, € ajouté auto)</label><input class="ai ai-sm" type="text" inputmode="decimal" value="${sp.price||''}" oninput="const v=this.value.trim();DATA.specials[${si}].price=v&&/^[\d.,]+$/.test(v)?v+'€':v;renderAll()"></div>
     </div>`;
   });
-  // Info banner (champ libre)
+  h+=`</div></div>`;
+  // Champ libre
   const ib=DATA.infoBanner||{};
-  h+=`<div class="admin-section"><div class="admin-sect-title">📢 Champ libre (informations)</div>
+  h+=`<div class="admin-section collapsible collapsed"><div class="admin-sect-title" onclick="toggleAdminSection(this)">Champ libre</div><div class="admin-sect-body">
     <div style="margin-bottom:8px">
       <label class="admin-toggle" style="margin-bottom:6px"><input type="checkbox" ${ib.active?'checked':''} onchange="if(!DATA.infoBanner)DATA.infoBanner={};DATA.infoBanner.active=this.checked;renderAll()"><label>Visible</label></label>
       <div style="display:flex;gap:12px;margin-top:4px">
@@ -1302,14 +1316,10 @@ function renderAdminGlobal(){
     </div>
     `+biInput('Titre', (ib.title&&ib.title.fr)||'', (ib.title&&ib.title[adminLang])||'', `if(!DATA.infoBanner.title)DATA.infoBanner.title={};DATA.infoBanner.title[adminLang]=this.value;renderAll()`)+`
     `+biInput('Texte libre', (ib.desc&&ib.desc.fr)||'', (ib.desc&&ib.desc[adminLang])||'', `if(!DATA.infoBanner.desc)DATA.infoBanner.desc={};DATA.infoBanner.desc[adminLang]=this.value;renderAll()`)+`
-  </div>`;
-  h+=`</div>`;
-
-  // Export
-  h+=renderExportSection();
+  </div></div>`;
 
   // Pinned / featured
-  h+=`<div class="admin-section"><div class="admin-sect-title">⭐ Plats à la une (max 4)</div>
+  h+=`<div class="admin-section collapsible collapsed"><div class="admin-sect-title" onclick="toggleAdminSection(this)">Plats à la une</div><div class="admin-sect-body">
     <div style="display:flex;gap:12px;margin-bottom:10px">
       <label style="display:flex;align-items:center;gap:5px;font-size:11px;color:var(--text3);cursor:pointer"><input type="checkbox" ${DATA.pinnedShowHome!==false?'checked':''} onchange="DATA.pinnedShowHome=this.checked;renderAll()"> Onglet Accueil</label>
       <label style="display:flex;align-items:center;gap:5px;font-size:11px;color:var(--text3);cursor:pointer"><input type="checkbox" ${DATA.pinnedShowFirst!==false?'checked':''} onchange="DATA.pinnedShowFirst=this.checked;renderAll()"> Première tab</label>
@@ -1331,7 +1341,10 @@ function renderAdminGlobal(){
     });
   });
   if(!dishCount) h+=`<div style="font-size:12px;color:var(--text3);font-family:Jost,sans-serif;padding:8px">Aucun plat avec image dans le menu.</div>`;
-  h+=`</div>`;
+  h+=`</div></div>`;
+
+  // Export
+  h+=renderExportSection();
 
   return h;
 }
@@ -1351,16 +1364,20 @@ function renderAdminTab(ti){
   const tab=DATA.tabs[ti];
   let h='';
 
-  // Tab label
-  h+=`<div class="admin-section"><div class="admin-sect-title">Nom de l'onglet</div>`;
+  // Tab label + visibility
+  h+=`<div class="admin-section collapsible"><div class="admin-sect-title" onclick="toggleAdminSection(this)">Nom de l'onglet</div><div class="admin-sect-body">`;
   h+=biInput("Nom de l'onglet", tab.label.fr||'', tab.label[adminLang]||'', `DATA.tabs[${ti}].label[adminLang]=this.value;renderAll()`);
-  h+=`<button class="adanger" onclick="askConfirm('Supprimer la tab « ${tab.label.fr} » et tout son contenu ?',()=>delTab(${ti}))">Supprimer cette tab</button>
-  </div>`;
+  h+=`<div style="display:flex;gap:8px;margin-top:10px;flex-wrap:wrap;align-items:center">
+    <div style="display:grid;grid-template-columns:1fr 1fr auto;gap:6px;margin-top:8px">
+      <button class="aadd" style="margin:0;padding:8px 6px;font-size:11px;background:${tab.visible!==false?'var(--navy)':'#eee'};color:${tab.visible!==false?'#fff':'var(--text2)'}; border:none" onclick="DATA.tabs[${ti}].visible=true;renderAll();renderAdminSection(DATA.tabs[${ti}].id)">Visible</button>
+      <button class="aadd" style="margin:0;padding:8px 6px;font-size:11px;background:${tab.visible===false?'#555':'#eee'};color:${tab.visible===false?'#fff':'var(--text2)'};border:none" onclick="DATA.tabs[${ti}].visible=false;renderAll();renderAdminSection(DATA.tabs[${ti}].id)">Masquée</button>
+      <button onclick="askConfirm('Supprimer la tab \'${tab.label.fr}\' et tout son contenu ?',()=>delTab(${ti}))" style="margin:0;padding:8px 10px;font-size:11px;border:1px solid #f5c6c2;border-radius:var(--rs);background:none;color:#c0392b;cursor:pointer;font-family:Jost,sans-serif;white-space:nowrap">Supprimer</button>
+    </div>
+  </div></div></div>`;
 
   // Cards
   tab.cards.forEach((card,ci)=>{
-    const canDelCard=tab.cards.length>1;
-    h+=`<div class="admin-section"><div class="admin-sect-title" style="display:flex;justify-content:space-between;align-items:center"><span>Carte — ${t(card.label)}</span>${canDelCard?`<button class="adel" style="font-size:11px;padding:2px 8px" onclick="askConfirm('Supprimer cette carte ?',()=>{DATA.tabs[${ti}].cards.splice(${ci},1);renderAll();renderAdminSection(DATA.tabs[${ti}].id)})">✕ Suppr.</button>`:''}</div>`;
+    h+=`<div class="admin-section collapsible"><div class="admin-sect-title" onclick="toggleAdminSection(this)" style="display:flex;justify-content:space-between;align-items:center;cursor:pointer"><span>Section — ${t(card.label)}</span><button class="adel" style="font-size:12px;padding:1px 5px;flex:none;opacity:.6;margin-left:auto;margin-right:20px" onclick="event.stopPropagation();askConfirm('Supprimer cette section ?',()=>{DATA.tabs[${ti}].cards.splice(${ci},1);renderAll();renderAdminSection(DATA.tabs[${ti}].id)})">✕</button></div><div class="admin-sect-body">`;
     h+=`<div class="admin-card">`;
     h+=biInput('Titre de section', card.label.fr||'', card.label[adminLang]||'', `DATA.tabs[${ti}].cards[${ci}].label[adminLang]=this.value;renderAll()`);
     h+=``;
@@ -1371,6 +1388,7 @@ function renderAdminTab(ti){
         h+=`<div class="admin-card" style="background:#fff;margin-top:4px" draggable="true" ondragstart="onDragBev(event,${ti},${ci},${ii})" ondragend="onDragEnd(event)" ondragover="onDragOver(event,${ti},${ci},${ii})" ondragleave="onDragLeave(event)" ondrop="onDropBev(event,${ti},${ci},${ii})">
           <div class="admin-card-hdr"><span class="drag-handle">⠿</span><span class="admin-card-num">Boisson ${ii+1}</span><button class="adel" onclick="askConfirm('Supprimer cette boisson ?',()=>delBev(${ti},${ci},${ii}))">×</button></div>
           <input class="ai" style="margin-bottom:4px" placeholder="${adminLang!=='fr'&&typeof item.name==='object'?item.name.fr||'Nom':'Nom'}" value="${typeof item.name==='object'?(item.name[adminLang]||''):item.name||''}" oninput="if(typeof DATA.tabs[${ti}].cards[${ci}].items[${ii}].name!=='object'){DATA.tabs[${ti}].cards[${ci}].items[${ii}].name={fr:DATA.tabs[${ti}].cards[${ci}].items[${ii}].name};}DATA.tabs[${ti}].cards[${ci}].items[${ii}].name[adminLang]=this.value;renderAll()">
+          `+imgFieldHtml(item.img||'',"DATA.tabs[${ti}].cards[${ci}].items[${ii}].img=this.value;renderAll()","Image URL ou uploader")+`
 
           <div style="font-size:10px;letter-spacing:.1em;text-transform:uppercase;color:var(--text3);font-family:Jost,sans-serif;margin-bottom:4px">Tailles & prix</div>
           ${sizeRows}
@@ -1379,7 +1397,7 @@ function renderAdminTab(ti){
       });
       h+=`<button class="aadd" style="margin-top:4px" onclick="addBev(${ti},${ci})">+ Boisson</button>`;
     } else if(card.type==='variants'){
-      h+=`<div class="af"><label class="al">Image URL</label><input class="ai" value="${card.img||''}" oninput="DATA.tabs[${ti}].cards[${ci}].img=this.value;renderAll()"></div>`;
+      h+=imgFieldHtml(card.img||'',"DATA.tabs[${ti}].cards[${ci}].img=this.value;renderAll()","Image URL ou uploader");
       (card.variants||[]).forEach((v,vi)=>{
         const vFr=typeof v.name==='object'?v.name.fr||'':v.name||'';
         const vVal=typeof v.name==='object'?(v.name[adminLang]||''):v.name||'';
@@ -1393,7 +1411,7 @@ function renderAdminTab(ti){
           `+biInput('Nom', d.name.fr||'', d.name[adminLang]||'', `DATA.tabs[${ti}].cards[${ci}].dishes[${di}].name[adminLang]=this.value;renderAll()`)+`
           `+biInput('Description', d.desc.fr||'', d.desc[adminLang]||'', `DATA.tabs[${ti}].cards[${ci}].dishes[${di}].desc[adminLang]=this.value;renderAll()`)+`
           `+priceField(d,ti,ci,di)+`
-          <div class="af"><label class="al">Image URL</label><input class="ai" value="${d.img||''}" oninput="DATA.tabs[${ti}].cards[${ci}].dishes[${di}].img=this.value;renderAll()"></div>
+          `+imgFieldHtml(d.img||'',"DATA.tabs[${ti}].cards[${ci}].dishes[${di}].img=this.value;renderAll()","Image URL ou uploader")+`
           <div class="badge-group">
             <label class="badge-check"><input type="checkbox" ${d.spicy?'checked':''} onchange="DATA.tabs[${ti}].cards[${ci}].dishes[${di}].spicy=this.checked;renderAll()"><img src="https://drevicioyster.com/wp-content/uploads/2026/06/icon-spicy.png" class="badge-icon"> Épicé</label>
             <label class="badge-check"><input type="checkbox" ${d.vegan?'checked':''} onchange="DATA.tabs[${ti}].cards[${ci}].dishes[${di}].vegan=this.checked;renderAll()"><img src="https://drevicioyster.com/wp-content/uploads/2026/06/icon-vegan.png" class="badge-icon"> Vegan</label>
@@ -1403,14 +1421,11 @@ function renderAdminTab(ti){
       h+=`<button class="aadd" onclick="addDish(${ti},${ci})">+ Plat</button>`;
     }
 
-    h+=`</div></div>`;
+    h+=`</div></div></div>`;
   });
 
-  h+=`<div class="admin-section"><button class="aadd" onclick="addCard(${ti})">+ Nouvelle carte dans cette tab</button></div>`;
-  h+=`<div style="display:flex;gap:8px;margin-top:6px">
-    <button class="asave" style="flex:1;background:rgba(16,40,94,0.12);color:var(--navy)" onclick="renderAll();showToast('Aperçu mis à jour')">👁 Aperçu</button>
-    <button class="asave" style="flex:1" onclick="renderAll();publishToGitHub()">🚀 Publier</button>
-  </div>`;
+  h+=`<div class="admin-section"><button class="aadd" style="display:block;width:100%;padding:10px" onclick="addCard(${ti})">+ Nouvelle section dans cette tab</button></div>`;
+
   return h;
 }
 
@@ -1425,8 +1440,8 @@ function addBev(ti,ci){ DATA.tabs[ti].cards[ci].items.push({name:{fr:'Nouvelle b
 function addCard(ti){
   const tab=DATA.tabs[ti];
   const isBev=tab.id==='boissons'||tab.cards.every(c=>c.type==='bevs');
-  if(isBev) DATA.tabs[ti].cards.push({label:{fr:'Nouvelle carte',en:'New section'},type:'bevs',items:[]});
-  else DATA.tabs[ti].cards.push({label:{fr:'Nouvelle carte',en:'New section'},dishes:[]});
+  if(isBev) DATA.tabs[ti].cards.push({label:{fr:'Nouvelle section',en:'New section'},type:'bevs',items:[]});
+  else DATA.tabs[ti].cards.push({label:{fr:'Nouvelle section',en:'New section'},dishes:[]});
   renderAll(); renderAdminSection(DATA.tabs[ti].id);
 }
 function toggleHomeTab(){
@@ -1573,7 +1588,7 @@ function renderSocialSection(){
 
   const caption = buildCaption();
 
-  return `<div class="admin-section"><div class="admin-sect-title">📲 Créer un visuel réseaux sociaux</div>
+  return `<div class="admin-section"><div class="admin-sect-title">Réseaux sociaux</div>
     <div class="soc-tabs">${tabBtns}</div>
 
     <div class="soc-preview-wrap">
@@ -1899,7 +1914,7 @@ function exportMenuPDF(){
 </head><body>`);
   lines.push(`<h1>${restName}</h1>`);
   if(DATA.heroActive && DATA.hero) lines.push(`<div class="sub">${t(DATA.hero)}</div>`);
-  DATA.tabs.filter(tb=>tb.id!=='__home').forEach(tb=>{
+  DATA.tabs.filter(tb=>tb.id!=='__home'&&tb.visible!==false).forEach(tb=>{
     lines.push(`<h2>${t(tb.label)}</h2>`);
     tb.cards.forEach(card=>{
       if(t(card.label)) lines.push(`<h3>${t(card.label)}</h3>`);
@@ -1927,9 +1942,9 @@ function exportMenuPDF(){
 }
 
 function renderExportSection(){
-  const tabOpts = DATA.tabs.filter(tb=>tb.id!=='__home')
+  const tabOpts = DATA.tabs.filter(tb=>tb.id!=='__home'&&tb.visible!==false)
     .map(tb=>`<option value="${tb.id}">${t(tb.label)}</option>`).join('');
-  return `<div class="admin-section"><div class="admin-sect-title">📥 Exporter le menu</div>
+  return `<div class="admin-section collapsible collapsed"><div class="admin-sect-title" onclick="toggleAdminSection(this)">Exporter le menu</div><div class="admin-sect-body">
     <div style="font-size:11px;color:var(--text3);font-family:Jost,sans-serif;margin-bottom:10px;line-height:1.6">
       Exportez vos menus en CSV (Excel, Google Sheets) ou en PDF prêt à imprimer / uploader sur Google Business.
     </div>
@@ -1946,7 +1961,7 @@ function renderExportSection(){
       <button class="aadd" style="width:100%;padding:10px" onclick="exportMenuPDF()">🖨 Générer PDF / Imprimer</button>
       <div style="font-size:10px;color:var(--text3);margin-top:4px">Une fenêtre d'aperçu s'ouvre — utilisez "Enregistrer en PDF" dans la boîte d'impression.</div>
     </div>
-  </div>`;
+  </div></div>`;
 }
 
 async function publishToGitHub(){
@@ -2015,22 +2030,46 @@ function applyRestaurantBranding(){
 function restaurantSettingHtml(){
   const name=getRestaurantName();
   const logo=getRestaurantLogo();
-  return `<div class="admin-section"><div class="admin-sect-title">🏪 Mon établissement</div>
+  return `<div class="admin-section collapsible"><div class="admin-sect-title" onclick="toggleAdminSection(this)">Mon établissement</div><div class="admin-sect-body">
     <div class="af"><label class="al">Nom de l'établissement</label>
       <input class="ai" value="${name}" placeholder="Nom du restaurant" oninput="setRestaurantName(this.value);document.getElementById('logoText').textContent=this.value||'Mon Restaurant'">
     </div>
     <div class="af"><label class="al">Logo (URL image)</label>
       <input class="ai" value="${logo}" placeholder="https://... .png ou .svg" oninput="setRestaurantLogo(this.value.trim())">
-      <div style="font-size:11px;color:var(--text3);font-family:Jost,sans-serif;margin-top:4px">Laissez vide pour afficher le nom en texte. Logo centré dans le header, hauteur max 40px.</div>
+      <div style="font-size:11px;color:var(--text3);font-family:Jost,sans-serif;margin-top:4px">Laissez vide pour afficher le nom en texte.</div>
     </div>
-  </div>`;
+    <div class="af"><label class="al">Sous-titre</label>
+      <input class="ai" value="${DATA.hero?t(DATA.hero):''}" placeholder="Ex : Fruits de mer · Bretagne · Paris" oninput="if(!DATA.hero)DATA.hero={};DATA.hero[adminLang]=this.value;renderAll()">
+    </div>
+  </div></div>`;
+}
+
+function renderSocialAdminSection(){
+  const soc=DATA.social||{};
+  return `<div class="admin-section collapsible collapsed"><div class="admin-sect-title" onclick="toggleAdminSection(this)">Réseaux sociaux</div><div class="admin-sect-body">
+    <div class="af"><label class="al">Instagram</label>
+      <div style="display:flex;align-items:center;gap:6px">
+        <span style="font-size:13px;color:var(--text3)">@</span>
+        <input class="ai" value="${soc.instagram||''}" placeholder="drevicioysterbar" oninput="if(!DATA.social)DATA.social={};DATA.social.instagram=this.value;renderAll()">
+      </div></div>
+    <div class="af"><label class="al">TikTok</label>
+      <div style="display:flex;align-items:center;gap:6px">
+        <span style="font-size:13px;color:var(--text3)">@</span>
+        <input class="ai" value="${soc.tiktok||''}" placeholder="drevicioyster" oninput="if(!DATA.social)DATA.social={};DATA.social.tiktok=this.value;renderAll()">
+      </div></div>
+    <div class="af"><label class="al">Facebook</label>
+      <div style="display:flex;align-items:center;gap:6px">
+        <span style="font-size:13px;color:var(--text3)">@</span>
+        <input class="ai" value="${soc.facebook||''}" placeholder="drevicioyster" oninput="if(!DATA.social)DATA.social={};DATA.social.facebook=this.value;renderAll()">
+      </div></div>
+    <div style="font-size:11px;color:var(--text3);font-family:Jost,sans-serif;margin-top:4px;line-height:1.5">Les icônes s'affichent sous la présentation si le champ est rempli.</div>
+  </div></div>`;
 }
 
 function ghSectionHtml(){
   const token=getToken();
   const masked=token?token.slice(0,7)+'••••••••••••••••••'+token.slice(-4):'';
-  return restaurantSettingHtml() + `<div class="admin-section">
-    <div class="admin-sect-title">🔗 Synchronisation GitHub</div>
+  return `<div class="admin-section collapsible"><div class="admin-sect-title" onclick="toggleAdminSection(this)">Synchronisation GitHub</div><div class="admin-sect-body">
     ${token
       ?`<div style="display:flex;align-items:center;gap:8px;padding:10px 12px;background:#eef6ee;border-radius:8px;border:1px solid #b8e0b8;margin-bottom:10px">
           <div style="flex:1"><div style="font-size:12px;color:#2a7a2a;font-family:Jost,sans-serif;font-weight:500">✓ Token configuré</div><div style="font-size:11px;color:#999;font-family:monospace;margin-top:2px">${masked}</div></div>
@@ -2044,14 +2083,33 @@ function ghSectionHtml(){
           <div style="font-size:11px;color:var(--text3);font-family:Jost,sans-serif;margin-top:5px;line-height:1.5">github.com → Settings → Developer settings → Tokens (classic) → scope <strong>repo</strong></div>
         </div>`
     }
-    <button class="asave" id="ghPublishBtn" onclick="publishToGitHub()" ${!token?'disabled style="opacity:.5;cursor:not-allowed"':''}style="margin-top:4px">🚀 Publier sur GitHub</button>
+    <button class="asave" id="ghPublishBtn" onclick="publishToGitHub()" ${!token?'disabled style="opacity:.5;cursor:not-allowed"':''}style="margin-top:4px">Publier sur GitHub</button>
     <div style="font-size:11px;color:var(--text3);font-family:Jost,sans-serif;margin-top:8px;line-height:1.6">Ton menu sera en ligne sur<br><a href="https://${GH_USER}.github.io/${GH_REPO}/" target="_blank" style="color:var(--navy);font-weight:500">${GH_USER}.github.io/${GH_REPO}/</a><br>en ~30 secondes après chaque publication.</div>
-  </div>`;
+  </div></div>`;
 }
 
 // Patch renderAdminGlobal to prepend GH section
 const _origGlobal=renderAdminGlobal;
-renderAdminGlobal=function(){ return ghSectionHtml()+_origGlobal(); };
+renderAdminGlobal=function(){ return ghSectionHtml()+restaurantSettingHtml()+renderSocialAdminSection()+_origGlobal(); };
+
+// ═══════════════════════════════════════════
+// ADMIN COLLAPSE
+// ═══════════════════════════════════════════
+function imgFieldHtml(val, onchangeJs, placeholder){
+  const uid='imgf'+Math.random().toString(36).slice(2,8);
+  return `<div class="af"><div class="ai-img-wrap"><input class="ai" id="${uid}" value="${val||''}" placeholder="${placeholder||'Image URL'}" oninput="${onchangeJs}"><label class="ai-upload-btn" title="Uploader"><input type="file" accept="image/*" style="display:none" onchange="(function(e){const r=new FileReader();r.onload=ev=>{const el=document.getElementById('${uid}');el.value=ev.target.result;el.dispatchEvent(new Event('input'))};r.readAsDataURL(e.target.files[0])})(event)"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="16 16 12 12 8 16"></polyline><line x1="12" y1="12" x2="12" y2="21"></line><path d="M20.39 18.39A5 5 0 0 0 18 9h-1.26A8 8 0 1 0 3 16.3"></path></svg></label></div></div>`;
+}
+
+function toggleAdminSection(el){
+  const sec=el.closest('.admin-section');
+  if(sec) sec.classList.toggle('collapsed');
+}
+function openFirstAdminSection(){
+  const body=document.getElementById('adminBody');
+  if(!body) return;
+  const all=body.querySelectorAll('.admin-section.collapsible');
+  all.forEach((s,i)=>{ if(i===0) s.classList.remove('collapsed'); else s.classList.add('collapsed'); });
+}
 
 // ═══════════════════════════════════════════
 // INIT
