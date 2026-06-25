@@ -257,7 +257,7 @@
       "cards": [
         {
           "label": {
-            "fr": "À partager",
+            "fr": "",
             "en": "To share",
             "es": "Para compartir",
             "it": "Da condividere",
@@ -267,7 +267,7 @@
           "dishes": [
             {
               "name": {
-                "fr": "Planche de charcuterie",
+                "fr": "Planche de charcuterie bretonne",
                 "en": "Charcuterie board",
                 "es": "Tabla de embutidos",
                 "it": "Tagliere di salumi",
@@ -275,7 +275,7 @@
                 "jp": "シャルキュトリーボード"
               },
               "desc": {
-                "fr": "Sélection de charcuteries artisanales, cornichons, pain grillé et condiments maison",
+                "fr": "Saucisson de jambon, andouille bretonne, filet mignon fumée",
                 "en": "Artisan cured meats, gherkins, toast and house condiments",
                 "es": "Embutidos artesanales, pepinillos y pan tostado",
                 "it": "Salumi artigianali, cetrioli e pane tostato",
@@ -306,7 +306,7 @@
               },
               "price": "12€",
               "img": "https://drevicioyster.com/wp-content/uploads/2026/05/gambas-1000x1000.webp",
-              "spicy": true,
+              "spicy": false,
               "vegan": false
             },
             {
@@ -321,7 +321,7 @@
               "price": "9€",
               "img": "https://drevicioyster.com/wp-content/uploads/2026/06/bulots-hero2.webp",
               "spicy": false,
-              "vegan": true
+              "vegan": false
             },
             {
               "name": {
@@ -334,8 +334,8 @@
               },
               "price": "8€",
               "img": "https://drevicioyster.com/wp-content/uploads/2026/06/soupe-poisson.webp",
-              "spicy": true,
-              "vegan": true
+              "spicy": false,
+              "vegan": false
             }
           ]
         }
