@@ -1191,12 +1191,7 @@ function renderAdminSection(tid, _skipScroll){
   // bind inputs
   body.querySelectorAll('.ai[data-bind]').forEach(input=>input.addEventListener('input',()=>applyBind(input)));
   body.querySelectorAll('.ai[data-bind]').forEach(input=>input.addEventListener('change',()=>applyBind(input)));
-  // Ensure paste works on image URL fields by firing input event after paste
-  body.querySelectorAll('.ai-img-wrap .ai').forEach(input=>{
-    input.addEventListener('paste',e=>{
-      setTimeout(()=>{ input.dispatchEvent(new Event('input',{bubbles:true})); },10);
-    });
-  });
+  // paste handled inline via onpaste attribute in imgFieldHtml
 }
 
 function applyBind(input){
@@ -2152,9 +2147,14 @@ renderAdminGlobal=function(){ return ghSectionHtml()+restaurantSettingHtml()+ren
 // ═══════════════════════════════════════════
 function imgFieldHtml(val, onchangeJs, placeholder){
   const uid='imgf'+Math.random().toString(36).slice(2,8);
-  // onpaste: wait 0ms then fire both input+change so the value is committed after paste
-  const pasteJs=`setTimeout(function(){var el=document.getElementById('${uid}');if(el){el.dispatchEvent(new Event('input',{bubbles:true}));}},0)`;
-  return `<div class="af"><div class="ai-img-wrap"><input class="ai" id="${uid}" value="${val||''}" placeholder="${placeholder||'Image URL'}" oninput="${onchangeJs}" onchange="${onchangeJs}" onpaste="${pasteJs}"><label class="ai-upload-btn" title="Uploader"><input type="file" accept="image/*" style="display:none" onchange="(function(e){const r=new FileReader();r.onload=ev=>{const el=document.getElementById('${uid}');if(el){el.value=ev.target.result;el.dispatchEvent(new Event('input',{bubbles:true}));}};r.readAsDataURL(e.target.files[0])})(event)"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="16 16 12 12 8 16"></polyline><line x1="12" y1="12" x2="12" y2="21"></line><path d="M20.39 18.39A5 5 0 0 0 18 9h-1.26A8 8 0 1 0 3 16.3"></path></svg></label></div></div>`;
+  // Extract the data-save part (everything before renderAll) so we can save without re-rendering
+  // onchange (blur equivalent) → save + renderAll to update preview
+  // onpaste → wait for browser to insert text, then save + renderAll
+  const saveAndRender=onchangeJs; // e.g. "DATA.tabs[0].cards[0].dishes[0].img=this.value;renderAll()"
+  // For oninput: only save the value, don't call renderAll (avoids destroying the field mid-type)
+  const saveOnly=onchangeJs.replace(/;?renderAll\(\)/g,'');
+  const pasteJs=`setTimeout(function(){var el=document.getElementById('${uid}');if(el){var ev=new Event('change',{bubbles:true});el.dispatchEvent(ev);}},50)`;
+  return `<div class="af"><div class="ai-img-wrap"><input class="ai" id="${uid}" value="${val||''}" placeholder="${placeholder||'Image URL'}" oninput="${saveOnly}" onchange="${saveAndRender}" onpaste="${pasteJs}"><label class="ai-upload-btn" title="Uploader une image"><input type="file" accept="image/*" style="display:none" onchange="(function(e){const r=new FileReader();r.onload=ev=>{const el=document.getElementById('${uid}');if(el){el.value=ev.target.result;el.dispatchEvent(new Event('change',{bubbles:true}));}};r.readAsDataURL(e.target.files[0])})(event)"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="16 16 12 12 8 16"></polyline><line x1="12" y1="12" x2="12" y2="21"></line><path d="M20.39 18.39A5 5 0 0 0 18 9h-1.26A8 8 0 1 0 3 16.3"></path></svg></label></div></div>`;
 }
 
 function toggleAdminSection(el){
