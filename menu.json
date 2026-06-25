@@ -840,18 +840,18 @@
           "items": [
             {
               "name": {
-                "fr": "Nouvelle boisson",
+                "fr": "Miam test",
                 "en": "New drink"
               },
               "price": "",
               "sizes": [
                 {
-                  "cl": "",
+                  "cl": "30",
                   "price": "58"
                 },
                 {
-                  "cl": "",
-                  "price": ""
+                  "cl": "60",
+                  "price": "100"
                 }
               ]
             }
