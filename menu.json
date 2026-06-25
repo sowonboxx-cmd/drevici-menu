@@ -747,25 +747,45 @@
           "items": [
             {
               "name": {
-                "fr": "Champagne brut",
+                "fr": "Champagne la Maison Fricot",
                 "en": "Champagne brut",
                 "es": "Champán brut",
                 "it": "Champagne brut",
                 "kr": "샴페인 브뤼",
                 "jp": "シャンパーニュ"
               },
-              "price": "15€"
+              "price": "15€",
+              "sizes": [
+                {
+                  "cl": "10",
+                  "price": "10"
+                },
+                {
+                  "cl": "75",
+                  "price": "65"
+                }
+              ]
             },
             {
               "name": {
-                "fr": "Crémant d'Alsace",
+                "fr": "Pétillant Saumur",
                 "en": "Crémant d'Alsace",
                 "es": "Crémant de Alsacia",
                 "it": "Crémant d'Alsazia",
                 "kr": "크레망 달자스",
                 "jp": "クレマン ダルザス"
               },
-              "price": "9€"
+              "price": "9€",
+              "sizes": [
+                {
+                  "cl": "10",
+                  "price": "7"
+                },
+                {
+                  "cl": "75",
+                  "price": "30"
+                }
+              ]
             },
             {
               "name": {
