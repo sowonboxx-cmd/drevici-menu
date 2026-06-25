@@ -769,6 +769,38 @@
           ]
         }
       ]
+    },
+    {
+      "id": "tab_1782405406077",
+      "label": {
+        "fr": "Cocktails",
+        "en": "New tab"
+      },
+      "cards": [
+        {
+          "label": {
+            "fr": "Fait avec amour par notre barman",
+            "en": "À la carte"
+          },
+          "dishes": [
+            {
+              "name": {
+                "fr": "Espresso Martini",
+                "en": ""
+              },
+              "desc": {
+                "fr": "",
+                "en": ""
+              },
+              "price": "18€",
+              "img": "",
+              "spicy": false,
+              "vegan": false
+            }
+          ]
+        }
+      ],
+      "visible": true
     }
   ]
 }
