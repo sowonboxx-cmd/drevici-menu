@@ -629,14 +629,14 @@
             },
             {
               "name": {
-                "fr": "Miam",
+                "fr": "Mousaillon",
                 "en": ""
               },
               "desc": {
-                "fr": "On va boiire",
+                "fr": "3 huîtres N°3, 50gr de bulots, 3 gambas",
                 "en": ""
               },
-              "price": "78€",
+              "price": "22€",
               "img": "",
               "spicy": false,
               "vegan": false
