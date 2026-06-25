@@ -187,6 +187,39 @@
             },
             {
               "name": {
+                "fr": "Huîtres natures n°3",
+                "en": "New dish"
+              },
+              "desc": {
+                "fr": "Toutes nos huîtres sont accompagnées de pain, beurre, citron et/ou vinaigre-échalotes.",
+                "en": ""
+              },
+              "price": "Les 6 — 14€ · Les 12 — 26€",
+              "img": "https://drevicioyster.com/wp-content/uploads/2026/06/huitresiuf6.webp",
+              "spicy": false,
+              "vegan": false,
+              "priceType": "dual",
+              "qty1": "6",
+              "p1": "14",
+              "qty2": "12",
+              "p2": "26"
+            },
+            {
+              "name": {
+                "fr": "Huîtres natures n°2",
+                "en": "New dish"
+              },
+              "desc": {
+                "fr": "Toutes nos huîtres sont accompagnées de pain, beurre, citron et/ou vinaigre-échalotes.",
+                "en": ""
+              },
+              "price": "Les 6 — 14€ · Les 16 — 30€",
+              "img": "https://drevicioyster.com/wp-content/uploads/2026/06/huitres-6-02apres.webp",
+              "spicy": false,
+              "vegan": false
+            },
+            {
+              "name": {
                 "fr": "Huîtres gratinées",
                 "en": "Gratin oysters",
                 "es": "Ostras gratinadas",
@@ -206,81 +239,6 @@
               "img": "https://drevicioyster.com/wp-content/uploads/2026/05/gratines-1.webp",
               "spicy": false,
               "vegan": false
-            },
-            {
-              "name": {
-                "fr": "Huîtres natures n°3",
-                "en": "New dish"
-              },
-              "desc": {
-                "fr": "Toutes nos huîtres sont accompagnées de pain, beurre, citron et/ou vinaigre-échalotes.",
-                "en": ""
-              },
-              "price": "Les 6 — 14€ · Les 12 — 26€",
-              "img": "https://drevicioyster.com/wp-content/uploads/2026/06/huitresiuf6.webp",
-              "spicy": false,
-              "vegan": true,
-              "priceType": "dual",
-              "qty1": "6",
-              "p1": "14",
-              "qty2": "12",
-              "p2": "26"
-            },
-            {
-              "name": {
-                "fr": "Huîtres natures n°2",
-                "en": "New dish"
-              },
-              "desc": {
-                "fr": "Toutes nos huîtres sont accompagnées de pain, beurre, citron et/ou vinaigre-échalotes.",
-                "en": ""
-              },
-              "price": "Les 6 — 14€ · Les 16 — 30€",
-              "img": "https://drevicioyster.com/wp-content/uploads/2026/06/huitres-6-02apres.webp",
-              "spicy": false,
-              "vegan": true
-            },
-            {
-              "name": {
-                "fr": "Moussaillon",
-                "en": "New dish"
-              },
-              "desc": {
-                "fr": "12 huîtres N°3 et 2 coupes de champagne",
-                "en": ""
-              },
-              "price": "53€",
-              "img": "https://drevicioyster.com/wp-content/uploads/2026/06/IMG_3058-1-scaled.webp",
-              "spicy": false,
-              "vegan": false
-            },
-            {
-              "name": {
-                "fr": "Nouveau plat",
-                "en": "New dish"
-              },
-              "desc": {
-                "fr": "",
-                "en": ""
-              },
-              "price": "70€",
-              "img": "https://drevicioyster.com/wp-content/uploads/2026/05/01-Image-tesst-apres.webp",
-              "spicy": false,
-              "vegan": false
-            },
-            {
-              "name": {
-                "fr": "Test will",
-                "en": "New dish"
-              },
-              "desc": {
-                "fr": "",
-                "en": ""
-              },
-              "price": "45€",
-              "img": "https://drevicioyster.com/wp-content/uploads/2026/05/ChatGPT-Image-May-7-2026-01_26_35-PM.png",
-              "spicy": false,
-              "vegan": true
             }
           ]
         }
