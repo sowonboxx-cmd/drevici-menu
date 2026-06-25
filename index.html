@@ -2152,7 +2152,9 @@ renderAdminGlobal=function(){ return ghSectionHtml()+restaurantSettingHtml()+ren
 // ═══════════════════════════════════════════
 function imgFieldHtml(val, onchangeJs, placeholder){
   const uid='imgf'+Math.random().toString(36).slice(2,8);
-  return `<div class="af"><div class="ai-img-wrap"><input class="ai" id="${uid}" value="${val||''}" placeholder="${placeholder||'Image URL'}" oninput="${onchangeJs}"><label class="ai-upload-btn" title="Uploader"><input type="file" accept="image/*" style="display:none" onchange="(function(e){const r=new FileReader();r.onload=ev=>{const el=document.getElementById('${uid}');el.value=ev.target.result;el.dispatchEvent(new Event('input'))};r.readAsDataURL(e.target.files[0])})(event)"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="16 16 12 12 8 16"></polyline><line x1="12" y1="12" x2="12" y2="21"></line><path d="M20.39 18.39A5 5 0 0 0 18 9h-1.26A8 8 0 1 0 3 16.3"></path></svg></label></div></div>`;
+  // onpaste: wait 0ms then fire both input+change so the value is committed after paste
+  const pasteJs=`setTimeout(function(){var el=document.getElementById('${uid}');if(el){el.dispatchEvent(new Event('input',{bubbles:true}));}},0)`;
+  return `<div class="af"><div class="ai-img-wrap"><input class="ai" id="${uid}" value="${val||''}" placeholder="${placeholder||'Image URL'}" oninput="${onchangeJs}" onchange="${onchangeJs}" onpaste="${pasteJs}"><label class="ai-upload-btn" title="Uploader"><input type="file" accept="image/*" style="display:none" onchange="(function(e){const r=new FileReader();r.onload=ev=>{const el=document.getElementById('${uid}');if(el){el.value=ev.target.result;el.dispatchEvent(new Event('input',{bubbles:true}));}};r.readAsDataURL(e.target.files[0])})(event)"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="16 16 12 12 8 16"></polyline><line x1="12" y1="12" x2="12" y2="21"></line><path d="M20.39 18.39A5 5 0 0 0 18 9h-1.26A8 8 0 1 0 3 16.3"></path></svg></label></div></div>`;
 }
 
 function toggleAdminSection(el){
