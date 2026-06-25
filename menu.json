@@ -605,6 +605,20 @@
               "img": "https://domainerosalina.com/wp-content/uploads/2026/06/illus-espresso.webp",
               "spicy": false,
               "vegan": false
+            },
+            {
+              "name": {
+                "fr": "Miam",
+                "en": ""
+              },
+              "desc": {
+                "fr": "On va boiire",
+                "en": ""
+              },
+              "price": "78€",
+              "img": "",
+              "spicy": false,
+              "vegan": false
             }
           ]
         }
