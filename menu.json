@@ -503,11 +503,25 @@
                 "en": ""
               },
               "desc": {
-                "fr": "Exquise de rillettes de Noix Saint Jacques cuisinées à la bretonne.",
+                "fr": "Exquise de rillettes de Noix Saint Jacques cuisinées à la bretonne",
                 "en": ""
               },
               "price": "9€",
               "img": "https://domainerosalina.com/wp-content/uploads/2026/06/rillettes-st-jacques.webp",
+              "spicy": false,
+              "vegan": false
+            },
+            {
+              "name": {
+                "fr": "Homard Bleu",
+                "en": ""
+              },
+              "desc": {
+                "fr": "Cuisinée à partir de Homard Bleu (le Homard breton), considéré comme le plus fin des crustacés, découvrez la chair tendre et raffinée du Homard (30%) à travers cette recette qui ravira les fins gourmets",
+                "en": ""
+              },
+              "price": "9€",
+              "img": "https://domainerosalina.com/wp-content/uploads/2026/06/rillettes-homard.webp",
               "spicy": false,
               "vegan": false
             }
