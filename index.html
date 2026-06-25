@@ -2145,29 +2145,20 @@ renderAdminGlobal=function(){ return ghSectionHtml()+restaurantSettingHtml()+ren
 // ADMIN COLLAPSE
 // ═══════════════════════════════════════════
 function imgFieldHtml(val, onchangeJs, placeholder){
-  const uid = 'img'+(_imgUidCounter++);
-  // Store the data-save callback so updateImgField can run it
-  _imgFieldCallbacks[uid] = onchangeJs;
   const previewStyle = val ? '' : 'display:none';
-  return `<div class="af"><div class="ai-img-wrap"><input class="ai" id="${uid}" value="${val||''}" placeholder="${placeholder||'Image URL'}" oninput="updateImgField(this)"><label class="ai-upload-btn" title="Uploader une image"><input type="file" accept="image/*" style="display:none" onchange="uploadImgFile(this)"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="16 16 12 12 8 16"></polyline><line x1="12" y1="12" x2="12" y2="21"></line><path d="M20.39 18.39A5 5 0 0 0 18 9h-1.26A8 8 0 1 0 3 16.3"></path></svg></label></div><img class="ai-img-preview" src="${val||''}" style="${previewStyle};width:100%;max-width:120px;aspect-ratio:1;object-fit:cover;border-radius:6px;margin-top:6px;border:1px solid var(--border)" onerror="this.style.display='none'"></div>`;
+  // oninput = the SAME inline save+render that name/price use, then a clean preview sync call
+  const handler = onchangeJs + ';syncImgPreview(this)';
+  return `<div class="af"><div class="ai-img-wrap"><input class="ai" value="${val||''}" placeholder="${placeholder||'Image URL'}" oninput="${handler}"><label class="ai-upload-btn" title="Uploader une image"><input type="file" accept="image/*" style="display:none" onchange="uploadImgFile(this)"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="16 16 12 12 8 16"></polyline><line x1="12" y1="12" x2="12" y2="21"></line><path d="M20.39 18.39A5 5 0 0 0 18 9h-1.26A8 8 0 1 0 3 16.3"></path></svg></label></div><img class="ai-img-preview" src="${val||''}" style="${previewStyle};width:100%;max-width:120px;aspect-ratio:1;object-fit:cover;border-radius:6px;margin-top:6px;border:1px solid var(--border)" onerror="this.style.display='none'"></div>`;
 }
 
-let _imgUidCounter = 0;
-let _imgFieldCallbacks = {};
-
-function updateImgField(input){
-  // 1) Run the data-save callback (e.g. DATA.tabs[0]...img=value;renderAll())
-  const cb = _imgFieldCallbacks[input.id];
-  if(cb){
-    try { new Function(cb).call(input); } catch(e){ console.error('img save error', e); }
-  }
-  // 2) Update the inline thumbnail preview
-  const preview = input.closest('.ai-img-wrap').parentElement.querySelector('.ai-img-preview');
-  if(preview){
-    const v = input.value.trim();
-    if(v){ preview.src = v; preview.style.display = 'block'; }
-    else { preview.style.display = 'none'; }
-  }
+function syncImgPreview(input){
+  const wrap = input.closest('.ai-img-wrap');
+  if(!wrap) return;
+  const preview = wrap.parentElement.querySelector('.ai-img-preview');
+  if(!preview) return;
+  const v = input.value.trim();
+  if(v){ preview.src = v; preview.style.display = 'block'; }
+  else { preview.style.display = 'none'; }
 }
 
 function uploadImgFile(fileInput){
@@ -2177,7 +2168,7 @@ function uploadImgFile(fileInput){
   r.onload = ev => {
     const inp = fileInput.closest('.ai-img-wrap').querySelector('.ai');
     inp.value = ev.target.result;
-    updateImgField(inp);
+    inp.dispatchEvent(new Event('input'));
   };
   r.readAsDataURL(file);
 }
