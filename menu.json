@@ -531,11 +531,25 @@
                 "en": ""
               },
               "desc": {
-                "fr": "Associée au Poivre de Sichuan, un poivre très aromatique, cette recette riche en filets de Maquereau (56%) vous fera voyager le temps d'un apéritif.",
+                "fr": "Associée au Poivre de Sichuan, un poivre très aromatique, cette recette riche en filets de Maquereau (56%) vous fera voyager le temps d'un apéritif",
                 "en": ""
               },
               "price": "9€",
               "img": "https://domainerosalina.com/wp-content/uploads/2026/06/rillettes-maquerau-e1782420706820.webp",
+              "spicy": false,
+              "vegan": false
+            },
+            {
+              "name": {
+                "fr": " Rillettes de Sardines au Piment d'Espelette",
+                "en": ""
+              },
+              "desc": {
+                "fr": "Riches en filets de sardines (62%) pêchées à la bolinche en Bretagne",
+                "en": ""
+              },
+              "price": "9€",
+              "img": "https://domainerosalina.com/wp-content/uploads/2026/06/rillettes-sardine-e1782420880884.webp",
               "spicy": false,
               "vegan": false
             }
