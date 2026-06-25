@@ -912,5 +912,9 @@
       ],
       "visible": true
     }
-  ]
+  ],
+  "pdfStyle": {
+    "format": "a4",
+    "template": "maritime"
+  }
 }
