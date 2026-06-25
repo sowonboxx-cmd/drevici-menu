@@ -533,20 +533,6 @@
               "img": "https://domainerosalina.com/wp-content/uploads/2026/06/illus-poto.webp",
               "spicy": false,
               "vegan": true
-            },
-            {
-              "name": {
-                "fr": "",
-                "en": ""
-              },
-              "desc": {
-                "fr": "",
-                "en": ""
-              },
-              "price": "",
-              "img": "",
-              "spicy": false,
-              "vegan": false
             }
           ]
         },
@@ -581,48 +567,6 @@
               },
               "price": "22€",
               "img": "https://domainerosalina.com/wp-content/uploads/2026/06/illus-espresso.webp",
-              "spicy": false,
-              "vegan": false
-            },
-            {
-              "name": {
-                "fr": "",
-                "en": ""
-              },
-              "desc": {
-                "fr": "",
-                "en": ""
-              },
-              "price": "",
-              "img": "",
-              "spicy": false,
-              "vegan": false
-            },
-            {
-              "name": {
-                "fr": "",
-                "en": ""
-              },
-              "desc": {
-                "fr": "",
-                "en": ""
-              },
-              "price": "",
-              "img": "",
-              "spicy": false,
-              "vegan": false
-            },
-            {
-              "name": {
-                "fr": "",
-                "en": ""
-              },
-              "desc": {
-                "fr": "",
-                "en": ""
-              },
-              "price": "",
-              "img": "",
               "spicy": false,
               "vegan": false
             }
