@@ -757,6 +757,116 @@
         },
         {
           "label": {
+            "fr": "vins rouges et rosé",
+            "en": "New section"
+          },
+          "type": "bevs",
+          "items": [
+            {
+              "name": {
+                "fr": "Côte du Rhône",
+                "en": "New drink"
+              },
+              "price": "",
+              "sizes": [
+                {
+                  "cl": "25",
+                  "price": "5"
+                },
+                {
+                  "cl": "50",
+                  "price": "17"
+                }
+              ]
+            },
+            {
+              "name": {
+                "fr": "Pinot Noir",
+                "en": "New drink"
+              },
+              "price": "",
+              "sizes": [
+                {
+                  "cl": "25",
+                  "price": "5.5"
+                },
+                {
+                  "cl": "75",
+                  "price": "30"
+                }
+              ]
+            },
+            {
+              "name": {
+                "fr": "Rosé ",
+                "en": "New drink"
+              },
+              "price": "",
+              "sizes": [
+                {
+                  "cl": "25",
+                  "price": "5.5"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "label": {
+            "fr": "Les spiritueux artisanaux",
+            "en": "New section"
+          },
+          "type": "bevs",
+          "items": [
+            {
+              "name": {
+                "fr": "Liqueur de Citron ou de Menthe",
+                "en": "New drink"
+              },
+              "price": "8€",
+              "desc": {
+                "fr": "4cl"
+              },
+              "sizes": [
+                {
+                  "cl": "4",
+                  "price": "8"
+                }
+              ]
+            },
+            {
+              "name": {
+                "fr": "Gin, Rhum, Esprit Malt",
+                "en": "New drink"
+              },
+              "price": "9€",
+              "desc": {
+                "fr": "4 cl"
+              },
+              "sizes": [
+                {
+                  "cl": "4",
+                  "price": "9"
+                }
+              ]
+            },
+            {
+              "name": {
+                "fr": "Pastis",
+                "en": "New drink"
+              },
+              "price": "",
+              "sizes": [
+                {
+                  "cl": "4",
+                  "price": "7"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "label": {
             "fr": "Bulles",
             "en": "Sparkling",
             "es": "Espumosos",
@@ -805,6 +915,71 @@
                 {
                   "cl": "75",
                   "price": "30"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "label": {
+            "fr": "Les bières",
+            "en": "New section"
+          },
+          "type": "bevs",
+          "items": [
+            {
+              "name": {
+                "fr": "La Blonde 5,5°",
+                "en": "New drink"
+              },
+              "price": "",
+              "sizes": [
+                {
+                  "cl": "25",
+                  "price": "4"
+                },
+                {
+                  "cl": "50",
+                  "price": "7"
+                }
+              ]
+            },
+            {
+              "name": {
+                "fr": "La IPA 6°",
+                "en": "New drink"
+              },
+              "price": "",
+              "sizes": [
+                {
+                  "cl": "25",
+                  "price": "5"
+                },
+                {
+                  "cl": "50",
+                  "price": "8"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "label": {
+            "fr": "Cocktails",
+            "en": "New section"
+          },
+          "type": "bevs",
+          "items": [
+            {
+              "name": {
+                "fr": "Spritz",
+                "en": "New drink"
+              },
+              "price": "",
+              "sizes": [
+                {
+                  "cl": "",
+                  "price": "9.5"
                 }
               ]
             }
@@ -882,181 +1057,6 @@
               ]
             }
           ]
-        },
-        {
-          "label": {
-            "fr": "Les spiritueux artisanaux",
-            "en": "New section"
-          },
-          "type": "bevs",
-          "items": [
-            {
-              "name": {
-                "fr": "Liqueur de Citron ou de Menthe",
-                "en": "New drink"
-              },
-              "price": "8€",
-              "desc": {
-                "fr": "4cl"
-              },
-              "sizes": [
-                {
-                  "cl": "4",
-                  "price": "8"
-                }
-              ]
-            },
-            {
-              "name": {
-                "fr": "Gin, Rhum, Esprit Malt",
-                "en": "New drink"
-              },
-              "price": "9€",
-              "desc": {
-                "fr": "4 cl"
-              },
-              "sizes": [
-                {
-                  "cl": "4",
-                  "price": "9"
-                }
-              ]
-            },
-            {
-              "name": {
-                "fr": "Pastis",
-                "en": "New drink"
-              },
-              "price": "",
-              "sizes": [
-                {
-                  "cl": "4",
-                  "price": "7"
-                }
-              ]
-            }
-          ]
-        },
-        {
-          "label": {
-            "fr": "Cocktails",
-            "en": "New section"
-          },
-          "type": "bevs",
-          "items": [
-            {
-              "name": {
-                "fr": "Spritz",
-                "en": "New drink"
-              },
-              "price": "",
-              "sizes": [
-                {
-                  "cl": "",
-                  "price": "9.5"
-                }
-              ]
-            }
-          ]
-        },
-        {
-          "label": {
-            "fr": "vins rouges et rosé",
-            "en": "New section"
-          },
-          "type": "bevs",
-          "items": [
-            {
-              "name": {
-                "fr": "Côte du Rhône",
-                "en": "New drink"
-              },
-              "price": "",
-              "sizes": [
-                {
-                  "cl": "25",
-                  "price": "5"
-                },
-                {
-                  "cl": "50",
-                  "price": "17"
-                }
-              ]
-            },
-            {
-              "name": {
-                "fr": "Pinot Noir",
-                "en": "New drink"
-              },
-              "price": "",
-              "sizes": [
-                {
-                  "cl": "25",
-                  "price": "5.5"
-                },
-                {
-                  "cl": "75",
-                  "price": "30"
-                }
-              ]
-            },
-            {
-              "name": {
-                "fr": "Rosé ",
-                "en": "New drink"
-              },
-              "price": "",
-              "sizes": [
-                {
-                  "cl": "25",
-                  "price": "5.5"
-                }
-              ]
-            }
-          ]
-        },
-        {
-          "label": {
-            "fr": "Les bières",
-            "en": "New section"
-          },
-          "type": "bevs",
-          "items": [
-            {
-              "name": {
-                "fr": "La Blonde 5,5°",
-                "en": "New drink"
-              },
-              "price": "",
-              "sizes": [
-                {
-                  "cl": "25",
-                  "price": "4"
-                },
-                {
-                  "cl": "50",
-                  "price": "7"
-                }
-              ]
-            },
-            {
-              "name": {
-                "fr": "La IPA 6°",
-                "en": "New drink"
-              },
-              "price": "",
-              "sizes": [
-                {
-                  "cl": "25",
-                  "price": "5"
-                },
-                {
-                  "cl": "50",
-                  "price": "8"
-                }
-              ]
-            }
-          ]
         }
       ]
     },
@@ -1093,5 +1093,9 @@
       "visible": false
     }
   ],
-  "pdfStyle": {}
+  "pdfStyle": {
+    "format": "a4",
+    "template": "maritime",
+    "showLogo": true
+  }
 }
