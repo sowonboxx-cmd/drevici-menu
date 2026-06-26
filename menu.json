@@ -615,14 +615,14 @@
             },
             {
               "name": {
-                "fr": "Maître ",
+                "fr": "Matelot",
                 "en": "New dish"
               },
               "desc": {
-                "fr": "6 huîtres N°3, 4 gambas",
+                "fr": "6 huîtres N°3, 4 gambas de madagascar",
                 "en": ""
               },
-              "price": "22€",
+              "price": "15€",
               "img": "https://domainerosalina.com/wp-content/uploads/2026/06/illus-espresso.webp",
               "spicy": false,
               "vegan": false
@@ -1071,11 +1071,5 @@
       ],
       "visible": true
     }
-  ],
-  "pdfStyle": {
-    "format": "a4",
-    "template": "maritime",
-    "showLogo": false,
-    "footerShowDate": true
-  }
+  ]
 }
