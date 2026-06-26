@@ -615,6 +615,20 @@
             },
             {
               "name": {
+                "fr": "Mousaillon",
+                "en": ""
+              },
+              "desc": {
+                "fr": "6 huîtres N°3, 4 gambas de Madagascar",
+                "en": ""
+              },
+              "price": "22€",
+              "img": "https://drevicioyster.com/wp-content/uploads/2026/06/IMG_3058-scaled.webp",
+              "spicy": false,
+              "vegan": false
+            },
+            {
+              "name": {
                 "fr": "Matelot",
                 "en": "New dish"
               },
@@ -624,20 +638,6 @@
               },
               "price": "15€",
               "img": "https://domainerosalina.com/wp-content/uploads/2026/06/illus-espresso.webp",
-              "spicy": false,
-              "vegan": false
-            },
-            {
-              "name": {
-                "fr": "Mousaillon",
-                "en": ""
-              },
-              "desc": {
-                "fr": "6 huîtres N°3, 4 gambas de Madagascar",
-                "en": ""
-              },
-              "price": "22€",
-              "img": "",
               "spicy": false,
               "vegan": false
             }
