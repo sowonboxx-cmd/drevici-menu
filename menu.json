@@ -786,19 +786,6 @@
                   "price": "30"
                 }
               ]
-            },
-            {
-              "name": {
-                "fr": "Breitz Cola Fanta",
-                "en": "New drink"
-              },
-              "price": "",
-              "sizes": [
-                {
-                  "cl": "100",
-                  "price": "56"
-                }
-              ]
             }
           ]
         },
