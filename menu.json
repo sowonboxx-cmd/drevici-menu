@@ -139,24 +139,24 @@
   },
   "pinnedDishes": [
     {
-      "tabId": "huitres",
-      "cardIdx": 0,
-      "dishIdx": 0
+      "tabId": "tab_1782264697487",
+      "cardIdx": 1,
+      "dishIdx": 1
     },
     {
-      "tabId": "huitres",
+      "tabId": "tab_1782264697487",
       "cardIdx": 0,
       "dishIdx": 1
     },
     {
-      "tabId": "huitres",
-      "cardIdx": 0,
-      "dishIdx": 2
-    },
-    {
-      "tabId": "huitres",
+      "tabId": "mer",
       "cardIdx": 0,
       "dishIdx": 3
+    },
+    {
+      "tabId": "mer",
+      "cardIdx": 0,
+      "dishIdx": 0
     }
   ],
   "pinnedShowHome": true,
