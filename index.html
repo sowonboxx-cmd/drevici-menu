@@ -272,6 +272,11 @@ body{background:var(--bg);font-family:'Jost',sans-serif;font-weight:400;font-siz
 .pdf-tpl-btn{padding:9px 8px;font-size:12px;font-family:'Jost',sans-serif;border:1px solid var(--border);border-radius:6px;background:#fff;color:var(--text2);cursor:pointer;transition:all .15s}
 .pdf-tpl-btn.active{background:var(--navy);color:#fff;border-color:var(--navy)}
 .pdf-tpl-btn:hover{border-color:var(--navy)}
+.dish-vis-btn{font-size:10px;font-family:'Jost',sans-serif;padding:3px 7px;border:1px solid var(--border);border-radius:4px;background:#fff;color:var(--text3);cursor:pointer;white-space:nowrap;line-height:1.4;transition:all .1s}
+.dish-vis-active{background:#e8f5e9;color:#2e7d32;border-color:#a5d6a7}
+.dish-hid-btn.dish-hid-active{background:#f5f5f5;color:var(--text2);border-color:#bbb}
+.dish-del-btn{color:#c62828;border-color:#ef9a9a}
+.dish-del-btn:hover{background:#ffebee}
 .aadd{width:100%;padding:9px;border:1.5px dashed var(--border);border-radius:var(--rs);background:none;color:var(--text3);font-size:12px;font-family:'Jost',sans-serif;cursor:pointer;transition:all .15s;margin-top:4px}
 .aadd:hover{border-color:var(--navy);color:var(--navy)}
 .asave{width:100%;padding:12px;background:var(--navy);color:#fff;border:none;border-radius:50px;font-size:13px;font-weight:500;font-family:'Jost',sans-serif;cursor:pointer;margin-top:6px;letter-spacing:.04em}
@@ -543,7 +548,7 @@ let DATA = {
   ]
 };
 
-let lang='fr', view='list', currentTabId='huitres';
+let lang='fr', view='grid', currentTabId='huitres';
 let lbImages=[], lbIdx=0;
 let confirmCallback=null;
 
@@ -780,7 +785,7 @@ function renderTabContent(tab,lbOffset){
       if(ytMatch) embedUrl=`https://www.youtube.com/embed/${ytMatch[1]}?autoplay=0&rel=0&controls=0&modestbranding=1&showinfo=0`;
       else if(vimeoMatch) embedUrl=`https://player.vimeo.com/video/${vimeoMatch[1]}?controls=0&title=0&byline=0&portrait=0`;
       else embedUrl=videoUrl;
-      if(embedUrl) html+=`<div class="home-photo-wrap" style="aspect-ratio:4/3;background:#000"><iframe src="${embedUrl}" style="width:100%;height:100%;border:none" allowfullscreen loading="lazy"></iframe></div>`;
+      if(embedUrl) html+=`<div class="home-photo-wrap" style="aspect-ratio:4/3;background:#000"><iframe src="${embedUrl+(embedUrl.includes('?')? '&' : '?') + 'autoplay=1&mute=1&controls=0&loop=1'}" style="width:100%;height:100%;border:none" allow="autoplay" allowfullscreen loading="lazy"></iframe></div>`;
     } else if(DATA.homeTab&&DATA.homeTab.photo){
       html+=`<div class="home-photo-wrap"><img class="home-photo" src="${DATA.homeTab.photo}" alt="Photo restaurant" loading="lazy"></div>`;
     }
@@ -868,7 +873,7 @@ function renderTabContent(tab,lbOffset){
       html+=`<div class="card"><div class="card-hdr"><span class="card-label">${t(card.label)}</span></div><div class="card-body">`;
 
       if(card.type==='bevs'){
-        (card.items||[]).forEach(item=>{
+        (card.items||[]).filter(item=>!item.hidden).forEach(item=>{
           const sizes=item.sizes||[];
           // sizes display: "25cl / 50cl" in name area, "5€ / 17€" in price area
           const clStr=sizes.length>0?sizes.filter(s=>s.cl).map(s=>s.cl+'cl').join(' / '):'';
@@ -888,7 +893,7 @@ function renderTabContent(tab,lbOffset){
           </div>
           ${card.img?`<span class="img-wrap"><img class="dish-img" src="${card.img}" alt="" loading="lazy"></span>`:''}</div>`;
       } else {
-        (card.dishes||[]).forEach((d,di)=>{
+        (card.dishes||[]).filter(d=>!d.hidden).forEach((d,di)=>{
           const idx=d.img?imgIdx++:null;
           const badges=(d.spicy?`<img src="https://drevicioyster.com/wp-content/uploads/2026/06/icon-spicy.png" class="badge-icon" title="Épicé">`:'')+(d.vegan?`<img src="https://drevicioyster.com/wp-content/uploads/2026/06/icon-vegan.png" class="badge-icon" title="Vegan">`:'');
           html+=`<div class="dish-row${d.img?' dish-row-clickable':''}"${d.img?` data-lbidx="${idx}"`:''}${di===0?' style="padding-top:0"':''}><div class="dish-text"><div class="dish-name-row"><span class="dish-name">${t(d.name)}</span>${badges?`<span class="dish-badges">${badges}</span>`:''}</div><div class="dish-desc">${t(d.desc)}</div><div class="dish-price">${d.price}</div></div>${d.img?`<span class="img-wrap"><img class="dish-img" src="${d.img}" alt="" loading="lazy"></span>`:''}</div>`;
@@ -899,6 +904,10 @@ function renderTabContent(tab,lbOffset){
   }
 
   html+='</div>';
+  // Champ libre de la tab (indépendant des autres tabs)
+  if(tab.infoBanner && tab.infoBanner.active){
+    html += renderInfoBanner(tab.infoBanner);
+  }
   return html;
 }
 
@@ -1153,7 +1162,7 @@ function adminGoTab(val){
 function adminSaveBar(){
   return `<div style="display:flex;gap:8px;margin-top:12px;padding:0 0 4px">
     <button class="asave" style="flex:1;background:rgba(16,40,94,0.12);color:var(--navy)" onclick="renderAll();showToast('Aperçu mis à jour')">Aperçu</button>
-    <button class="asave" style="flex:1" onclick="renderAll();publishToGitHub()">Publier</button>
+    <button class="asave" style="flex:1" onclick="renderAll();publishToGitHub()">Sauvegarder</button>
   </div>`;
 }
 
@@ -1220,12 +1229,16 @@ function setAdminLang(l){
 
 // Helper: render a bilingual input field
 // Shows FR value as placeholder when editing another lang
-function biInput(label, frVal, targetVal, onInputCode){
+function biInput(label, frVal, targetVal, onInputCode, multiline){
   const isFr = adminLang==='fr';
   const placeholder = isFr ? '' : (frVal||'');
   const value = targetVal||'';
   const langLabel = adminLang.toUpperCase();
-  return `<div class="af"><label class="al">${label}${isFr?'':` <span style="color:var(--text3);font-weight:400">(${langLabel})</span>`}</label><input class="ai" value="${value.replace(/"/g,'&quot;')}" placeholder="${placeholder.replace(/"/g,'&quot;')}" oninput="${onInputCode}"></div>`;
+  const escapedVal = value.replace(/&/g,'&amp;').replace(/</g,'&lt;');
+  const field = multiline
+    ? `<textarea class="ai" rows="5" style="resize:vertical;min-height:90px;padding:8px" placeholder="${placeholder.replace(/"/g,'&quot;')}" oninput="${onInputCode}">${escapedVal}</textarea>`
+    : `<input class="ai" value="${escapedVal.replace(/"/g,'&quot;')}" placeholder="${placeholder.replace(/"/g,'&quot;')}" oninput="${onInputCode}">`;
+  return `<div class="af"><label class="al">${label}${isFr?'':` <span style="color:var(--text3);font-weight:400">(${langLabel})</span>`}</label>${field}</div>`;
 }
 
 // Price field helper
@@ -1279,7 +1292,7 @@ function renderAdminHomeTab(){
   // Présentation
   h+=`<div class="admin-section"><div class="admin-sect-title">Présentation</div><div class="admin-sect-body">
     <label class="admin-toggle"><input type="checkbox" ${DATA.intro.active?'checked':''} onchange="DATA.intro.active=this.checked;renderAll();renderAdminSection('__home')"><label>Afficher la présentation</label></label>
-    `+biInput('Texte de présentation', DATA.intro.text.fr||'', DATA.intro.text[adminLang]||'', `DATA.intro.text[adminLang]=this.value;renderAll()`)+`
+    `+biInput('Texte de présentation', DATA.intro.text.fr||'', DATA.intro.text[adminLang]||'', `DATA.intro.text[adminLang]=this.value;renderAll()`, true)+`
   </div></div>`;
   // Plats à la une
   h+=`<div class="admin-section collapsible collapsed"><div class="admin-sect-title" onclick="toggleAdminSection(this)">Plats à la une</div><div class="admin-sect-body">
@@ -1341,7 +1354,7 @@ function renderAdminGlobal(){
       <input class="ai" value="${t(ib.label)||''}" placeholder="Informations" oninput="if(!DATA.infoBanner)DATA.infoBanner={};if(!DATA.infoBanner.label)DATA.infoBanner.label={};DATA.infoBanner.label[adminLang]=this.value;renderAll()">
     </div>
     `+biInput('Titre', (ib.title&&ib.title.fr)||'', (ib.title&&ib.title[adminLang])||'', `if(!DATA.infoBanner.title)DATA.infoBanner.title={};DATA.infoBanner.title[adminLang]=this.value;renderAll()`)+`
-    `+biInput('Texte libre', (ib.desc&&ib.desc.fr)||'', (ib.desc&&ib.desc[adminLang])||'', `if(!DATA.infoBanner.desc)DATA.infoBanner.desc={};DATA.infoBanner.desc[adminLang]=this.value;renderAll()`)+`
+    `+biInput('Texte libre', (ib.desc&&ib.desc.fr)||'', (ib.desc&&ib.desc[adminLang])||'', `if(!DATA.infoBanner.desc)DATA.infoBanner.desc={};DATA.infoBanner.desc[adminLang]=this.value;renderAll()`, true)+`
   </div></div>`;
 
   // Pinned / featured
@@ -1403,7 +1416,7 @@ function renderAdminTab(ti){
 
   // Cards
   tab.cards.forEach((card,ci)=>{
-    h+=`<div class="admin-section collapsible collapsed"><div class="admin-sect-title" onclick="toggleAdminSection(this)" style="display:flex;justify-content:space-between;align-items:center;cursor:pointer"><span>Section — ${t(card.label)}</span><button class="adel" style="font-size:12px;padding:1px 5px;flex:none;opacity:.6;margin-left:auto;margin-right:20px" onclick="event.stopPropagation();askConfirm('Supprimer cette section ?',()=>{DATA.tabs[${ti}].cards.splice(${ci},1);renderAll();renderAdminSection(DATA.tabs[${ti}].id)})">✕</button></div><div class="admin-sect-body">`;
+    h+=`<div class="admin-section collapsible collapsed" draggable="true" ondragstart="onDragSection(event,${ti},${ci})" ondragend="onDragSectionEnd(event)" ondragover="onDragSectionOver(event,${ti},${ci})" ondragleave="onDragLeave(event)" ondrop="onDropSection(event,${ti},${ci})"><div class="admin-sect-title" onclick="toggleAdminSection(this)" style="display:flex;justify-content:space-between;align-items:center;cursor:pointer"><span>⠿ Section — ${t(card.label)}</span><button class="adel" style="font-size:12px;padding:1px 5px;flex:none;opacity:.6;margin-left:auto;margin-right:20px" onclick="event.stopPropagation();askConfirm('Supprimer cette section ?',()=>{DATA.tabs[${ti}].cards.splice(${ci},1);renderAll();renderAdminSection(DATA.tabs[${ti}].id)})">✕</button></div><div class="admin-sect-body">`;
     h+=`<div class="admin-card">`;
     h+=biInput('Titre de section', card.label.fr||'', card.label[adminLang]||'', `DATA.tabs[${ti}].cards[${ci}].label[adminLang]=this.value;renderAll()`);
     h+=``;
@@ -1412,7 +1425,7 @@ function renderAdminTab(ti){
       (card.items||[]).forEach((item,ii)=>{
         const sizeRows=(item.sizes||[]).map((s,si)=>`<div class="ai-row" style="margin-bottom:4px"><input class="ai" type="number" min="0" placeholder="cl" value="${s.cl||''}" style="max-width:64px" oninput="DATA.tabs[${ti}].cards[${ci}].items[${ii}].sizes[${si}].cl=this.value;renderAll()"><span style="font-size:11px;color:var(--text3);padding:0 4px">cl</span><input class="ai" type="number" min="0" step="0.5" placeholder="prix" value="${s.price||''}" style="max-width:64px" oninput="DATA.tabs[${ti}].cards[${ci}].items[${ii}].sizes[${si}].price=this.value;renderAll()"><span style="font-size:11px;color:var(--text3);padding:0 4px">€</span><button class="adel" onclick="DATA.tabs[${ti}].cards[${ci}].items[${ii}].sizes.splice(${si},1);renderAll();renderAdminSection(DATA.tabs[${ti}].id)">×</button></div>`).join('');
         h+=`<div class="admin-card" style="background:#fff;margin-top:4px" ondragover="onDragOver(event,${ti},${ci},${ii})" ondragleave="onDragLeave(event)" ondrop="onDropBev(event,${ti},${ci},${ii})">
-          <div class="admin-card-hdr"><span class="drag-handle" draggable="true" ondragstart="onDragBev(event,${ti},${ci},${ii})" ondragend="onDragEndHandle(event)">⠿</span><span class="admin-card-num">Boisson ${ii+1}</span><button class="adel" onclick="askConfirm('Supprimer cette boisson ?',()=>delBev(${ti},${ci},${ii}))">×</button></div>
+          <div class="admin-card-hdr"><span class="drag-handle" draggable="true" ondragstart="onDragBev(event,${ti},${ci},${ii})" ondragend="onDragEndHandle(event)">⠿</span><span class="admin-card-num">Boisson ${ii+1}</span><div style="display:flex;gap:3px;margin-left:auto;margin-right:4px"><button class="dish-vis-btn ${!item.hidden?'dish-vis-active':''}" onclick="delete DATA.tabs[${ti}].cards[${ci}].items[${ii}].hidden;renderAll();renderAdminSection(DATA.tabs[${ti}].id)">Visible</button><button class="dish-vis-btn dish-hid-btn ${item.hidden?'dish-hid-active':''}" onclick="DATA.tabs[${ti}].cards[${ci}].items[${ii}].hidden=true;renderAll();renderAdminSection(DATA.tabs[${ti}].id)">Masquée</button><button class="dish-vis-btn dish-del-btn" onclick="askConfirm('Supprimer cette boisson ?',()=>delBev(${ti},${ci},${ii}))">✕</button></div></div>
           <input class="ai" style="margin-bottom:4px" placeholder="${adminLang!=='fr'&&typeof item.name==='object'?item.name.fr||'Nom':'Nom'}" value="${typeof item.name==='object'?(item.name[adminLang]||''):item.name||''}" oninput="if(typeof DATA.tabs[${ti}].cards[${ci}].items[${ii}].name!=='object'){DATA.tabs[${ti}].cards[${ci}].items[${ii}].name={fr:DATA.tabs[${ti}].cards[${ci}].items[${ii}].name};}DATA.tabs[${ti}].cards[${ci}].items[${ii}].name[adminLang]=this.value;renderAll()">
           `+imgFieldHtml(item.img||'',`DATA.tabs[${ti}].cards[${ci}].items[${ii}].img=this.value;renderAll()`,"Image URL ou uploader")+`
 
@@ -1433,7 +1446,7 @@ function renderAdminTab(ti){
     } else {
       (card.dishes||[]).forEach((d,di)=>{
         h+=`<div class="admin-card" style="background:#fff;margin-top:6px" ondragover="onDragOver(event,${ti},${ci},${di})" ondragleave="onDragLeave(event)" ondrop="onDrop(event,${ti},${ci},${di})">
-          <div class="admin-card-hdr"><span class="drag-handle" title="Glisser pour réordonner" draggable="true" ondragstart="onDragStart(event,${ti},${ci},${di})" ondragend="onDragEndHandle(event)">⠿</span><span class="admin-card-num">Plat ${di+1}</span><button class="adel" onclick="askConfirm('Supprimer « ${d.name.fr||'ce plat'} » ?',()=>delDish(${ti},${ci},${di}))">×</button></div>
+          <div class="admin-card-hdr"><span class="drag-handle" title="Glisser pour réordonner" draggable="true" ondragstart="onDragStart(event,${ti},${ci},${di})" ondragend="onDragEndHandle(event)">⠿</span><span class="admin-card-num">Plat ${di+1}</span><div style="display:flex;gap:3px;margin-left:auto;margin-right:4px"><button class="dish-vis-btn ${!d.hidden?'dish-vis-active':''}" onclick="delete DATA.tabs[${ti}].cards[${ci}].dishes[${di}].hidden;renderAll();renderAdminSection(DATA.tabs[${ti}].id)">Visible</button><button class="dish-vis-btn dish-hid-btn ${d.hidden?'dish-hid-active':''}" onclick="DATA.tabs[${ti}].cards[${ci}].dishes[${di}].hidden=true;renderAll();renderAdminSection(DATA.tabs[${ti}].id)">Masquée</button><button class="dish-vis-btn dish-del-btn" onclick="askConfirm('Supprimer « ${d.name.fr||'ce plat'} » ?',()=>delDish(${ti},${ci},${di}))">✕</button></div></div>
           `+biInput('Nom', d.name.fr||'', d.name[adminLang]||'', `DATA.tabs[${ti}].cards[${ci}].dishes[${di}].name[adminLang]=this.value;renderAll()`)+`
           `+biInput('Description', d.desc.fr||'', d.desc[adminLang]||'', `DATA.tabs[${ti}].cards[${ci}].dishes[${di}].desc[adminLang]=this.value;renderAll()`)+`
           `+priceField(d,ti,ci,di)+`
@@ -1451,6 +1464,15 @@ function renderAdminTab(ti){
   });
 
   h+=`<div class="admin-section"><button class="aadd" style="display:block;width:100%;padding:10px" onclick="addCard(${ti})">+ Nouvelle section dans cette tab</button></div>`;
+
+  // Champ libre (par tab, indépendant)
+  const tib=tab.infoBanner||{};
+  h+=`<div class="admin-section collapsible collapsed"><div class="admin-sect-title" onclick="toggleAdminSection(this)">Champ libre</div><div class="admin-sect-body">
+    <label class="admin-toggle"><input type="checkbox" ${tib.active?'checked':''} onchange="DATA.tabs[${ti}].infoBanner=DATA.tabs[${ti}].infoBanner||{};DATA.tabs[${ti}].infoBanner.active=this.checked;renderAll()"><label>Visible</label></label>
+    `+biInput('Étiquette (optionnel)', tib.label&&tib.label.fr||'', tib.label&&tib.label[adminLang]||'', `DATA.tabs[${ti}].infoBanner=DATA.tabs[${ti}].infoBanner||{};if(!DATA.tabs[${ti}].infoBanner.label)DATA.tabs[${ti}].infoBanner.label={};DATA.tabs[${ti}].infoBanner.label[adminLang]=this.value;renderAll()`)+`
+    `+biInput('Titre', tib.title&&tib.title.fr||'', tib.title&&tib.title[adminLang]||'', `DATA.tabs[${ti}].infoBanner=DATA.tabs[${ti}].infoBanner||{};if(!DATA.tabs[${ti}].infoBanner.title)DATA.tabs[${ti}].infoBanner.title={};DATA.tabs[${ti}].infoBanner.title[adminLang]=this.value;renderAll()`)+`
+    `+biInput('Texte libre', tib.desc&&tib.desc.fr||'', tib.desc&&tib.desc[adminLang]||'', `DATA.tabs[${ti}].infoBanner=DATA.tabs[${ti}].infoBanner||{};if(!DATA.tabs[${ti}].infoBanner.desc)DATA.tabs[${ti}].infoBanner.desc={};DATA.tabs[${ti}].infoBanner.desc[adminLang]=this.value;renderAll()`, true)+`
+  </div></div>`;
 
   h+=adminSaveBar();
 
@@ -1535,6 +1557,35 @@ function onDropBev(e,ti,ci,ii){
 function onDragStart(e,ti,ci,di){ dragSrc={ti,ci,di}; const card=e.currentTarget.closest('.admin-card')||e.currentTarget; card.classList.add('dragging'); e.dataTransfer.effectAllowed='move'; }
 function onDragEnd(e){ e.currentTarget.classList.remove('dragging'); document.querySelectorAll('.admin-card').forEach(el=>el.classList.remove('drag-over')); }
 function onDragEndHandle(e){ const card=e.currentTarget.closest('.admin-card'); if(card) card.classList.remove('dragging'); document.querySelectorAll('.admin-card').forEach(el=>el.classList.remove('drag-over')); }
+
+let dragSectionSrc=null;
+function onDragSection(e,ti,ci){
+  dragSectionSrc={ti,ci};
+  e.currentTarget.classList.add('dragging');
+  e.dataTransfer.effectAllowed='move';
+  e.stopPropagation();
+}
+function onDragSectionEnd(e){
+  e.currentTarget.classList.remove('dragging');
+  document.querySelectorAll('.admin-section').forEach(el=>el.classList.remove('drag-over'));
+}
+function onDragSectionOver(e,ti,ci){
+  if(!dragSectionSrc||dragSectionSrc.ti!==ti||dragSectionSrc.ci===ci) return;
+  e.preventDefault();
+  e.stopPropagation();
+  e.currentTarget.classList.add('drag-over');
+}
+function onDropSection(e,ti,ci){
+  e.preventDefault();
+  e.stopPropagation();
+  if(!dragSectionSrc||dragSectionSrc.ti!==ti||dragSectionSrc.ci===ci) return;
+  const cards=DATA.tabs[ti].cards;
+  const [moved]=cards.splice(dragSectionSrc.ci,1);
+  cards.splice(ci,0,moved);
+  dragSectionSrc=null;
+  renderAll();
+  renderAdminSection(DATA.tabs[ti].id);
+}
 function onDragOver(e,ti,ci,di){ e.preventDefault(); e.currentTarget.classList.add('drag-over'); }
 function onDragLeave(e){ e.currentTarget.classList.remove('drag-over'); }
 function onDrop(e,ti,ci,di){
@@ -1958,8 +2009,9 @@ function pdfCfg(){
     titleColor: d.titleColor || '#10285E',
     accentColor: d.accentColor || '#C6A24A',
     showLogo: d.showLogo !== false,
-    footerAddress: d.footerAddress || '',
-    footerPhone: d.footerPhone || '',
+    logoData: d.logoData || '',   // base64 or URL uploaded specifically for PDF
+    footerAddress: d.footerAddress || (DATA.address ? [DATA.address.street,DATA.address.zip,DATA.address.city].filter(Boolean).join(', ') : '') || '',
+    footerPhone: d.footerPhone || (DATA.address&&DATA.address.phone) || '',
     footerShowDate: d.footerShowDate !== false,
     format: d.format || 'a4'                     // 'a4' | 'gbiz'
   };
@@ -1973,12 +2025,14 @@ function setPdfCfg(key, val){
 // Build the inner menu HTML (shared by preview + export)
 function buildPdfMenuHTML(cfg){
   const restName = getRestaurantName() || 'Menu';
-  const logoUrl = 'https://drevicioyster.com/wp-content/uploads/2026/06/Logo-transparent.png';
+  // Logo: PDF-specific upload > restaurant logo already stored > nothing
+  const logoUrl = (DATA.pdfStyle && DATA.pdfStyle.logoData) || getRestaurantLogo() || '';
   let h = '';
 
   // Header
   h += `<div class="pdf-header">`;
-  if(cfg.showLogo) h += `<img src="${logoUrl}" class="pdf-logo" crossorigin="anonymous">`;
+  if(cfg.showLogo && logoUrl) h += `<img src="${logoUrl}" class="pdf-logo" onerror="this.style.display='none'">`;
+  else if(cfg.showLogo && !logoUrl) h += `<div class="pdf-logo-text">${getRestaurantName()||''}</div>`;
   h += `<h1 class="pdf-title">${restName}</h1>`;
   if(DATA.heroActive && DATA.hero) h += `<div class="pdf-sub">${t(DATA.hero)}</div>`;
   if(cfg.template === 'maritime') h += `<div class="pdf-deco-divider">${PDF_SVG.waves}</div>`;
@@ -2042,7 +2096,8 @@ function buildPdfCSS(cfg){
   .pdf-page{font-family:'Open Sans',sans-serif;color:#1a1a1a;background:${maritime?'#fdfbf6':'#ffffff'};width:${pageW}px;padding:${pad}px;margin:0 auto;position:relative}
   ${maritime?`.pdf-page::before{content:'';position:absolute;inset:14px;border:1.5px solid ${cfg.accentColor};opacity:.4;pointer-events:none}`:''}
   .pdf-header{text-align:center;margin-bottom:${isGbiz?40:28}px;position:relative}
-  .pdf-logo{max-width:${isGbiz?160:120}px;max-height:${isGbiz?110:80}px;object-fit:contain;margin:0 auto 12px;display:block}
+  .pdf-logo-text{font-family:'Cormorant Garamond',serif;font-size:22px;font-weight:700;color:var(--navy,#10285E);margin:0 auto 12px;display:block;text-align:center}
+.pdf-logo{max-width:${isGbiz?160:120}px;max-height:${isGbiz?110:80}px;object-fit:contain;margin:0 auto 12px;display:block}
   .pdf-title{font-family:'Cormorant Garamond',serif;font-size:${isGbiz?44:32}px;font-weight:700;color:${cfg.titleColor};line-height:1.1}
   .pdf-sub{font-size:${isGbiz?13:11}px;letter-spacing:.16em;text-transform:uppercase;color:#999;margin-top:6px}
   .pdf-deco-divider{width:${isGbiz?120:90}px;margin:14px auto 0;color:${cfg.accentColor}}
@@ -2183,7 +2238,17 @@ function renderPdfStyleSection(){
     ${swatch('Couleur titre', 'titleColor', cfg.titleColor)}
     ${swatch('Couleur prix / accent', 'accentColor', cfg.accentColor)}
 
-    <label class="admin-toggle" style="margin-top:8px"><input type="checkbox" ${cfg.showLogo?'checked':''} onchange="setPdfCfg('showLogo',this.checked)"><label>Afficher le logo</label></label>
+    <div class="af"><label class="al">Logo du menu</label>
+      ${cfg.logoData || getRestaurantLogo() ? `<div style="display:flex;align-items:center;gap:10px;margin-bottom:8px">
+        <img src="${cfg.logoData || getRestaurantLogo()}" style="max-height:50px;max-width:120px;object-fit:contain;border:1px solid var(--border);border-radius:6px;padding:4px;background:#fff" onerror="this.style.display='none'">
+        <button class="adel" onclick="setPdfCfg('logoData','');renderAdminSection(adminCurrentTab)" title="Supprimer">✕</button>
+      </div>` : `<div style="font-size:11px;color:var(--text3);margin-bottom:6px">Aucun logo — le nom de l'établissement sera affiché.</div>`}
+      <label class="aadd" style="display:block;width:100%;text-align:center;padding:9px;cursor:pointer">
+        📁 Uploader un logo (PNG, SVG, WEBP…)
+        <input type="file" accept="image/*" style="display:none" onchange="(function(e){const r=new FileReader();r.onload=ev=>{setPdfCfg('logoData',ev.target.result);};r.readAsDataURL(e.target.files[0])})(event)">
+      </label>
+      <label class="admin-toggle" style="margin-top:8px"><input type="checkbox" ${cfg.showLogo?'checked':''} onchange="setPdfCfg('showLogo',this.checked)"><label>Afficher le logo</label></label>
+    </div>
 
     <div class="admin-sect-title" style="margin-top:14px;font-size:12px">Pied de page</div>
     <div class="af"><label class="al">Adresse</label><input class="ai" value="${cfg.footerAddress.replace(/"/g,'&quot;')}" placeholder="12 rue de la Mer, Paris" oninput="setPdfCfg('footerAddress',this.value)"></div>
@@ -2348,14 +2413,45 @@ function restaurantSettingHtml(){
     <div class="af"><label class="al">Nom de l'établissement</label>
       <input class="ai" value="${name}" placeholder="Nom du restaurant" oninput="setRestaurantName(this.value);document.getElementById('logoText').textContent=this.value||'Mon Restaurant'">
     </div>
-    <div class="af"><label class="al">Logo (URL image)</label>
+    <div class="af"><label class="al">Logo de la marque (utilisé dans le PDF et les templates)</label>
       <input class="ai" value="${logo}" placeholder="https://... .png ou .svg" oninput="setRestaurantLogo(this.value.trim())">
       <div style="font-size:11px;color:var(--text3);font-family:Jost,sans-serif;margin-top:4px">Laissez vide pour afficher le nom en texte.</div>
     </div>
     <div class="af"><label class="al">Sous-titre</label>
       <input class="ai" value="${DATA.hero?t(DATA.hero):''}" placeholder="Ex : Fruits de mer · Bretagne · Paris" oninput="if(!DATA.hero)DATA.hero={};DATA.hero[adminLang]=this.value;renderAll()">
     </div>
+    <div class="af"><label class="al" style="font-size:13px;font-weight:600;margin-top:10px;display:block;border-top:1px solid var(--border);padding-top:10px">Adresse & contact</label></div>
+    <div class="af"><label class="al">Rue</label>
+      <input class="ai" value="${DATA.address&&DATA.address.street||''}" placeholder="12 rue de la Mer" oninput="if(!DATA.address)DATA.address={};DATA.address.street=this.value;renderAll()">
+    </div>
+    <div class="af" style="display:flex;gap:8px">
+      <div style="flex:0 0 100px"><label class="al">Code postal</label>
+        <input class="ai" value="${DATA.address&&DATA.address.zip||''}" placeholder="75001" oninput="if(!DATA.address)DATA.address={};DATA.address.zip=this.value;fetchCityFromZip(this.value)" maxlength="5" inputmode="numeric">
+      </div>
+      <div style="flex:1"><label class="al">Ville</label>
+        <input class="ai" id="cityInput" value="${DATA.address&&DATA.address.city||''}" placeholder="Paris" oninput="if(!DATA.address)DATA.address={};DATA.address.city=this.value;renderAll()">
+      </div>
+    </div>
+    <div class="af"><label class="al">Téléphone</label>
+      <input class="ai" value="${DATA.address&&DATA.address.phone||''}" placeholder="01 23 45 67 89" inputmode="tel" oninput="if(!DATA.address)DATA.address={};DATA.address.phone=this.value;renderAll()">
+    </div>
   </div></div>`;
+}
+
+function fetchCityFromZip(zip){
+  if(!zip||zip.length!==5) return;
+  fetch('https://geo.api.gouv.fr/communes?codePostal='+zip+'&fields=nom&limit=1')
+    .then(r=>r.json())
+    .then(data=>{
+      if(data&&data.length){
+        if(!DATA.address) DATA.address={};
+        DATA.address.city=data[0].nom;
+        const cityEl=document.getElementById('cityInput');
+        if(cityEl) cityEl.value=data[0].nom;
+        renderAll();
+      }
+    })
+    .catch(()=>{}); // if no internet, user types manually
 }
 
 function renderSocialAdminSection(){
