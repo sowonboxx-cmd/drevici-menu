@@ -886,25 +886,21 @@
         },
         {
           "label": {
-            "fr": "Cocktails Cool",
+            "fr": "Cocktails",
             "en": "New section"
           },
           "type": "bevs",
           "items": [
             {
               "name": {
-                "fr": "Miam test",
+                "fr": "Spritz",
                 "en": "New drink"
               },
               "price": "",
               "sizes": [
                 {
-                  "cl": "30",
-                  "price": "58"
-                },
-                {
-                  "cl": "60",
-                  "price": "100"
+                  "cl": "",
+                  "price": "9.5"
                 }
               ]
             }
