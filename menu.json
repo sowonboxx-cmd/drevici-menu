@@ -21,7 +21,7 @@
     "facebook": ""
   },
   "homeTab": {
-    "active": true,
+    "active": false,
     "photo": "https://drevicioyster.com/wp-content/uploads/2026/06/storytest3.webp",
     "video": "https://drevicioyster.com/wp-content/uploads/2026/06/renton_work_1780704512_3913155264639435874_78349449169.mp4"
   },
@@ -162,19 +162,6 @@
   "pinnedShowHome": true,
   "pinnedShowFirst": false,
   "tabs": [
-    {
-      "id": "__home",
-      "label": {
-        "fr": "Accueil",
-        "en": "Home",
-        "es": "Inicio",
-        "it": "Casa",
-        "kr": "홈",
-        "jp": "ホーム"
-      },
-      "cards": [],
-      "isHome": true
-    },
     {
       "id": "huitres",
       "isHome": true,
@@ -1105,5 +1092,6 @@
       ],
       "visible": false
     }
-  ]
+  ],
+  "pdfStyle": {}
 }
