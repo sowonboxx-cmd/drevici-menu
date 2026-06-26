@@ -802,18 +802,24 @@
           "items": [
             {
               "name": {
-                "fr": "Eau minérale",
+                "fr": "Breizh Cola / Cola Zero",
                 "en": "Mineral water",
                 "es": "Agua mineral",
                 "it": "Acqua minerale",
                 "kr": "미네랄 워터",
                 "jp": "ミネラルウォーター"
               },
-              "price": "3€"
+              "price": "3€",
+              "sizes": [
+                {
+                  "cl": "33",
+                  "price": "4"
+                }
+              ]
             },
             {
               "name": {
-                "fr": "Café / Espresso",
+                "fr": "Jus de Pomme breton",
                 "en": "Coffee",
                 "es": "Café",
                 "it": "Caffè",
@@ -823,8 +829,34 @@
               "price": "2€",
               "sizes": [
                 {
-                  "cl": "",
-                  "price": ""
+                  "cl": "33",
+                  "price": "4"
+                }
+              ]
+            },
+            {
+              "name": {
+                "fr": "Ginger Beer",
+                "en": "New drink"
+              },
+              "price": "",
+              "sizes": [
+                {
+                  "cl": "33",
+                  "price": "5"
+                }
+              ]
+            },
+            {
+              "name": {
+                "fr": "Tonic",
+                "en": "New drink"
+              },
+              "price": "",
+              "sizes": [
+                {
+                  "cl": "33",
+                  "price": "5"
                 }
               ]
             }
