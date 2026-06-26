@@ -555,7 +555,7 @@
                 "en": "New dish"
               },
               "desc": {
-                "fr": "12 huîtres N°3, 200gr de bulots, 6 gambas",
+                "fr": "12 huîtres N°3, 200gr de bulots, 6 gambas de Madagascar",
                 "en": ""
               },
               "price": "45€",
@@ -619,7 +619,7 @@
                 "en": "New dish"
               },
               "desc": {
-                "fr": "6 huîtres N°3, 4 gambas de madagascar",
+                "fr": "6 huîtres N°3, 4 gambas de Madagascar",
                 "en": ""
               },
               "price": "15€",
@@ -629,14 +629,14 @@
             },
             {
               "name": {
-                "fr": "Miam",
+                "fr": "Mousaillon",
                 "en": ""
               },
               "desc": {
                 "fr": "On va boiire",
                 "en": ""
               },
-              "price": "78€",
+              "price": "22€",
               "img": "",
               "spicy": false,
               "vegan": false
