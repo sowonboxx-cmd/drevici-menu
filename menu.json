@@ -123,7 +123,7 @@
   "infoBanner": {
     "active": true,
     "label": {
-      "fr": "Nos incontournables",
+      "fr": "Nos spécialités ",
       "en": "Information"
     },
     "title": {
@@ -131,7 +131,7 @@
       "en": ""
     },
     "desc": {
-      "fr": "Huîtres natures N°3 • Huîtres gratinées • Charcuterie bretonne",
+      "fr": "",
       "en": ""
     },
     "showHome": true,
