@@ -172,7 +172,8 @@
         "kr": "홈",
         "jp": "ホーム"
       },
-      "cards": []
+      "cards": [],
+      "isHome": true
     },
     {
       "id": "huitres",
@@ -246,10 +247,15 @@
                 "fr": "Elles sont accompagnées de pain, beurre, citron et/ou vinaigre-échalotes",
                 "en": ""
               },
-              "price": "Les 6 — 14€ · Les 16 — 30€",
+              "price": "Les 6 — 16€ · Les 12 — 30€",
               "img": "https://domainerosalina.com/wp-content/uploads/2026/06/huitre-x12.webp",
               "spicy": false,
-              "vegan": false
+              "vegan": false,
+              "priceType": "dual",
+              "qty1": "6",
+              "p1": "16",
+              "qty2": "12",
+              "p2": "30"
             },
             {
               "name": {
@@ -1104,6 +1110,5 @@
       ],
       "visible": false
     }
-  ],
-  "pdfStyle": {}
+  ]
 }
