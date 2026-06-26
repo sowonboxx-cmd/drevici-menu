@@ -204,7 +204,8 @@
               "price": "Les 6 — 12€ · Les 12 — 22€",
               "img": "https://domainerosalina.com/wp-content/uploads/2026/06/huitre-izi.png",
               "spicy": false,
-              "vegan": false
+              "vegan": false,
+              "hidden": true
             },
             {
               "name": {
