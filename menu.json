@@ -937,6 +937,62 @@
               ]
             }
           ]
+        },
+        {
+          "label": {
+            "fr": "vins rouges et rosé",
+            "en": "New section"
+          },
+          "type": "bevs",
+          "items": [
+            {
+              "name": {
+                "fr": "Côte du Rhône",
+                "en": "New drink"
+              },
+              "price": "",
+              "sizes": [
+                {
+                  "cl": "25",
+                  "price": "5"
+                },
+                {
+                  "cl": "50",
+                  "price": "17"
+                }
+              ]
+            },
+            {
+              "name": {
+                "fr": "Pinot Noir",
+                "en": "New drink"
+              },
+              "price": "",
+              "sizes": [
+                {
+                  "cl": "25",
+                  "price": "5.5"
+                },
+                {
+                  "cl": "75",
+                  "price": "30"
+                }
+              ]
+            },
+            {
+              "name": {
+                "fr": "Rosé ",
+                "en": "New drink"
+              },
+              "price": "",
+              "sizes": [
+                {
+                  "cl": "25",
+                  "price": "5.5"
+                }
+              ]
+            }
+          ]
         }
       ]
     },
