@@ -9,7 +9,7 @@
     "jp": "シーフード · ブルターニュ · パリ"
   },
   "intro": {
-    "active": false,
+    "active": true,
     "text": {
       "fr": "Bienvenue chez Drevici Oyster, une entreprise familiale située à Surzur, dans le Morbihan. Passionnés par notre métier et ancrés dans notre territoire.",
       "en": "Welcome to Drevici Oyster, a Breton oyster bar in the heart of Paris."
@@ -21,7 +21,7 @@
     "facebook": ""
   },
   "homeTab": {
-    "active": false,
+    "active": true,
     "photo": "https://drevicioyster.com/wp-content/uploads/2026/06/storytest3.webp",
     "video": "https://drevicioyster.com/wp-content/uploads/2026/06/renton_work_1780704512_3913155264639435874_78349449169.mp4"
   },
@@ -163,6 +163,18 @@
   "pinnedShowFirst": false,
   "tabs": [
     {
+      "id": "__home",
+      "label": {
+        "fr": "Accueil",
+        "en": "Home",
+        "es": "Inicio",
+        "it": "Casa",
+        "kr": "홈",
+        "jp": "ホーム"
+      },
+      "cards": []
+    },
+    {
       "id": "huitres",
       "isHome": true,
       "label": {
@@ -204,8 +216,7 @@
               "price": "Les 6 — 12€ · Les 12 — 22€",
               "img": "https://domainerosalina.com/wp-content/uploads/2026/06/huitre-izi.png",
               "spicy": false,
-              "vegan": false,
-              "hidden": true
+              "vegan": false
             },
             {
               "name": {
@@ -1094,9 +1105,5 @@
       "visible": false
     }
   ],
-  "pdfStyle": {
-    "format": "a4",
-    "template": "maritime",
-    "showLogo": true
-  }
+  "pdfStyle": {}
 }
