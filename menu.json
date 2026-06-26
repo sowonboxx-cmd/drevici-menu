@@ -845,7 +845,13 @@
               "price": "8€",
               "desc": {
                 "fr": "4cl"
-              }
+              },
+              "sizes": [
+                {
+                  "cl": "4",
+                  "price": "8"
+                }
+              ]
             },
             {
               "name": {
@@ -855,7 +861,26 @@
               "price": "9€",
               "desc": {
                 "fr": "4 cl"
-              }
+              },
+              "sizes": [
+                {
+                  "cl": "4",
+                  "price": "9"
+                }
+              ]
+            },
+            {
+              "name": {
+                "fr": "Pastis",
+                "en": "New drink"
+              },
+              "price": "",
+              "sizes": [
+                {
+                  "cl": "4",
+                  "price": "7"
+                }
+              ]
             }
           ]
         },
