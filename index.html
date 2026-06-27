@@ -677,18 +677,46 @@ function renderNav(){
     el.addEventListener('click',()=>{ currentTabId=tab.id; renderAll(); });
     nav.appendChild(el);
   });
-  // Scroll active tab into view, with peek of next tab
+  // Scroll nav so active tab shows + 2 full next tabs + half of 3rd (both directions)
   setTimeout(()=>{
     const activeEl=nav.querySelector('.nav-tab.active');
-    if(activeEl){
-      const navBar=nav.closest('.nav-bar')||nav.parentElement;
-      const elRight=activeEl.offsetLeft+activeEl.offsetWidth;
-      const barW=navBar.offsetWidth;
-      if(elRight>barW+navBar.scrollLeft-60){
-        navBar.scrollLeft=elRight-barW+60;
-      }
+    if(!activeEl) return;
+    const navBar=nav.closest('.nav-bar')||nav.parentElement;
+    const tabs=Array.from(nav.querySelectorAll('.nav-tab'));
+    const activeIdx=tabs.indexOf(activeEl);
+    const barW=navBar.offsetWidth;
+    // How wide is an average tab (use next few to estimate)
+    const peekTabs=tabs.slice(activeIdx+1,activeIdx+4);
+    const peekWidth=peekTabs.reduce((s,el)=>s+el.offsetWidth,0);
+    const halfTab=peekTabs[2]?peekTabs[2].offsetWidth/2:(peekTabs[1]?peekTabs[1].offsetWidth/2:40);
+    // Target: active tab left edge, then show 2 full + half of 3rd to the right
+    // AND in the other direction: active tab right edge, then show 2 full + half of 3rd to the left
+    const activeLeft=activeEl.offsetLeft;
+    const activeRight=activeLeft+activeEl.offsetWidth;
+    // Determine swipe direction by comparing to previous scrollLeft
+    const prevScroll=navBar.scrollLeft;
+    // Target scroll: center active tab with peek on the side that has more tabs
+    const hasNext=activeIdx<tabs.length-1;
+    const hasPrev=activeIdx>0;
+    let target;
+    if(hasNext){
+      // Show active + 2 next full + half of 3rd
+      const showRight=peekWidth-(halfTab)+activeEl.offsetWidth;
+      target=activeLeft-(barW-showRight)/2;
+      // Clamp so active is always visible
+      target=Math.max(activeLeft-16, target);
+    } else if(hasPrev){
+      // Last tab: show active with peek of previous tabs on left
+      const prevTabs=tabs.slice(Math.max(0,activeIdx-3),activeIdx);
+      const prevPeekW=prevTabs.reduce((s,el)=>s+el.offsetWidth,0);
+      const halfPrev=prevTabs[0]?prevTabs[0].offsetWidth/2:40;
+      target=activeRight-barW+(barW-prevPeekW+halfPrev)/2;
+    } else {
+      target=activeLeft-16;
     }
-  },0);
+    target=Math.max(0,target);
+    navBar.scrollLeft=target;
+  },20);
 }
 
 function renderViewBar(){
