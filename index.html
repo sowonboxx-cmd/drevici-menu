@@ -470,6 +470,7 @@ let DATA = {
   hero: { fr:'Fruits de mer · Bretagne · Paris', en:'Seafood · Brittany · Paris', es:'Mariscos · Bretaña · París', it:'Frutti di mare · Bretagna · Parigi', kr:'해산물 · 브르타뉴 · 파리', jp:'シーフード · ブルターニュ · パリ' },
   intro: { active:false, text:{fr:'Bienvenue chez Drevici Oyster, un bar à huîtres breton au cœur de Paris.',en:'Welcome to Drevici Oyster, a Breton oyster bar in the heart of Paris.'} },
   social: { instagram:'', tiktok:'', facebook:'' },
+  showHeaderLogo: true,
   homeTab: { active:false, photo:'', video:'' },
   schedule: [
     { day:'Lundi',    services:[] },
@@ -785,7 +786,7 @@ function renderTabContent(tab,lbOffset){
       if(ytMatch) embedUrl=`https://www.youtube.com/embed/${ytMatch[1]}?autoplay=0&rel=0&controls=0&modestbranding=1&showinfo=0`;
       else if(vimeoMatch) embedUrl=`https://player.vimeo.com/video/${vimeoMatch[1]}?controls=0&title=0&byline=0&portrait=0`;
       else embedUrl=videoUrl;
-      if(embedUrl) html+=`<div class="home-photo-wrap" style="aspect-ratio:4/3;background:#000"><iframe src="${embedUrl+(embedUrl.includes('?')? '&' : '?') + 'autoplay=1&mute=1&controls=0&loop=1'}" style="width:100%;height:100%;border:none" allow="autoplay" allowfullscreen loading="lazy"></iframe></div>`;
+      if(embedUrl) html+=`<div class="home-photo-wrap" style="aspect-ratio:4/3;background:#000"><iframe src="${embedUrl+(embedUrl.includes('?')?'&':'?')+'autoplay=1&mute=1&controls=0&loop=1&playsinline=1'}" style="width:100%;height:100%;border:none;pointer-events:none" allow="autoplay; encrypted-media" allowfullscreen loading="lazy"></iframe></div>`;
     } else if(DATA.homeTab&&DATA.homeTab.photo){
       html+=`<div class="home-photo-wrap"><img class="home-photo" src="${DATA.homeTab.photo}" alt="Photo restaurant" loading="lazy"></div>`;
     }
@@ -860,7 +861,7 @@ function renderTabContent(tab,lbOffset){
         gridItems.push(`<div class="gc"><div class="gc-wrap" ${card.img?`data-lbidx="${idx}"`:''}>${card.img?`<img class="gc-img" src="${card.img}" alt="" loading="lazy">`:'<div style="aspect-ratio:1;background:#ece8e1"></div>'}</div><div class="gc-body"><div class="gc-name">${t(card.label)}</div><div class="gc-desc">${flavours}</div><div class="gc-price">${price}</div></div></div>`);
         return;
       }
-      (card.dishes||[]).forEach(d=>{
+      (card.dishes||[]).filter(d=>!d.hidden).forEach(d=>{
         const idx=d.img?imgIdx++:null;
         const badges=(d.spicy?`<img src="https://drevicioyster.com/wp-content/uploads/2026/06/icon-spicy.png" class="badge-icon" title="Épicé">`:'')+(d.vegan?`<img src="https://drevicioyster.com/wp-content/uploads/2026/06/icon-vegan.png" class="badge-icon" title="Vegan">`:'');
         gridItems.push(`<div class="gc"><div class="gc-wrap" ${d.img?`data-lbidx="${idx}"`:''}>${d.img?`<img class="gc-img" src="${d.img}" alt="" loading="lazy">`:'<div style="aspect-ratio:1;background:#ece8e1"></div>'}</div><div class="gc-body"><div class="gc-name">${t(d.name)}${badges?` <span class="dish-badges" style="display:inline-flex">${badges}</span>`:''}</div><div class="gc-desc">${t(d.desc)}</div><div class="gc-price">${d.price}</div></div></div>`);
@@ -1396,7 +1397,7 @@ function togglePin(tabId,ci,di){
   else { showToast('Maximum 4 plats à la une'); return; }
   DATA.pinnedDishes=pins;
   renderAll();
-  renderAdminSection('__global');
+  renderAdminSection(adminCurrentTab);
 }
 
 function renderAdminTab(ti){
@@ -2401,7 +2402,8 @@ function applyRestaurantBranding(){
   const logo=getRestaurantLogo();
   const logoEl=document.querySelector('.logo-img');
   const textEl=document.getElementById('logoText');
-  if(logo&&logoEl){ logoEl.src=logo; logoEl.style.display='block'; if(textEl) textEl.style.display='none'; }
+  const showHdrLogo = DATA.showHeaderLogo !== false;
+  if(logo&&logoEl&&showHdrLogo){ logoEl.src=logo; logoEl.style.display='block'; if(textEl) textEl.style.display='none'; }
   else { if(logoEl) logoEl.style.display='none'; if(textEl){ textEl.style.display='block'; textEl.textContent=name||'Mon Restaurant'; } }
   document.title=(name||'Menu')+' — Menu';
 }
@@ -2420,6 +2422,7 @@ function restaurantSettingHtml(){
     <div class="af"><label class="al">Sous-titre</label>
       <input class="ai" value="${DATA.hero?t(DATA.hero):''}" placeholder="Ex : Fruits de mer · Bretagne · Paris" oninput="if(!DATA.hero)DATA.hero={};DATA.hero[adminLang]=this.value;renderAll()">
     </div>
+    <label class="admin-toggle" style="margin-top:8px"><input type="checkbox" ${DATA.showHeaderLogo!==false?'checked':''} onchange="DATA.showHeaderLogo=this.checked;applyRestaurantBranding();renderAll()"><label>Afficher le logo dans le bandeau</label></label>
     <div class="af"><label class="al" style="font-size:13px;font-weight:600;margin-top:10px;display:block;border-top:1px solid var(--border);padding-top:10px">Adresse & contact</label></div>
     <div class="af"><label class="al">Rue</label>
       <input class="ai" value="${DATA.address&&DATA.address.street||''}" placeholder="12 rue de la Mer" oninput="if(!DATA.address)DATA.address={};DATA.address.street=this.value;renderAll()">
