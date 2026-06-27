@@ -160,7 +160,7 @@
       "dishIdx": 3
     }
   ],
-  "pinnedShowHome": true,
+  "pinnedShowHome": false,
   "pinnedShowFirst": false,
   "tabs": [
     {
@@ -1113,7 +1113,5 @@
       "visible": false
     }
   ],
-  "pdfStyle": {
-    "template": "maritime"
-  }
+  "pdfStyle": {}
 }
