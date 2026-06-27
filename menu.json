@@ -24,7 +24,8 @@
   "homeTab": {
     "active": true,
     "photo": "https://drevicioyster.com/wp-content/uploads/2026/06/Photos-Notre-histoire04.webp",
-    "video": ""
+    "video": "",
+    "siteUrl": "https://drevicioyster.com/will/"
   },
   "schedule": [
     {
