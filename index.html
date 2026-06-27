@@ -44,14 +44,14 @@ body{background:var(--bg);font-family:'Jost',sans-serif;font-weight:400;font-siz
 .header-top-right{display:flex;align-items:center;gap:6px}
 
 .lang-wrap{position:relative}
-.lang-sel{display:flex;align-items:center;gap:3px;padding:5px 10px;border:1px solid rgba(255,255,255,0.25);border-radius:6px;cursor:pointer;background:rgba(255,255,255,0.1);color:rgba(255,255,255,0.85);font-size:11px;font-family:'Jost',sans-serif;font-weight:500;letter-spacing:.06em;user-select:none}
+.lang-sel{display:flex;align-items:center;gap:3px;padding:5px 10px;border:1px solid rgba(255,255,255,0.2);border-radius:6px;cursor:pointer;background:var(--navy);color:rgba(255,255,255,0.85);font-size:11px;font-family:'Jost',sans-serif;font-weight:500;letter-spacing:.06em;user-select:none}
 .lang-dd{position:absolute;left:0;top:calc(100% + 6px);background:#fff;border:1px solid rgba(0,0,0,0.1);border-radius:8px;overflow:hidden;z-index:400;display:none;min-width:140px;box-shadow:0 4px 20px rgba(0,0,0,0.15)}
 .lang-dd.open{display:block}
 .lang-opt{padding:9px 14px;font-size:12px;color:var(--text2);cursor:pointer;font-family:'Jost',sans-serif;white-space:nowrap;transition:background .1s}
 .lang-opt:hover{background:var(--bg)}
 .lang-opt.active{color:var(--navy);font-weight:500}
-.admin-btn{display:flex;align-items:center;justify-content:center;width:30px;height:30px;border:1px solid rgba(255,255,255,0.25);border-radius:6px;cursor:pointer;background:rgba(255,255,255,0.1);color:rgba(255,255,255,0.75);transition:background .15s;flex:none}
-.admin-btn:hover{background:rgba(255,255,255,0.2)}
+.admin-btn{display:flex;align-items:center;justify-content:center;width:30px;height:30px;border:1px solid rgba(255,255,255,0.2);border-radius:6px;cursor:pointer;background:var(--navy);color:rgba(255,255,255,0.75);transition:background .15s;flex:none}
+.admin-btn:hover{background:rgba(255,255,255,0.08)}
 .admin-btn svg{width:15px;height:15px;stroke:currentColor;fill:none;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}
 .admin-btn svg{width:13px;height:13px;stroke:currentColor;fill:none;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}
 .logo-img{height:32px;max-width:160px;object-fit:contain;display:none;}
@@ -63,10 +63,10 @@ body{background:var(--bg);font-family:'Jost',sans-serif;font-weight:400;font-siz
 
 /* ── STICKY NAV ── */
 .sticky-nav{position:sticky;top:0;z-index:99}
-.nav-bar{background:var(--navy);overflow-x:auto;scrollbar-width:none;display:flex;border-bottom:1px solid rgba(255,255,255,0.1)}
+.nav-bar{background:var(--navy);overflow-x:auto;scrollbar-width:none;display:flex;border-bottom:none;margin-bottom:0;-webkit-overflow-scrolling:touch}
 .nav-bar::-webkit-scrollbar{display:none}
-.nav-bar-inner{display:flex;max-width:680px;margin:0 auto;padding:0 16px;min-width:max-content}
-.nav-tab{flex:none;padding:11px 14px;font-size:11px;font-weight:500;font-family:'Jost',sans-serif;letter-spacing:.08em;text-transform:uppercase;color:rgba(255,255,255,0.4);cursor:pointer;border-bottom:2px solid transparent;white-space:nowrap;transition:all .2s}
+.nav-bar-inner{display:flex;margin:0 auto;padding:0 16px 0 16px;min-width:max-content}
+.nav-tab{flex:none;padding:11px 14px 10px;font-size:11px;font-weight:500;font-family:'Jost',sans-serif;letter-spacing:.08em;text-transform:uppercase;color:rgba(255,255,255,0.4);cursor:pointer;border-bottom:3px solid transparent;white-space:nowrap;transition:all .2s}
 .nav-tab.active{color:#fff;border-bottom-color:var(--gold)}
 .view-bar{background:#fff;border-bottom:1px solid var(--border)}
 .view-bar-inner{max-width:680px;margin:0 auto;padding:9px 16px;display:flex;align-items:center;justify-content:space-between}
@@ -286,7 +286,7 @@ body{background:var(--bg);font-family:'Jost',sans-serif;font-weight:400;font-siz
 .admin-toggle:hover{border-color:var(--navy)}
 .admin-toggle input[type=checkbox]{accent-color:var(--navy);cursor:pointer}
 .admin-toggle label{font-size:12px;font-family:'Jost',sans-serif;color:var(--text);cursor:pointer;flex:1}
-.admin-badge{display:inline-block;font-size:10px;font-weight:600;padding:0 12px;height:34px;line-height:34px;border-radius:6px;background:var(--navy);color:#fff;font-family:'Jost',sans-serif;letter-spacing:.08em;box-sizing:border-box;border:1.5px solid #4ade80}
+.admin-badge{display:inline-block;font-size:10px;font-weight:600;padding:0 12px;height:34px;line-height:34px;border-radius:6px;background:var(--navy);color:#fff;font-family:'Jost',sans-serif;letter-spacing:.08em;box-sizing:border-box;border:1px solid rgba(255,255,255,0.2)}
 .badge-group{display:flex;gap:6px;margin-top:6px}
 .badge-check{display:flex;align-items:center;gap:4px;font-size:11px;font-family:'Jost',sans-serif;color:var(--text2);cursor:pointer}
 .badge-check img{width:16px;height:16px;object-fit:contain}
@@ -677,6 +677,18 @@ function renderNav(){
     el.addEventListener('click',()=>{ currentTabId=tab.id; renderAll(); });
     nav.appendChild(el);
   });
+  // Scroll active tab into view, with peek of next tab
+  setTimeout(()=>{
+    const activeEl=nav.querySelector('.nav-tab.active');
+    if(activeEl){
+      const navBar=nav.closest('.nav-bar')||nav.parentElement;
+      const elRight=activeEl.offsetLeft+activeEl.offsetWidth;
+      const barW=navBar.offsetWidth;
+      if(elRight>barW+navBar.scrollLeft-60){
+        navBar.scrollLeft=elRight-barW+60;
+      }
+    }
+  },0);
 }
 
 function renderViewBar(){
@@ -1350,7 +1362,7 @@ function renderAdminHomeTab(){
       const tb=DATA.tabs.find(t=>t.id===p.tabId); if(!tb)return;
       const card=tb.cards[p.cardIdx]; if(!card||!card.dishes)return;
       const d=card.dishes[p.dishIdx]; if(!d)return;
-      h+=`<div class="admin-card" draggable="true" style="display:flex;align-items:center;gap:8px;background:#fdf8ec;margin-bottom:4px;cursor:grab"
+      h+=`<div class="admin-card" draggable="true" data-pinidx="${pi}" style="display:flex;align-items:center;gap:8px;background:#fdf8ec;margin-bottom:4px;cursor:grab"
         ondragstart="onDragPin(event,${pi})" ondragend="onDragPinEnd(event)" ondragover="onDragPinOver(event,${pi})" ondrop="onDropPin(event,${pi})">
         <span style="font-size:14px;color:var(--text3);cursor:grab;padding:0 4px">⠿</span>
         ${d.img?`<img src="${d.img}" style="width:40px;height:40px;border-radius:6px;object-fit:cover;flex:none" loading="lazy">`:`<div style="width:40px;height:40px;border-radius:6px;background:#ddd;flex:none"></div>`}
@@ -1409,11 +1421,13 @@ function renderAdminGlobal(){
 }
 
 let dragPinSrc=null;
+// Desktop drag
 function onDragPin(e,pi){ dragPinSrc=pi; e.currentTarget.classList.add('dragging'); e.dataTransfer.effectAllowed='move'; }
-function onDragPinEnd(e){ e.currentTarget.classList.remove('dragging'); document.querySelectorAll('.admin-card').forEach(el=>el.classList.remove('drag-over')); }
+function onDragPinEnd(e){ e.currentTarget.classList.remove('dragging'); document.querySelectorAll('.admin-card').forEach(el=>el.classList.remove('drag-over')); dragPinSrc=null; }
 function onDragPinOver(e,pi){ if(dragPinSrc===null||dragPinSrc===pi)return; e.preventDefault(); e.currentTarget.classList.add('drag-over'); }
 function onDropPin(e,pi){
   e.preventDefault();
+  document.querySelectorAll('.admin-card').forEach(el=>el.classList.remove('drag-over'));
   if(dragPinSrc===null||dragPinSrc===pi)return;
   const pins=DATA.pinnedDishes||[];
   const [moved]=pins.splice(dragPinSrc,1);
@@ -1423,6 +1437,46 @@ function onDropPin(e,pi){
   renderAll();
   renderAdminSection(adminCurrentTab);
 }
+// Touch drag for mobile pins
+(function(){
+  let touchPinSrc=null, touchPinY=0, touchPinEl=null;
+  document.addEventListener('touchstart',function(e){
+    const handle=e.target.closest('.admin-card[data-pinidx]');
+    if(!handle) return;
+    touchPinSrc=parseInt(handle.dataset.pinidx);
+    touchPinEl=handle;
+    touchPinY=e.touches[0].clientY;
+    handle.classList.add('dragging');
+  },{passive:true});
+  document.addEventListener('touchmove',function(e){
+    if(touchPinSrc===null||!touchPinEl) return;
+    e.preventDefault();
+    const y=e.touches[0].clientY;
+    const els=document.querySelectorAll('.admin-card[data-pinidx]');
+    els.forEach(el=>{
+      const r=el.getBoundingClientRect();
+      if(y>r.top&&y<r.bottom&&parseInt(el.dataset.pinidx)!==touchPinSrc){
+        els.forEach(x=>x.classList.remove('drag-over'));
+        el.classList.add('drag-over');
+      }
+    });
+  },{passive:false});
+  document.addEventListener('touchend',function(e){
+    if(touchPinSrc===null) return;
+    const over=document.querySelector('.admin-card[data-pinidx].drag-over');
+    if(over){
+      const tgt=parseInt(over.dataset.pinidx);
+      const pins=DATA.pinnedDishes||[];
+      const [moved]=pins.splice(touchPinSrc,1);
+      pins.splice(tgt,0,moved);
+      DATA.pinnedDishes=pins;
+      renderAll();
+      renderAdminSection(adminCurrentTab);
+    }
+    document.querySelectorAll('.admin-card[data-pinidx]').forEach(el=>{el.classList.remove('dragging');el.classList.remove('drag-over');});
+    touchPinSrc=null; touchPinEl=null;
+  });
+})();
 
 function togglePin(tabId,ci,di){
   const pins=DATA.pinnedDishes||[];
@@ -2285,7 +2339,7 @@ function renderPdfStyleSection(){
         <input class="ai" value="${val}" oninput="setPdfCfg('${key}',this.value)" style="flex:1;font-family:monospace;font-size:12px">
       </div>
     </div>`;
-  return `<div class="admin-section collapsible collapsed"><div class="admin-sect-title" onclick="toggleAdminSection(this)">🎨 Style du PDF</div><div class="admin-sect-body">
+  return `<div class="admin-section collapsible collapsed"><div class="admin-sect-title" onclick="toggleAdminSection(this)">Exporter le menu en PDF</div><div class="admin-sect-body">
     <div style="font-size:11px;color:var(--text3);font-family:Jost,sans-serif;margin-bottom:12px;line-height:1.6">Personnalisez le menu imprimable, prévisualisez puis exportez en A4 (impression) ou en image Google Business.</div>
 
     <div class="af"><label class="al">Modèle</label>
