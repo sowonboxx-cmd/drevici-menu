@@ -580,20 +580,31 @@ function collectLbImages(){
   DATA.tabs.forEach(tab=>{
     const cat=t(tab.label);
     tab.cards.forEach(card=>{
-      if(card.dishes) card.dishes.forEach(d=>{ if(d.img) lbImages.push({src:d.img,name:t(d.name),desc:t(d.desc)||'',cat}); });
+      if(card.dishes) card.dishes.filter(d=>!d.hidden).forEach(d=>{ if(d.img) lbImages.push({src:d.img,name:t(d.name),desc:t(d.desc)||'',cat}); });
       if(card.img && !card.dishes) lbImages.push({src:card.img,name:t(card.label),desc:'',cat});
     });
   });
 }
-// Mini lightbox for pinned dishes on home tab
+// ── LIGHTBOX MODE FLAG ──
+// 'pin' = plats à la une (4 slides indépendantes), 'normal' = lb standard
+let lbMode='normal';
+
+// Mini lightbox for pinned dishes — independent slides, own counter
 let pinLbDishes=[], pinLbIdx=0;
 function openPinLb(idx){
   const pins=DATA.pinnedDishes||[];
-  pinLbDishes=pins.map(p=>{ const tb=DATA.tabs.find(tb=>tb.id===p.tabId); if(!tb)return null; const card=tb.cards[p.cardIdx]; if(!card||!card.dishes)return null; return card.dishes[p.dishIdx]; }).filter(Boolean).slice(0,4);
+  pinLbDishes=pins.map(p=>{
+    const tb=DATA.tabs.find(tb=>tb.id===p.tabId); if(!tb)return null;
+    const card=tb.cards[p.cardIdx]; if(!card||!card.dishes)return null;
+    const d=card.dishes[p.dishIdx];
+    return (d&&!d.hidden)?d:null;  // exclude hidden
+  }).filter(Boolean).slice(0,4);
   if(!pinLbDishes.length) return;
-  pinLbIdx=idx;
+  lbMode='pin';
+  pinLbIdx=Math.min(idx,pinLbDishes.length-1);
   renderPinLb();
   document.getElementById('lb').classList.add('open');
+  document.body.style.overflow='hidden';
 }
 function renderPinLb(){
   const d=pinLbDishes[pinLbIdx];
@@ -609,9 +620,10 @@ function stepPinLb(dir){
   renderPinLb();
 }
 
-function openLb(idx){ collectLbImages(); lbIdx=idx; renderLbSlide(); document.getElementById('lb').classList.add('open'); document.body.style.overflow='hidden'; }
-function closeLb(){ document.getElementById('lb').classList.remove('open'); document.body.style.overflow=''; }
-function lbStep(d){ lbIdx=(lbIdx+d+lbImages.length)%lbImages.length; renderLbSlide(); }
+function openLb(idx){ lbMode='normal'; collectLbImages(); lbIdx=idx; renderLbSlide(); document.getElementById('lb').classList.add('open'); document.body.style.overflow='hidden'; }
+function closeLb(){ document.getElementById('lb').classList.remove('open'); document.body.style.overflow=''; lbMode='normal'; }
+// Route lbStep to the right mode
+function lbStep(d){ if(lbMode==='pin'){ stepPinLb(d); } else { lbIdx=(lbIdx+d+lbImages.length)%lbImages.length; renderLbSlide(); } }
 function renderLbSlide(){
   const item=lbImages[lbIdx];
   document.getElementById('lbImg').src=item.src;
@@ -674,10 +686,16 @@ function renderNav(){
     const el=document.createElement('div');
     el.className='nav-tab'+(tab.id===currentTabId?' active':'');
     el.textContent=t(tab.label);
-    el.addEventListener('click',()=>{ currentTabId=tab.id; renderAll(); });
+    el.addEventListener('click',()=>{
+      if(tab.id==='__home' && DATA.homeTab&&DATA.homeTab.siteUrl){
+        window.open(DATA.homeTab.siteUrl,'_blank');
+        return;
+      }
+      currentTabId=tab.id; renderAll();
+    });
     nav.appendChild(el);
   });
-  // Scroll nav so active tab shows + 2 full next tabs + half of 3rd (both directions)
+  // Scroll nav: show active + 2 full + half of 3rd on each side (Twitter-style)
   setTimeout(()=>{
     const activeEl=nav.querySelector('.nav-tab.active');
     if(!activeEl) return;
@@ -685,37 +703,40 @@ function renderNav(){
     const tabs=Array.from(nav.querySelectorAll('.nav-tab'));
     const activeIdx=tabs.indexOf(activeEl);
     const barW=navBar.offsetWidth;
-    // How wide is an average tab (use next few to estimate)
-    const peekTabs=tabs.slice(activeIdx+1,activeIdx+4);
-    const peekWidth=peekTabs.reduce((s,el)=>s+el.offsetWidth,0);
-    const halfTab=peekTabs[2]?peekTabs[2].offsetWidth/2:(peekTabs[1]?peekTabs[1].offsetWidth/2:40);
-    // Target: active tab left edge, then show 2 full + half of 3rd to the right
-    // AND in the other direction: active tab right edge, then show 2 full + half of 3rd to the left
-    const activeLeft=activeEl.offsetLeft;
-    const activeRight=activeLeft+activeEl.offsetWidth;
-    // Determine swipe direction by comparing to previous scrollLeft
-    const prevScroll=navBar.scrollLeft;
-    // Target scroll: center active tab with peek on the side that has more tabs
+    const totalW=nav.scrollWidth;
+
+    // Compute target: position scroll so active tab sits at left + 16px padding,
+    // letting the next 2 full + half of 3rd peek to the right naturally
+    // For the last tabs, scroll back so 2 prev + half peek on the left
+    const nextTabs=tabs.slice(activeIdx+1, activeIdx+4);
+    const prevTabs=tabs.slice(Math.max(0,activeIdx-3), activeIdx);
+    const nextW=nextTabs.reduce((s,el)=>s+el.offsetWidth,0);
+    const prevW=prevTabs.reduce((s,el)=>s+el.offsetWidth,0);
+    const halfNext=nextTabs[2]?nextTabs[2].offsetWidth/2:(nextTabs[1]?nextTabs[1].offsetWidth/2:40);
+    const halfPrev=prevTabs[0]?prevTabs[0].offsetWidth/2:40;
+
+    let target;
     const hasNext=activeIdx<tabs.length-1;
     const hasPrev=activeIdx>0;
-    let target;
-    if(hasNext){
-      // Show active + 2 next full + half of 3rd
-      const showRight=peekWidth-(halfTab)+activeEl.offsetWidth;
-      target=activeLeft-(barW-showRight)/2;
-      // Clamp so active is always visible
-      target=Math.max(activeLeft-16, target);
-    } else if(hasPrev){
-      // Last tab: show active with peek of previous tabs on left
-      const prevTabs=tabs.slice(Math.max(0,activeIdx-3),activeIdx);
-      const prevPeekW=prevTabs.reduce((s,el)=>s+el.offsetWidth,0);
-      const halfPrev=prevTabs[0]?prevTabs[0].offsetWidth/2:40;
-      target=activeRight-barW+(barW-prevPeekW+halfPrev)/2;
+
+    if(hasNext&&hasPrev){
+      // Middle: show active at ~left-quarter, peek both sides
+      const rightPeek=nextW-halfNext;
+      target=activeEl.offsetLeft-(barW-activeEl.offsetWidth-rightPeek)/2;
+    } else if(hasNext){
+      // First tab(s): start from left, just show naturally
+      target=0;
     } else {
-      target=activeLeft-16;
+      // Last tab(s): scroll so 2 prev + half show on left
+      target=totalW-barW;
     }
-    target=Math.max(0,target);
-    navBar.scrollLeft=target;
+
+    target=Math.max(0, Math.min(target, totalW-barW));
+
+    // Only scroll if needed, use smooth for non-initial renders
+    if(Math.abs(navBar.scrollLeft-target)>2){
+      navBar.scrollTo({left:target, behavior:'smooth'});
+    }
   },20);
 }
 
@@ -1070,7 +1091,8 @@ function renderTabReorder(){
 }
 
 let dragTabSrc=null;
-function onDragTab(e,ti){ dragTabSrc=ti; e.currentTarget.classList.add('dragging'); e.dataTransfer.effectAllowed='move'; }
+function onDragTab(e,ti){
+  if(e.target.tagName==='INPUT'||e.target.tagName==='TEXTAREA'||e.target.tagName==='SELECT') { e.preventDefault(); return; } dragTabSrc=ti; e.currentTarget.classList.add('dragging'); e.dataTransfer.effectAllowed='move'; }
 function onDropTab(e,ti){
   e.preventDefault(); e.currentTarget.classList.remove('drag-over');
   if(dragTabSrc===null||dragTabSrc===ti) return;
@@ -1371,6 +1393,11 @@ function renderAdminHomeTab(){
         oninput="if(!DATA.homeTab)DATA.homeTab={};DATA.homeTab.video=this.value.trim();renderAll()">
       <div style="font-size:11px;color:var(--text3);font-family:Jost,sans-serif;margin-top:4px">Si renseignée, la vidéo remplace la photo.</div>
     </div>
+    <div class="af"><label class="al">Lien vers le site du client (optionnel)</label>
+      <input class="ai" value="${(DATA.homeTab&&DATA.homeTab.siteUrl)||''}" placeholder="https://monrestaurant.fr"
+        oninput="if(!DATA.homeTab)DATA.homeTab={};DATA.homeTab.siteUrl=this.value.trim();renderAll()">
+      <div style="font-size:11px;color:var(--text3);font-family:Jost,sans-serif;margin-top:4px">Si renseigné, l'onglet Accueil redirige vers ce site au lieu d'afficher la page.</div>
+    </div>
   </div></div>`;
   // Présentation
   h+=`<div class="admin-section"><div class="admin-sect-title">Présentation</div><div class="admin-sect-body">
@@ -1419,6 +1446,16 @@ function renderAdminHomeTab(){
   });
   if(!pinCount&&!pinnedList.length) h+=`<div style="font-size:12px;color:var(--text3);font-family:Jost,sans-serif;padding:8px">Aucun plat dans le menu.</div>`;
   h+=`</div></div>`;
+
+  // Champ libre de la page Accueil (global infoBanner)
+  const ib=DATA.infoBanner||{};
+  h+=`<div class="admin-section collapsible collapsed"><div class="admin-sect-title" onclick="toggleAdminSection(this)">Champ libre</div><div class="admin-sect-body">
+    <label class="admin-toggle" style="margin-bottom:8px"><input type="checkbox" ${ib.active?'checked':''} onchange="if(!DATA.infoBanner)DATA.infoBanner={};DATA.infoBanner.active=this.checked;renderAll()"><label>Visible</label></label>
+    `+biInput('Étiquette (optionnel)', t(ib.label)||'', t(ib.label)||'', `if(!DATA.infoBanner)DATA.infoBanner={};if(!DATA.infoBanner.label)DATA.infoBanner.label={};DATA.infoBanner.label[adminLang]=this.value;renderAll()`)+`
+    `+biInput('Titre', (ib.title&&ib.title.fr)||'', (ib.title&&ib.title[adminLang])||'', `if(!DATA.infoBanner)DATA.infoBanner={};if(!DATA.infoBanner.title)DATA.infoBanner.title={};DATA.infoBanner.title[adminLang]=this.value;renderAll()`)+`
+    `+biInput('Texte', (ib.desc&&ib.desc.fr)||'', (ib.desc&&ib.desc[adminLang])||'', `if(!DATA.infoBanner)DATA.infoBanner={};if(!DATA.infoBanner.desc)DATA.infoBanner.desc={};DATA.infoBanner.desc[adminLang]=this.value;renderAll()`, true)+`
+  </div></div>`;
+
   return h;
 }
 
@@ -1534,7 +1571,7 @@ function renderAdminTab(ti){
 
   // Cards
   tab.cards.forEach((card,ci)=>{
-    h+=`<div class="admin-section collapsible collapsed" draggable="true" ondragstart="onDragSection(event,${ti},${ci})" ondragend="onDragSectionEnd(event)" ondragover="onDragSectionOver(event,${ti},${ci})" ondragleave="onDragLeave(event)" ondrop="onDropSection(event,${ti},${ci})"><div class="admin-sect-title" onclick="toggleAdminSection(this)" style="display:flex;justify-content:space-between;align-items:center;cursor:pointer"><span>⠿ Section — ${t(card.label)}</span><button class="adel" style="font-size:12px;padding:1px 5px;flex:none;opacity:.6;margin-left:auto;margin-right:20px" onclick="event.stopPropagation();askConfirm('Supprimer cette section ?',()=>{DATA.tabs[${ti}].cards.splice(${ci},1);renderAll();renderAdminSection(DATA.tabs[${ti}].id)})">✕</button></div><div class="admin-sect-body">`;
+    h+=`<div class="admin-section collapsible collapsed" ondragover="onDragSectionOver(event,${ti},${ci})" ondragleave="onDragLeave(event)" ondrop="onDropSection(event,${ti},${ci})"><div class="admin-sect-title" onclick="toggleAdminSection(this)" style="display:flex;justify-content:space-between;align-items:center;cursor:pointer"><span draggable="true" ondragstart="onDragSection(event,${ti},${ci})" ondragend="onDragSectionEnd(event)" style="cursor:grab;user-select:none">⠿ Section — ${t(card.label)}</span><button class="adel" style="font-size:12px;padding:1px 5px;flex:none;opacity:.6;margin-left:auto;margin-right:20px" onclick="event.stopPropagation();askConfirm('Supprimer cette section ?',()=>{DATA.tabs[${ti}].cards.splice(${ci},1);renderAll();renderAdminSection(DATA.tabs[${ti}].id)})">✕</button></div><div class="admin-sect-body">`;
     h+=`<div class="admin-card">`;
     h+=biInput('Titre de section', card.label.fr||'', card.label[adminLang]||'', `DATA.tabs[${ti}].cards[${ci}].label[adminLang]=this.value;renderAll()`);
     h+=``;
@@ -1678,8 +1715,11 @@ function onDragEndHandle(e){ const card=e.currentTarget.closest('.admin-card'); 
 
 let dragSectionSrc=null;
 function onDragSection(e,ti,ci){
+  // Only drag from the handle span, not from inputs inside
+  if(e.target.tagName==='INPUT'||e.target.tagName==='TEXTAREA'||e.target.tagName==='SELECT'||e.target.tagName==='BUTTON') { e.preventDefault(); return; }
   dragSectionSrc={ti,ci};
-  e.currentTarget.classList.add('dragging');
+  const card=e.currentTarget.closest('.admin-section')||e.currentTarget;
+  card.classList.add('dragging');
   e.dataTransfer.effectAllowed='move';
   e.stopPropagation();
 }
