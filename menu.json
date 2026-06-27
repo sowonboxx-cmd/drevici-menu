@@ -393,82 +393,6 @@
       "cards": [
         {
           "label": {
-            "fr": "Tartare d'algues",
-            "en": "To spread",
-            "es": "Para untar",
-            "it": "Da spalmare",
-            "kr": "스프레드",
-            "jp": "スプレッド"
-          },
-          "dishes": [
-            {
-              "name": {
-                "fr": "Soleil",
-                "en": "Seaweed tartare (Begood Alg)",
-                "es": "Tartar de algas (Begood Alg)",
-                "it": "Tartare di alghe (Begood Alg)",
-                "kr": "해조류 타르타르 (Begood Alg)",
-                "jp": "海藻タルタル (Begood Alg)"
-              },
-              "desc": {
-                "fr": "Tartare d'algues (4 algues) poivrons grillés et paprika",
-                "en": "Apple & honey · Roasted pepper & paprika · Nori caviar · Sun",
-                "es": "Manzana y miel · Pimientos y páprika · Caviar nori · Sol",
-                "it": "Mela e miele · Peperoni e paprika · Caviale nori · Sole",
-                "kr": "사과와 꿀 · 구운 피망과 파프리카 · 노리 캐비아 · 썬",
-                "jp": "りんごと蜂蜜 · 焼きパプリカ · 海苔キャビア · サン"
-              },
-              "price": "9€",
-              "img": "https://domainerosalina.com/wp-content/uploads/2026/06/algue-soleil.webp",
-              "spicy": false,
-              "vegan": false
-            },
-            {
-              "name": {
-                "fr": "Nature",
-                "en": ""
-              },
-              "desc": {
-                "fr": "La version au naturel est excellente avec du fromage ou à consommer directement dans une huître",
-                "en": ""
-              },
-              "price": "9€",
-              "img": "https://domainerosalina.com/wp-content/uploads/2026/06/algue-naturel.webp",
-              "spicy": false,
-              "vegan": false
-            },
-            {
-              "name": {
-                "fr": "Pomme et Miel",
-                "en": ""
-              },
-              "desc": {
-                "fr": "Parfait pour accompagner des toasts de chèvre chaud, avec tomme de brebis",
-                "en": ""
-              },
-              "price": "9€",
-              "img": "https://domainerosalina.com/wp-content/uploads/2026/06/algue-pomme.webp",
-              "spicy": false,
-              "vegan": false
-            },
-            {
-              "name": {
-                "fr": "Caviar de nori",
-                "en": ""
-              },
-              "desc": {
-                "fr": "La Nori est l'or noir breton! C'est une algue d'une finesse imcomparable, difficile à récolter et à sécher",
-                "en": ""
-              },
-              "price": "9€",
-              "img": "https://domainerosalina.com/wp-content/uploads/2026/06/algue-nori.webp",
-              "spicy": false,
-              "vegan": false
-            }
-          ]
-        },
-        {
-          "label": {
             "fr": "Rillettes de poissons (Groix & Nature)",
             "en": "New section"
           },
@@ -568,6 +492,82 @@
               },
               "price": "9€",
               "img": "https://domainerosalina.com/wp-content/uploads/2026/06/rillettes-daurade.webp",
+              "spicy": false,
+              "vegan": false
+            }
+          ]
+        },
+        {
+          "label": {
+            "fr": "Tartare d'algues",
+            "en": "To spread",
+            "es": "Para untar",
+            "it": "Da spalmare",
+            "kr": "스프레드",
+            "jp": "スプレッド"
+          },
+          "dishes": [
+            {
+              "name": {
+                "fr": "Soleil",
+                "en": "Seaweed tartare (Begood Alg)",
+                "es": "Tartar de algas (Begood Alg)",
+                "it": "Tartare di alghe (Begood Alg)",
+                "kr": "해조류 타르타르 (Begood Alg)",
+                "jp": "海藻タルタル (Begood Alg)"
+              },
+              "desc": {
+                "fr": "Tartare d'algues (4 algues) poivrons grillés et paprika",
+                "en": "Apple & honey · Roasted pepper & paprika · Nori caviar · Sun",
+                "es": "Manzana y miel · Pimientos y páprika · Caviar nori · Sol",
+                "it": "Mela e miele · Peperoni e paprika · Caviale nori · Sole",
+                "kr": "사과와 꿀 · 구운 피망과 파프리카 · 노리 캐비아 · 썬",
+                "jp": "りんごと蜂蜜 · 焼きパプリカ · 海苔キャビア · サン"
+              },
+              "price": "9€",
+              "img": "https://domainerosalina.com/wp-content/uploads/2026/06/algue-soleil.webp",
+              "spicy": false,
+              "vegan": false
+            },
+            {
+              "name": {
+                "fr": "Nature",
+                "en": ""
+              },
+              "desc": {
+                "fr": "La version au naturel est excellente avec du fromage ou à consommer directement dans une huître",
+                "en": ""
+              },
+              "price": "9€",
+              "img": "https://domainerosalina.com/wp-content/uploads/2026/06/algue-naturel.webp",
+              "spicy": false,
+              "vegan": false
+            },
+            {
+              "name": {
+                "fr": "Pomme et Miel",
+                "en": ""
+              },
+              "desc": {
+                "fr": "Parfait pour accompagner des toasts de chèvre chaud, avec tomme de brebis",
+                "en": ""
+              },
+              "price": "9€",
+              "img": "https://domainerosalina.com/wp-content/uploads/2026/06/algue-pomme.webp",
+              "spicy": false,
+              "vegan": false
+            },
+            {
+              "name": {
+                "fr": "Caviar de nori",
+                "en": ""
+              },
+              "desc": {
+                "fr": "La Nori est l'or noir breton! C'est une algue d'une finesse imcomparable, difficile à récolter et à sécher",
+                "en": ""
+              },
+              "price": "9€",
+              "img": "https://domainerosalina.com/wp-content/uploads/2026/06/algue-nori.webp",
               "spicy": false,
               "vegan": false
             }
