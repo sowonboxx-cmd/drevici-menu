@@ -173,7 +173,8 @@
         "kr": "홈",
         "jp": "ホーム"
       },
-      "cards": []
+      "cards": [],
+      "isHome": true
     },
     {
       "id": "huitres",
@@ -402,8 +403,7 @@
               "price": "20€",
               "img": "https://domainerosalina.com/wp-content/uploads/2026/06/sushi-sup.webp",
               "spicy": false,
-              "vegan": false,
-              "hidden": true
+              "vegan": false
             },
             {
               "name": {
@@ -1154,6 +1154,5 @@
       ],
       "visible": false
     }
-  ],
-  "pdfStyle": {}
+  ]
 }
