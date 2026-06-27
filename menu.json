@@ -402,6 +402,21 @@
               "price": "20€",
               "img": "https://domainerosalina.com/wp-content/uploads/2026/06/sushi-sup.webp",
               "spicy": false,
+              "vegan": false,
+              "hidden": true
+            },
+            {
+              "name": {
+                "fr": "Crème brûlée au sésame noir ",
+                "en": ""
+              },
+              "desc": {
+                "fr": "Appréciez l’équilibre parfait entre l’arôme toasté du sésame noir et la douceur subtile de la crème.",
+                "en": ""
+              },
+              "price": "5€",
+              "img": "https://domainerosalina.com/wp-content/uploads/2026/06/cremebru.webp",
+              "spicy": false,
               "vegan": false
             }
           ]
