@@ -1,6 +1,9 @@
 <!DOCTYPE html>
 <html lang="fr">
 <head>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Open+Sans+Condensed:wght@300;700&family=Lovelo:wght@400;700&family=Playfair+Display:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet">
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 <title>Drevici Oyster — Menu</title>
@@ -1888,21 +1891,35 @@ const SOCIAL_TEMPLATES = [
   { id:'plat',     label:'🍽 Plat / Menu' },
   { id:'event',    label:'🎵 Événement' },
   { id:'info',     label:'ℹ️ Info / Fermeture' },
+  { id:'libre',    label:'✏️ Post libre' },
 ];
 
+const SOC_FONTS = [
+  { id:'opensans',  label:'Open Sans Condensed', css:"'Open Sans Condensed',sans-serif" },
+  { id:'playfair',  label:'Playfair Display',    css:"'Playfair Display',serif" },
+  { id:'jost',      label:'Jost',                css:"'Jost',sans-serif" },
+];
 let socState = {
   tplId: 'arrivage',
   titre: '',
   desc: '',
   extra: '',
   photo: '',
-  format: 'post',         // post | story
-  selectedDish: null,     // dish object from dropdown
-  galleryIdx: 0,          // which gallery image is selected
-  caption: '',            // pre-saved caption for selected dish
-  textPos: 'bottom-left', // top-left | top-center | top-right | center | bottom-left | bottom-center | bottom-right
-  textColor: '#ffffff',   // text overlay color
-  overlayOpacity: 40,     // 0-100 % of dark overlay
+  format: 'post',
+  selectedDish: null,
+  galleryIdx: 0,
+  caption: '',
+  textPos: 'bottom-left',
+  textColor: '#ffffff',
+  overlayOpacity: 40,
+  fontId: 'opensans',        // selected font
+  titleSize: 36,             // px at 1080px width
+  descSize: 18,
+  titleBold: true,
+  descBold: false,
+  showBadge: true,           // show "À LA CARTE" badge
+  showLogo: true,
+  showHashtags: true,
 };
 
 function renderSocialSection(){
@@ -1982,6 +1999,40 @@ function renderSocialSection(){
             </div>
           </div>
 
+          <!-- TYPOGRAPHIE -->
+          <div class="af"><label class="al" style="font-weight:600">Typographie</label>
+            <div style="display:flex;gap:6px;flex-wrap:wrap;margin-bottom:8px">
+              ${SOC_FONTS.map(f=>`<button class="soc-pos-btn${s.fontId===f.id?' active':''}" onclick="socState.fontId='${f.id}';renderSocPreview()" style="min-width:auto;padding:6px 10px;font-size:11px;font-family:${f.css}">${f.label}</button>`).join('')}
+            </div>
+            <div style="display:flex;gap:10px;align-items:flex-end;margin-bottom:8px">
+              <div style="flex:1"><label class="al" style="font-size:10px">Taille titre</label>
+                <div style="display:flex;align-items:center;gap:6px">
+                  <input type="range" min="18" max="72" value="${s.titleSize}" oninput="socState.titleSize=parseInt(this.value);this.nextElementSibling.textContent=this.value+'px';renderSocPreview()" style="flex:1">
+                  <span style="font-size:11px;color:var(--text3);width:34px">${s.titleSize}px</span>
+                </div>
+              </div>
+              <label style="display:flex;align-items:center;gap:4px;font-size:11px;cursor:pointer;padding-bottom:2px"><input type="checkbox" ${s.titleBold?'checked':''} onchange="socState.titleBold=this.checked;renderSocPreview()"> Gras</label>
+            </div>
+            <div style="display:flex;gap:10px;align-items:flex-end;margin-bottom:8px">
+              <div style="flex:1"><label class="al" style="font-size:10px">Taille description</label>
+                <div style="display:flex;align-items:center;gap:6px">
+                  <input type="range" min="10" max="36" value="${s.descSize}" oninput="socState.descSize=parseInt(this.value);this.nextElementSibling.textContent=this.value+'px';renderSocPreview()" style="flex:1">
+                  <span style="font-size:11px;color:var(--text3);width:34px">${s.descSize}px</span>
+                </div>
+              </div>
+              <label style="display:flex;align-items:center;gap:4px;font-size:11px;cursor:pointer;padding-bottom:2px"><input type="checkbox" ${s.descBold?'checked':''} onchange="socState.descBold=this.checked;renderSocPreview()"> Gras</label>
+            </div>
+          </div>
+
+          <!-- VISIBILITE ELEMENTS -->
+          <div class="af"><label class="al" style="font-weight:600">Éléments visibles</label>
+            <div style="display:flex;gap:14px;flex-wrap:wrap">
+              <label style="display:flex;align-items:center;gap:5px;font-size:12px;cursor:pointer"><input type="checkbox" ${s.showBadge?'checked':''} onchange="socState.showBadge=this.checked;renderSocPreview()"> Badge catégorie</label>
+              <label style="display:flex;align-items:center;gap:5px;font-size:12px;cursor:pointer"><input type="checkbox" ${s.showLogo!==false?'checked':''} onchange="socState.showLogo=this.checked;renderSocPreview()"> Logo</label>
+              <label style="display:flex;align-items:center;gap:5px;font-size:12px;cursor:pointer"><input type="checkbox" ${s.showHashtags!==false?'checked':''} onchange="socState.showHashtags=this.checked;renderSocPreview()"> Hashtags</label>
+            </div>
+          </div>
+
           <!-- FORMAT -->
           <div class="af"><label class="al">Format</label>
             <div style="display:flex;gap:8px">
@@ -2023,11 +2074,22 @@ function tplPlaceholder(id, field){
   return map[id]?.[field] || '';
 }
 
-function buildTplHTML(id, titre, desc, extra, photo, format, textPos, textColor, overlayOpacity){
+function buildTplHTML(id, titre, desc, extra, photo, format, textPos, textColor, overlayOpacity, opts){
   const isStory = format === 'story';
   textPos = textPos || 'bottom-left';
   textColor = textColor || '#ffffff';
   overlayOpacity = overlayOpacity != null ? overlayOpacity : 40;
+  opts = opts || {};
+  const fontId = opts.fontId || 'opensans';
+  const fontDef = SOC_FONTS.find(f=>f.id===fontId)||SOC_FONTS[0];
+  const fontCss = fontDef.css;
+  const titleSz = (opts.titleSize||36)/1080; // relative to 1080px render
+  const descSz  = (opts.descSize||18)/1080;
+  const titleW  = opts.titleBold!==false ? '700' : '400';
+  const descW   = opts.descBold ? '700' : '400';
+  const showBadge    = opts.showBadge !== false;
+  const showLogo     = opts.showLogo !== false;
+  const showHashtags = opts.showHashtags !== false;
   // Text position → CSS
   const posMap = {
     'top-left':     'top:0;left:0;align-items:flex-start;justify-content:flex-start;text-align:left',
@@ -2077,18 +2139,30 @@ function buildTplHTML(id, titre, desc, extra, photo, format, textPos, textColor,
         :'<div style="position:absolute;inset:0;background:radial-gradient(circle at 50% 30%,rgba(198,162,74,.15),transparent 70%)"></div>'}
       <div style="position:absolute;inset:0;display:flex;flex-direction:column;padding:${isStory?'8%':'6%'}">
         <div style="display:flex;justify-content:flex-end">
-          <img class="st-logo-sm" src="${logoUrl}" style="max-height:${isStory?'28px':'22px'}" onerror="this.style.display='none'">
+          ${showLogo?`<img class="st-logo-sm" src="${logoUrl}" style="max-height:${isStory?'28px':'22px'}" onerror="this.style.display='none'">`:''}
         </div>
-        <div style="flex:1;display:flex;flex-direction:column;${posCSS.replace(/top:0;|bottom:0;|left:0;|right:0;/g,'')};justify-content:${textPos.startsWith('top')?'flex-start':textPos==='center'?'center':'flex-end'};align-items:${textPos.endsWith('left')?'flex-start':textPos.endsWith('right')?'flex-end':'center'}">
+        <div style="flex:1;display:flex;flex-direction:column;justify-content:${textPos.startsWith('top')?'flex-start':textPos==='center'?'center':'flex-end'};align-items:${textPos.endsWith('right')?'flex-end':textPos.endsWith('center')||textPos==='center'?'center':'flex-start'}">
           <div>
-            <div class="st-badge" style="font-size:${isStory?'.6em':'.52em'};padding:2px 8px;border-radius:3px;margin-bottom:10px">À LA CARTE</div>
-            <div style="font-family:'Cormorant Garamond',serif;font-size:${isStory?'2em':'1.6em'};font-weight:700;color:${textColor};margin-bottom:8px;line-height:1.1">${titre||'Fine de Claire'}</div>
-            <div style="font-size:${isStory?'.75em':'.65em'};color:${textColor};opacity:.85;margin-bottom:${extra?'12px':'0'}">${desc||'Élevées en eau claire · Goût de noisette'}</div>
+            ${showBadge?`<div class="st-badge" style="font-size:${isStory?'.6em':'.52em'};padding:2px 8px;border-radius:3px;margin-bottom:10px">À LA CARTE</div>`:''}
+            ${titre?`<div style="font-family:${fontCss};font-size:${isStory?'2em':'1.6em'};font-weight:${titleW};color:${textColor};margin-bottom:8px;line-height:1.1">${titre}</div>`:''}
+            ${desc?`<div style="font-family:${fontCss};font-size:${isStory?'.75em':'.65em'};font-weight:${descW};color:${textColor};opacity:.88;margin-bottom:${extra?'12px':'0'}">${desc}</div>`:''}
             ${extra?`<div style="font-family:'Cormorant Garamond',serif;font-size:${isStory?'2em':'1.6em'};font-weight:700;color:#C6A24A;margin-bottom:8px">${extra}</div>`:''}
-            <div class="st-divider" style="margin-bottom:10px"></div>
-            <div class="st-hashtags" style="font-size:${isStory?'.6em':'.52em'}">#huitres #finedeclaire #paris #morbihan</div>
+            ${showHashtags?`<div class="st-divider" style="margin-bottom:8px"></div><div class="st-hashtags" style="font-size:${isStory?'.6em':'.52em'}">#huitres #finedeclaire #paris #morbihan</div>`:''}
           </div>
         </div>
+      </div>
+    </div>`;
+  }
+
+  if(id === 'libre'){
+    const jContent=`${textPos.startsWith('top')?'flex-start':textPos==='center'?'center':'flex-end'}`;
+    const aContent=`${textPos.endsWith('right')?'flex-end':textPos.endsWith('center')||textPos==='center'?'center':'flex-start'}`;
+    return `<div class="st-wrap" style="position:relative;background:#111;justify-content:flex-end">
+      ${photo?`<img class="st-photo" src="${photo}"><div style="position:absolute;inset:0;background:${overlayCSS};pointer-events:none"></div>`:''}
+      ${showLogo?`<div style="position:absolute;top:${isStory?'6%':'5%'};right:${isStory?'6%':'5%'}"><img src="${logoUrl}" style="max-height:${isStory?'28px':'22px'};object-fit:contain" onerror="this.style.display='none'"></div>`:''}
+      <div style="position:absolute;inset:0;padding:${isStory?'8%':'6%'};display:flex;flex-direction:column;justify-content:${jContent};align-items:${aContent}">
+        ${titre?`<div style="font-family:${fontCss};font-weight:${titleW};font-size:${isStory?'2.2em':'1.8em'};color:${textColor};line-height:1.1;margin-bottom:10px">${titre}</div>`:''}
+        ${desc?`<div style="font-family:${fontCss};font-weight:${descW};font-size:${isStory?'.9em':'.75em'};color:${textColor};opacity:.88;line-height:1.4">${desc}</div>`:''}
       </div>
     </div>`;
   }
@@ -2222,7 +2296,7 @@ function renderSocPreview(){
   const cap   = document.getElementById('socCaption');
   if(frame){
     frame.className = 'soc-frame ratio-'+(socState.format==='story'?'916':'34');
-    frame.innerHTML = buildTplHTML(socState.tplId, socState.titre, socState.desc, socState.extra, socState.photo, socState.format, socState.textPos, socState.textColor, socState.overlayOpacity);
+    frame.innerHTML = buildTplHTML(socState.tplId, socState.titre, socState.desc, socState.extra, socState.photo, socState.format, socState.textPos, socState.textColor, socState.overlayOpacity, socState);
   }
   if(cap) cap.textContent = buildCaption();
 }
@@ -2242,18 +2316,36 @@ function downloadSocImg(fmt){
 
   const div = document.createElement('div');
   div.style.cssText = `position:fixed;left:-9999px;top:0;width:${renderW}px;height:${renderH}px;overflow:hidden;z-index:-1;font-size:16px`;
-  div.innerHTML = buildTplHTML(s.tplId, s.titre, s.desc, s.extra, s.photo, fmt);
+  div.innerHTML = buildTplHTML(s.tplId, s.titre, s.desc, s.extra, s.photo, fmt, s.textPos, s.textColor, s.overlayOpacity, s);
   document.body.appendChild(div);
 
   if(typeof html2canvas !== 'undefined'){
     showToast('Export en cours…');
-    html2canvas(div, {
-      width: renderW,
-      height: renderH,
-      scale: scaleF,
-      useCORS: true,
-      allowTaint: true,
-      logging: false
+    // Pre-load images as blob to bypass CORS, then render
+    async function loadImgAsBlob(url){
+      try {
+        const r=await fetch(url,{mode:'cors'}); const b=await r.blob();
+        return URL.createObjectURL(b);
+      } catch(e){ return url; }
+    }
+    const imgEl=div.querySelector('img[src]:not([src=""])');
+    const imgSrc=imgEl?.src||'';
+    (imgSrc ? loadImgAsBlob(imgSrc) : Promise.resolve('')).then(blobUrl=>{
+      if(blobUrl&&imgEl) imgEl.src=blobUrl;
+      return html2canvas(div, {
+        width: renderW,
+        height: renderH,
+        scale: scaleF,
+        useCORS: true,
+        allowTaint: true,
+        logging: false,
+        onclone: (cloneDoc)=>{
+          // ensure fonts are loaded in clone
+          const s=cloneDoc.createElement('link');
+          s.href='https://fonts.googleapis.com/css2?family=Open+Sans+Condensed:wght@300;700&family=Playfair+Display:ital,wght@0,400;0,700&family=Jost:wght@400;700&display=swap';
+          s.rel='stylesheet'; cloneDoc.head.appendChild(s);
+        }
+      });
     }).then(canvas=>{
       const a = document.createElement('a');
       a.href = canvas.toDataURL('image/png');
@@ -2262,7 +2354,7 @@ function downloadSocImg(fmt){
       document.body.removeChild(div);
       s.format = prevFmt;
       showToast('✓ Image exportée !');
-    }).catch(()=>{ document.body.removeChild(div); s.format=prevFmt; showToast('Erreur export'); });
+    }).catch((e)=>{ console.error(e); document.body.removeChild(div); s.format=prevFmt; showToast('Erreur export — vérifiez les images CORS'); });
   } else {
     document.body.removeChild(div);
     s.format = prevFmt;
@@ -2455,7 +2547,10 @@ function updatePdfPreview(){
   const menu = buildPdfMenuHTML(cfg);
   const isGbiz = cfg.format === 'gbiz';
   // For A4: overlay page-break guides every ~1040px (A4 ratio at 700px width)
-  const doc = `<!DOCTYPE html><html><head><meta charset="UTF-8"><style>${css}
+  const doc = `<!DOCTYPE html><html><head>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Open+Sans+Condensed:wght@300;700&family=Lovelo:wght@400;700&family=Playfair+Display:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet"><meta charset="UTF-8"><style>${css}
     body{background:#e8e8e8;padding:16px 0;margin:0}
     .pdf-page{box-shadow:0 2px 12px rgba(0,0,0,.15)}
     ${!isGbiz?`.pdf-page{position:relative}`:''}
@@ -2499,7 +2594,10 @@ function exportA4Print(cfg){
   const menu = buildPdfMenuHTML(cfg);
   const restName = getRestaurantName() || 'Menu';
   const win = window.open('','_blank');
-  win.document.write(`<!DOCTYPE html><html><head><meta charset="UTF-8"><title>${restName}</title><style>${css}</style></head><body><div class="pdf-page">${menu}</div></body></html>`);
+  win.document.write(`<!DOCTYPE html><html><head>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Open+Sans+Condensed:wght@300;700&family=Lovelo:wght@400;700&family=Playfair+Display:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet"><meta charset="UTF-8"><title>${restName}</title><style>${css}</style></head><body><div class="pdf-page">${menu}</div></body></html>`);
   win.document.close();
   setTimeout(()=>win.print(), 600);
 }
@@ -2595,7 +2693,10 @@ function exportMenuPDF(){
   // Build a clean print page with all tabs
   const lines = [];
   const restName = getRestaurantName() || 'Menu';
-  lines.push(`<!DOCTYPE html><html><head><meta charset="UTF-8">
+  lines.push(`<!DOCTYPE html><html><head>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Open+Sans+Condensed:wght@300;700&family=Lovelo:wght@400;700&family=Playfair+Display:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet"><meta charset="UTF-8">
 <title>${restName}</title>
 <style>
   @import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;600;700&family=Open+Sans:wght@300;400;600&display=swap');
@@ -2831,12 +2932,32 @@ renderAdminGlobal=function(){ return ghSectionHtml()+restaurantSettingHtml()+ren
 // ADMIN COLLAPSE
 // ═══════════════════════════════════════════
 function dishGalleryHtml(d,ti,ci,di){
-  let h='<div class="af"><label class="al" style="font-size:11px;font-weight:600;color:var(--text2)">Galerie réseaux sociaux (1–4 photos)</label><div style="display:flex;flex-direction:column;gap:6px">';
+  const gallery=d.gallery||[];
+  let h='<div class="af"><label class="al" style="font-size:11px;font-weight:600;color:var(--text2)">Galerie réseaux sociaux (1–4 photos)</label>';
+  // Thumbnail strip — clickable previews of filled slots
+  const filled=gallery.filter(Boolean);
+  if(filled.length){
+    h+='<div style="display:flex;gap:6px;margin-bottom:8px;flex-wrap:wrap">';
+    for(let gi=0;gi<4;gi++){
+      const img=gallery[gi]||'';
+      if(img){
+        h+=`<div style="position:relative;width:60px;height:60px;border-radius:8px;overflow:hidden;border:2px solid var(--gold)">
+          <img src="${img}" style="width:100%;height:100%;object-fit:cover">
+          <span style="position:absolute;top:1px;left:3px;font-size:9px;color:#fff;font-weight:700;text-shadow:0 1px 3px #000">${gi+1}</span>
+        </div>`;
+      }
+    }
+    h+='</div>';
+  }
+  // Upload slots
+  h+='<div style="display:flex;flex-direction:column;gap:8px">';
   for(let gi=0;gi<4;gi++){
-    const val=(d.gallery&&d.gallery[gi])||'';
+    const val=gallery[gi]||'';
     const cb=`if(!DATA.tabs[${ti}].cards[${ci}].dishes[${di}].gallery)DATA.tabs[${ti}].cards[${ci}].dishes[${di}].gallery=[];DATA.tabs[${ti}].cards[${ci}].dishes[${di}].gallery[${gi}]=this.value;renderAll()`;
-    h+=`<div style="display:flex;align-items:center;gap:6px"><span style="font-size:10px;color:var(--text3);width:14px;text-align:center;flex:none">${gi+1}</span>`
-      +imgFieldHtml(val,cb,`Photo ${gi+1}`)
+    h+=`<div style="display:flex;align-items:flex-start;gap:6px">
+      <span style="font-size:10px;color:var(--text3);min-width:14px;text-align:center;padding-top:10px;flex:none">${gi+1}</span>`
+      +imgFieldHtml(val,cb,`Photo ${gi+1} — URL ou upload`)
+      +(val?`<button onclick="DATA.tabs[${ti}].cards[${ci}].dishes[${di}].gallery[${gi}]='';renderAll();renderAdminSection(DATA.tabs[${ti}].id)" style="padding:4px 8px;font-size:11px;border:1px solid #fca5a5;border-radius:4px;color:#c62828;background:#fff;cursor:pointer;white-space:nowrap;align-self:center;flex:none">✕</button>`:'')
       +`</div>`;
   }
   h+='</div></div>';
