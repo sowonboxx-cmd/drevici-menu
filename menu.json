@@ -389,6 +389,20 @@
               "img": "https://drevicioyster.com/wp-content/uploads/2026/06/Hampe.png",
               "spicy": false,
               "vegan": false
+            },
+            {
+              "name": {
+                "fr": "SUSHI Spécial (Supérieur) - 上寿司",
+                "en": ""
+              },
+              "desc": {
+                "fr": " sushis (thon, saumon, anguille, crevette crue, coquille Saint-Jacques, palourde Hokkigai, œufs de saumons) + 3 makis + 3 makis saumon avocat",
+                "en": ""
+              },
+              "price": "20€",
+              "img": "https://domainerosalina.com/wp-content/uploads/2026/06/sushi-sup.webp",
+              "spicy": false,
+              "vegan": false
             }
           ]
         }
