@@ -375,6 +375,20 @@
               "img": "https://domainerosalina.com/wp-content/uploads/2026/06/soupedepoisson3.png",
               "spicy": false,
               "vegan": false
+            },
+            {
+              "name": {
+                "fr": "Hampe de bœuf",
+                "en": ""
+              },
+              "desc": {
+                "fr": "À la sauce échalote & frites",
+                "en": ""
+              },
+              "price": "15.90€",
+              "img": "https://drevicioyster.com/wp-content/uploads/2026/06/Hampe.png",
+              "spicy": false,
+              "vegan": false
             }
           ]
         }
