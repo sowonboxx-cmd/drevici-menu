@@ -54,11 +54,11 @@ body{background:var(--bg);font-family:'Jost',sans-serif;font-weight:400;font-siz
 .admin-btn:hover{background:rgba(255,255,255,0.2)}
 .admin-btn svg{width:15px;height:15px;stroke:currentColor;fill:none;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}
 .admin-btn svg{width:13px;height:13px;stroke:currentColor;fill:none;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}
-.logo-img{height:32px;object-fit:contain;display:none;}
+.logo-img{height:32px;max-width:160px;object-fit:contain;display:none;}
 .logo-text{font-family:'Cormorant Garamond',serif;font-size:20px;font-weight:700;color:#fff;letter-spacing:.08em;white-space:nowrap;text-align:center}
 .header-top{position:relative}
 .logo-centered{position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);pointer-events:none;display:flex;align-items:center;justify-content:center}
-@media(min-width:480px){.logo-img{height:42px;display:block}.logo-text{display:none}}
+@media(min-width:480px){.logo-img{height:42px;max-width:200px;display:block}.logo-text{display:none}}
 .header-sub{font-size:10px;font-weight:300;color:rgba(255,255,255,0.45);letter-spacing:.14em;text-transform:uppercase;margin-bottom:14px;text-align:center}
 
 /* ── STICKY NAV ── */
@@ -169,6 +169,7 @@ body{background:var(--bg);font-family:'Jost',sans-serif;font-weight:400;font-siz
 .soc-frame{width:100%;border-radius:var(--r);overflow:hidden;border:1px solid var(--border);position:relative}
 .soc-frame.ratio-1{aspect-ratio:1}
 .soc-frame.ratio-916{aspect-ratio:9/16}
+.soc-frame.ratio-34{aspect-ratio:3/4}
 .soc-controls{flex:1;min-width:220px}
 .soc-caption-box{background:#f7f7f5;border-radius:var(--r);border:1px solid var(--border);padding:14px;margin-top:12px;position:relative}
 .soc-caption-text{font-size:12px;line-height:1.7;color:var(--text);font-family:Jost,sans-serif;white-space:pre-wrap}
@@ -235,11 +236,11 @@ body{background:var(--bg);font-family:'Jost',sans-serif;font-weight:400;font-siz
 .admin-overlay.open{display:block}
 .admin-panel{position:fixed;top:0;right:0;bottom:0;width:min(440px,100vw);background:#fff;z-index:501;transform:translateX(100%);transition:transform .3s cubic-bezier(.4,0,.2,1);display:flex;flex-direction:column}
 .admin-panel.open{transform:translateX(0)}
-.admin-hdr{padding:16px 18px;border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;background:#fff;z-index:2}
+.admin-hdr{padding:14px 18px;border-bottom:1px solid rgba(255,255,255,0.15);display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;background:var(--navy);z-index:2}
 .admin-hdr-title{font-family:'Cormorant Garamond',serif;font-size:24px;font-weight:700;color:var(--navy)}
 .admin-hdr-right{display:flex;gap:6px;align-items:center}
-.admin-tab-dd{padding:0 10px;height:34px;border:1px solid var(--border);border-radius:6px;font-size:12px;font-family:'Jost',sans-serif;color:var(--text);background:#fff;cursor:pointer;outline:none;max-width:160px;box-sizing:border-box}
-.admin-close{background:none;border:1px solid var(--border);border-radius:6px;width:34px;height:34px;cursor:pointer;font-size:17px;color:var(--text2);line-height:1;display:flex;align-items:center;justify-content:center;padding:0;box-sizing:border-box}
+.admin-tab-dd{padding:0 10px;height:34px;border:1px solid rgba(255,255,255,0.25);border-radius:6px;font-size:12px;font-family:'Jost',sans-serif;color:#fff;background:rgba(255,255,255,0.12);cursor:pointer;outline:none;max-width:160px;box-sizing:border-box;-webkit-appearance:none;appearance:none}
+.admin-close{background:rgba(255,255,255,0.12);border:1px solid rgba(255,255,255,0.25);border-radius:6px;width:34px;height:34px;cursor:pointer;font-size:17px;color:#fff;line-height:1;display:flex;align-items:center;justify-content:center;padding:0;box-sizing:border-box}
 .admin-body{flex:1;overflow-y:auto;padding:16px}
 .admin-section{margin-bottom:16px;border-radius:6px;overflow:hidden}
 .admin-section:has(>.admin-sect-title){border:1px solid rgba(16,40,94,0.18)}
@@ -285,7 +286,7 @@ body{background:var(--bg);font-family:'Jost',sans-serif;font-weight:400;font-siz
 .admin-toggle:hover{border-color:var(--navy)}
 .admin-toggle input[type=checkbox]{accent-color:var(--navy);cursor:pointer}
 .admin-toggle label{font-size:12px;font-family:'Jost',sans-serif;color:var(--text);cursor:pointer;flex:1}
-.admin-badge{display:inline-block;font-size:9px;padding:2px 6px;border-radius:20px;background:#e8f0fd;color:var(--navy);font-family:'Jost',sans-serif;margin-left:6px;vertical-align:middle;letter-spacing:.04em}
+.admin-badge{display:inline-block;font-size:10px;font-weight:600;padding:0 12px;height:34px;line-height:34px;border-radius:6px;background:var(--navy);color:#fff;font-family:'Jost',sans-serif;letter-spacing:.08em;box-sizing:border-box}
 .badge-group{display:flex;gap:6px;margin-top:6px}
 .badge-check{display:flex;align-items:center;gap:4px;font-size:11px;font-family:'Jost',sans-serif;color:var(--text2);cursor:pointer}
 .badge-check img{width:16px;height:16px;object-fit:contain}
@@ -376,7 +377,7 @@ body{background:var(--bg);font-family:'Jost',sans-serif;font-weight:400;font-siz
 <div class="admin-overlay" id="adminOverlay" onclick="closeAdmin()"></div>
 <aside class="admin-panel" id="adminPanel">
   <div class="admin-hdr">
-    <span class="admin-hdr-title"><span class="admin-badge">Administrateur</span></span>
+    <span class="admin-hdr-title"><span class="admin-badge">ADMIN</span></span>
     <div class="admin-hdr-right">
       <select class="admin-tab-dd" id="adminTabDd" onchange="adminGoTab(this.value)"></select>
       <select class="admin-tab-dd" id="adminLangDd" onchange="setAdminLang(this.value)" title="Langue d'édition" style="width:60px">
@@ -766,6 +767,24 @@ function renderInfoBanner(ib){
   return `<div class="special-banner" style="background:var(--navy)"><div class="special-banner-label">${labelTxt}</div><div class="special-banner-title">${t(ib.title)}</div><div class="special-banner-text">${t(ib.desc)}</div></div>`;
 }
 
+// ── SWIPE TO CHANGE TABS ──
+(function(){
+  let tsX=0,tsY=0;
+  document.addEventListener('touchstart',e=>{tsX=e.touches[0].clientX;tsY=e.touches[0].clientY;},{passive:true});
+  document.addEventListener('touchend',e=>{
+    // Only in menu area (not admin panel)
+    if(document.getElementById('adminPanel')?.classList.contains('open')) return;
+    const dx=e.changedTouches[0].clientX-tsX;
+    const dy=e.changedTouches[0].clientY-tsY;
+    if(Math.abs(dx)>50&&Math.abs(dx)>Math.abs(dy)*1.5){
+      const visibleTabs=DATA.tabs.filter(tb=>tb.visible!==false);
+      const idx=visibleTabs.findIndex(tb=>tb.id===currentTabId);
+      if(dx<0&&idx<visibleTabs.length-1){currentTabId=visibleTabs[idx+1].id;renderAll();}
+      else if(dx>0&&idx>0){currentTabId=visibleTabs[idx-1].id;renderAll();}
+    }
+  },{passive:true});
+})();
+
 function renderTabContent(tab,lbOffset){
   let imgIdx=lbOffset;
   let html='<div class="cards-stack">';
@@ -1084,7 +1103,7 @@ function onDropTab(e,ti){
 // ═══════════════════════════════════════════
 function renderScheduleAdmin(){
   const sch=DATA.schedule||[];
-  let h=`<div class="admin-section"><div class="admin-sect-title">Horaires</div>`;
+  let h=`<div class="admin-section collapsible collapsed"><div class="admin-sect-title" onclick="toggleAdminSection(this)">Horaires</div>`;
   h+=`<div style="font-size:11px;color:var(--text3);font-family:Jost,sans-serif;margin-bottom:10px;line-height:1.6">Format 24h standard. Ex: 12 = midi, 17 = 17h00, 2 = 2h du matin, 0 = minuit.<br>Vous pouvez ajouter plusieurs services par jour (midi, soir, brunch…).</div>`;
   sch.forEach((d,i)=>{
     // Compat: migrate old {open,close} to services[]
@@ -1102,13 +1121,35 @@ function renderScheduleAdmin(){
             oninput="DATA.schedule[${i}].services[${si}].label=this.value;renderAll()">
           <button class="adel" onclick="DATA.schedule[${i}].services.splice(${si},1);renderAll();renderAdminSection('__global')">×</button>
         </div>
-        <div class="ai-row">
-          <div style="flex:1"><div style="font-size:10px;color:var(--text3);margin-bottom:2px">Ouverture</div>
-            <input class="ai" type="number" min="0" max="24" step="0.5" value="${s.open!=null?s.open:''}" placeholder="ex: 12"
-              oninput="DATA.schedule[${i}].services[${si}].open=this.value===''?null:parseFloat(this.value);renderAll()"></div>
-          <div style="flex:1"><div style="font-size:10px;color:var(--text3);margin-bottom:2px">Fermeture</div>
-            <input class="ai" type="number" min="0" max="24" step="0.5" value="${s.close!=null?s.close:''}" placeholder="ex: 26"
-              oninput="DATA.schedule[${i}].services[${si}].close=this.value===''?null:parseFloat(this.value);renderAll()"></div>
+        <div class="ai-row" style="gap:12px">
+          <div style="flex:1"><div style="font-size:10px;color:var(--text3);margin-bottom:4px">Ouverture</div>
+            <div style="display:flex;gap:4px">
+              <select class="ai" style="flex:1;padding:6px 4px" onchange="(function(v){const p=DATA.schedule[${i}].services[${si}];p.open=v===''?null:parseFloat(v);renderAll()})(this.value)">
+                <option value="">--</option>
+                ${Array.from({length:29},(_,h)=>`<option value="${h}" ${s.open==h?'selected':''}>${String(h).padStart(2,'0')}h</option>`).join('')}
+              </select>
+              <select class="ai" style="width:60px;padding:6px 4px" onchange="(function(v){const p=DATA.schedule[${i}].services[${si}];if(p.open!=null){p.open=Math.floor(p.open)+parseFloat(v);renderAll();}})(this.value)">
+                <option value="0" ${(s.open%1||0)<0.1?'selected':''}>00</option>
+                <option value="0.25" ${Math.abs((s.open%1||0)-0.25)<0.1?'selected':''}>15</option>
+                <option value="0.5" ${Math.abs((s.open%1||0)-0.5)<0.1?'selected':''}>30</option>
+                <option value="0.75" ${Math.abs((s.open%1||0)-0.75)<0.1?'selected':''}>45</option>
+              </select>
+            </div>
+          </div>
+          <div style="flex:1"><div style="font-size:10px;color:var(--text3);margin-bottom:4px">Fermeture</div>
+            <div style="display:flex;gap:4px">
+              <select class="ai" style="flex:1;padding:6px 4px" onchange="(function(v){const p=DATA.schedule[${i}].services[${si}];p.close=v===''?null:parseFloat(v);renderAll()})(this.value)">
+                <option value="">--</option>
+                ${Array.from({length:29},(_,h)=>`<option value="${h}" ${s.close==h?'selected':''}>${String(h).padStart(2,'0')}h</option>`).join('')}
+              </select>
+              <select class="ai" style="width:60px;padding:6px 4px" onchange="(function(v){const p=DATA.schedule[${i}].services[${si}];if(p.close!=null){p.close=Math.floor(p.close)+parseFloat(v);renderAll();}})(this.value)">
+                <option value="0" ${(s.close%1||0)<0.1?'selected':''}>00</option>
+                <option value="0.25" ${Math.abs((s.close%1||0)-0.25)<0.1?'selected':''}>15</option>
+                <option value="0.5" ${Math.abs((s.close%1||0)-0.5)<0.1?'selected':''}>30</option>
+                <option value="0.75" ${Math.abs((s.close%1||0)-0.75)<0.1?'selected':''}>45</option>
+              </select>
+            </div>
+          </div>
         </div>
       </div>`;
     });
@@ -1139,15 +1180,14 @@ function closeAdmin(){ document.getElementById('adminOverlay').classList.remove(
 
 function renderAdminTabDd(){
   const dd=document.getElementById('adminTabDd');
-  const tabOpts=DATA.tabs.filter(tb=>tb.id!=='__home'&&tb.visible!==false).map(tb=>`<option value="${tb.id}"${tb.id===adminCurrentTab?' selected':''}>${t(tb.label)}</option>`).join('');
-  dd.innerHTML='<option value="__global">Infos générales</option>'
+  const tabOpts=DATA.tabs.filter(tb=>tb.id!=='__home').map(tb=>`<option value="${tb.id}"${tb.id===adminCurrentTab?' selected':''}>${t(tb.label)}</option>`).join('');
+  dd.innerHTML='<option value="__global">Informations générales</option>'
     +'<option value="__home">Accueil</option>'
     +tabOpts
     +'<option value="__addtab_plats">+ Nouvelle tab (plats)</option>'
     +'<option value="__addtab_boissons">+ Nouvelle tab (boissons)</option>'
-    +'<option value="__reorder">Réordonner les tabs</option>'
-    +'<option disabled>──────────────</option>'
-    +'<option value="__social">Réseaux sociaux</option>';
+    +'<option value="__reorder">☰ Réordonner les tabs</option>'
+    +'<option value="__social" style="font-weight:600">★ Réseaux sociaux</option>';
   dd.value=adminCurrentTab;
 }
 
@@ -1295,12 +1335,10 @@ function renderAdminHomeTab(){
     <label class="admin-toggle"><input type="checkbox" ${DATA.intro.active?'checked':''} onchange="DATA.intro.active=this.checked;renderAll();renderAdminSection('__home')"><label>Afficher la présentation</label></label>
     `+biInput('Texte de présentation', DATA.intro.text.fr||'', DATA.intro.text[adminLang]||'', `DATA.intro.text[adminLang]=this.value;renderAll()`, true)+`
   </div></div>`;
-  // Plats à la une
+  // Plats à la une (accueil uniquement)
   h+=`<div class="admin-section collapsible collapsed"><div class="admin-sect-title" onclick="toggleAdminSection(this)">Plats à la une</div><div class="admin-sect-body">
-    <div style="display:flex;gap:12px;margin-bottom:10px">
-      <label style="display:flex;align-items:center;gap:5px;font-size:11px;color:var(--text3);cursor:pointer"><input type="checkbox" ${DATA.pinnedShowHome!==false?'checked':''} onchange="DATA.pinnedShowHome=this.checked;renderAll()"> Onglet Accueil</label>
-      <label style="display:flex;align-items:center;gap:5px;font-size:11px;color:var(--text3);cursor:pointer"><input type="checkbox" ${DATA.pinnedShowFirst!==false?'checked':''} onchange="DATA.pinnedShowFirst=this.checked;renderAll()"> Première tab</label>
-    </div>`;
+    <label class="admin-toggle" style="margin-bottom:10px"><input type="checkbox" ${DATA.pinnedShowHome!==false?'checked':''} onchange="DATA.pinnedShowHome=this.checked;renderAll()"><label>Activer</label></label>
+    <div style="font-size:11px;color:var(--text3);font-family:Jost,sans-serif;margin-bottom:10px">Les plats épinglés s'affichent uniquement dans la page Accueil.</div>`;
   let pinCount=0;
   DATA.tabs.forEach((tab,ti)=>{
     tab.cards.forEach((card,ci)=>{
@@ -1341,50 +1379,8 @@ function renderAdminGlobal(){
     </div>`;
   });
   h+=`</div></div>`;
-  // Champ libre
-  const ib=DATA.infoBanner||{};
-  h+=`<div class="admin-section collapsible collapsed"><div class="admin-sect-title" onclick="toggleAdminSection(this)">Champ libre</div><div class="admin-sect-body">
-    <div style="margin-bottom:8px">
-      <label class="admin-toggle" style="margin-bottom:6px"><input type="checkbox" ${ib.active?'checked':''} onchange="if(!DATA.infoBanner)DATA.infoBanner={};DATA.infoBanner.active=this.checked;renderAll()"><label>Visible</label></label>
-      <div style="display:flex;gap:12px;margin-top:4px">
-        <label style="display:flex;align-items:center;gap:5px;font-size:11px;color:var(--text3);cursor:pointer"><input type="checkbox" ${ib.showHome!==false?'checked':''} onchange="if(!DATA.infoBanner)DATA.infoBanner={};DATA.infoBanner.showHome=this.checked;renderAll()"> Onglet Accueil</label>
-        <label style="display:flex;align-items:center;gap:5px;font-size:11px;color:var(--text3);cursor:pointer"><input type="checkbox" ${ib.showFirst!==false?'checked':''} onchange="if(!DATA.infoBanner)DATA.infoBanner={};DATA.infoBanner.showFirst=this.checked;renderAll()"> Première tab</label>
-      </div>
-    </div>
-    <div class="af"><label class="al">Étiquette (optionnel)</label>
-      <input class="ai" value="${t(ib.label)||''}" placeholder="Informations" oninput="if(!DATA.infoBanner)DATA.infoBanner={};if(!DATA.infoBanner.label)DATA.infoBanner.label={};DATA.infoBanner.label[adminLang]=this.value;renderAll()">
-    </div>
-    `+biInput('Titre', (ib.title&&ib.title.fr)||'', (ib.title&&ib.title[adminLang])||'', `if(!DATA.infoBanner.title)DATA.infoBanner.title={};DATA.infoBanner.title[adminLang]=this.value;renderAll()`)+`
-    `+biInput('Texte libre', (ib.desc&&ib.desc.fr)||'', (ib.desc&&ib.desc[adminLang])||'', `if(!DATA.infoBanner.desc)DATA.infoBanner.desc={};DATA.infoBanner.desc[adminLang]=this.value;renderAll()`, true)+`
-  </div></div>`;
-
-  // Pinned / featured
-  h+=`<div class="admin-section collapsible collapsed"><div class="admin-sect-title" onclick="toggleAdminSection(this)">Plats à la une</div><div class="admin-sect-body">
-    <div style="display:flex;gap:12px;margin-bottom:10px">
-      <label style="display:flex;align-items:center;gap:5px;font-size:11px;color:var(--text3);cursor:pointer"><input type="checkbox" ${DATA.pinnedShowHome!==false?'checked':''} onchange="DATA.pinnedShowHome=this.checked;renderAll()"> Onglet Accueil</label>
-      <label style="display:flex;align-items:center;gap:5px;font-size:11px;color:var(--text3);cursor:pointer"><input type="checkbox" ${DATA.pinnedShowFirst!==false?'checked':''} onchange="DATA.pinnedShowFirst=this.checked;renderAll()"> Première tab</label>
-    </div>`;
-  let dishCount=0;
-  DATA.tabs.forEach((tab,ti)=>{
-    tab.cards.forEach((card,ci)=>{
-      if(!card.dishes) return;
-      card.dishes.forEach((d,di)=>{
-        dishCount++;
-        const pinKey=JSON.stringify({tabId:tab.id,cardIdx:ci,dishIdx:di});
-        const isPinned=(DATA.pinnedDishes||[]).some(p=>p.tabId===tab.id&&p.cardIdx===ci&&p.dishIdx===di);
-        h+=`<div class="admin-card" style="display:flex;align-items:center;gap:8px;background:${isPinned?'#fdf8ec':'var(--bg)'}">
-          ${d.img?`<img src="${d.img}" style="width:40px;height:40px;border-radius:6px;object-fit:cover;flex:none" loading="lazy">`:'<div style="width:40px;height:40px;border-radius:6px;background:#ddd;flex:none"></div>'}
-          <div style="flex:1;min-width:0"><div style="font-family:Cormorant Garamond,serif;font-size:14px;font-weight:600;color:var(--navy)">${t(d.name)}</div><div style="font-size:11px;color:var(--text3)">${t(tab.label)}</div></div>
-          <button class="apin${isPinned?' pinned':''}" onclick="togglePin('${tab.id}',${ci},${di})" title="${isPinned?'Retirer':'Épingler'}">${isPinned?'📌':'📍'}</button>
-        </div>`;
-      });
-    });
-  });
-  if(!dishCount) h+=`<div style="font-size:12px;color:var(--text3);font-family:Jost,sans-serif;padding:8px">Aucun plat avec image dans le menu.</div>`;
-  h+=`</div></div>`;
-
-  // Export
-  h+=renderExportSection();
+  // PDF export (Style section renamed)
+  h+=renderPdfStyleSection();
 
   return h;
 }
@@ -1698,8 +1694,14 @@ function renderSocialSection(){
 
     <div class="soc-preview-wrap">
       <div class="soc-controls">
+        <div class="af"><label class="al">Choisir un plat / boisson (optionnel)</label>
+          <select class="ai" onchange="socPickDish(this.value)" style="font-family:Jost,sans-serif">
+            <option value="">— Saisie manuelle —</option>
+            ${(()=>{let opts='';DATA.tabs.filter(tb=>tb.visible!==false&&tb.id!=='__home').forEach(tb=>{(tb.cards||[]).forEach(card=>{(card.dishes||[]).filter(d=>!d.hidden&&t(d.name)).forEach(d=>{opts+=`<option value="${encodeURIComponent(JSON.stringify({name:t(d.name),desc:t(d.desc)||'',img:d.img||''}))}">${t(tb.label)} — ${t(d.name)}</option>`;});(card.items||[]).filter(i=>!i.hidden&&t(i.name)).forEach(i=>{opts+=`<option value="${encodeURIComponent(JSON.stringify({name:t(i.name),desc:t(i.desc)||'',img:i.img||''}))}">${t(tb.label)} — ${t(i.name)}</option>`;});});});return opts;})()}
+          </select>
+        </div>
         <div class="af"><label class="al">Titre</label>
-          <input class="ai" value="${s.titre}" placeholder="${tplPlaceholder(s.tplId,'titre')}" oninput="socState.titre=this.value;renderSocPreview()">
+          <input class="ai" id="socTitreInput" value="${s.titre}" placeholder="${tplPlaceholder(s.tplId,'titre')}" oninput="socState.titre=this.value;renderSocPreview()">
         </div>
         <div class="af"><label class="al">Description</label>
           <textarea class="ai" rows="3" style="-webkit-appearance:none;resize:vertical" placeholder="${tplPlaceholder(s.tplId,'desc')}" oninput="socState.desc=this.value;renderSocPreview()">${s.desc}</textarea>
@@ -1711,7 +1713,7 @@ function renderSocialSection(){
         </div>
         <div class="af"><label class="al">Format</label>
           <div style="display:flex;gap:8px">
-            <label style="display:flex;align-items:center;gap:5px;font-size:12px;cursor:pointer"><input type="radio" name="socfmt" value="post" ${s.format==='post'?'checked':''} onchange="socState.format='post';renderSocPreview()"> Post (1:1)</label>
+            <label style="display:flex;align-items:center;gap:5px;font-size:12px;cursor:pointer"><input type="radio" name="socfmt" value="post" ${s.format==='post'?'checked':''} onchange="socState.format='post';renderSocPreview()"> Post (3:4)</label>
             <label style="display:flex;align-items:center;gap:5px;font-size:12px;cursor:pointer"><input type="radio" name="socfmt" value="story" ${s.format==='story'?'checked':''} onchange="socState.format='story';renderSocPreview()"> Story (9:16)</label>
           </div>
         </div>
@@ -1719,7 +1721,7 @@ function renderSocialSection(){
 
       <div class="soc-canvas-wrap">
         <div class="soc-canvas-label">Aperçu</div>
-        <div class="soc-frame ratio-${s.format==='story'?'916':'1'}" id="socFrame">
+        <div class="soc-frame ratio-${s.format==='story'?'916':'34'}" id="socFrame">
           ${buildTplHTML(s.tplId, s.titre, s.desc, s.extra, s.photo, s.format)}
         </div>
         <div class="soc-dl-row">
@@ -1853,7 +1855,7 @@ Fraîches, iodées, directement de nos parcs en Morbihan. Élevées à la main, 
 🕐 ${hs||'Mar–Sam · 17h–2h'}
 📩 Réservation via le lien en bio
 
-${hashtags}`;
+${hashtags}\n\n—\nBy @TensaiAgency · @Willichiban`;
   }
   if(s.tplId === 'plat'){
     return `✨ ${s.titre||'À la carte'}${s.extra?' — '+s.extra:''}
@@ -1881,7 +1883,25 @@ Merci de votre compréhension. Nous avons hâte de vous retrouver !
 📍 ${restName} · Paris
 🕐 ${hs||'Mar–Sam · 17h–2h'}
 
-${hashtags}`;
+${hashtags}
+
+—
+By @TensaiAgency · @Willichiban`;
+}
+
+function socPickDish(val){
+  if(!val) return;
+  try {
+    const d = JSON.parse(decodeURIComponent(val));
+    socState.titre = d.name || '';
+    socState.desc = d.desc || '';
+    if(d.img) socState.photo = d.img;
+    // Update inputs
+    const ti = document.getElementById('socTitreInput');
+    if(ti) ti.value = socState.titre;
+    renderSocPreview();
+    renderAdminSection('__social');
+  } catch(e){}
 }
 
 function socPickTpl(id){
@@ -1901,7 +1921,7 @@ function renderSocPreview(){
   const frame = document.getElementById('socFrame');
   const cap   = document.getElementById('socCaption');
   if(frame){
-    frame.className = 'soc-frame ratio-'+(socState.format==='story'?'916':'1');
+    frame.className = 'soc-frame ratio-'+(socState.format==='story'?'916':'34');
     frame.innerHTML = buildTplHTML(socState.tplId, socState.titre, socState.desc, socState.extra, socState.photo, socState.format);
   }
   if(cap) cap.textContent = buildCaption();
@@ -1912,7 +1932,7 @@ function downloadSocImg(fmt){
   const prevFmt = s.format;
   s.format = fmt;
 
-  const size = fmt==='story' ? {w:1080,h:1920} : {w:1080,h:1080};
+  const size = fmt==='story' ? {w:1080,h:1920} : {w:1080,h:1350};
 
   // Render at preview size (matches the visible frame) then scale up
   // Preview frame is ~800px wide max, we render at that width and scale to 1080
@@ -2006,7 +2026,7 @@ function pdfCfg(){
   if(!DATA.pdfStyle) DATA.pdfStyle = {};
   const d = DATA.pdfStyle;
   return {
-    template: d.template || 'classic',          // 'classic' | 'maritime'
+    template: d.template || 'maritime',          // 'classic' | 'maritime'
     titleColor: d.titleColor || '#10285E',
     accentColor: d.accentColor || '#C6A24A',
     showLogo: d.showLogo !== false,
@@ -2231,8 +2251,8 @@ function renderPdfStyleSection(){
 
     <div class="af"><label class="al">Modèle</label>
       <div style="display:flex;gap:8px">
+        <button class="pdf-tpl-btn${cfg.template==='maritime'?' active':''}" onclick="setPdfCfg('template','maritime');renderAdminSection(adminCurrentTab)" style="flex:1">Customisé</button>
         <button class="pdf-tpl-btn${cfg.template==='classic'?' active':''}" onclick="setPdfCfg('template','classic');renderAdminSection(adminCurrentTab)" style="flex:1">Épuré</button>
-        <button class="pdf-tpl-btn${cfg.template==='maritime'?' active':''}" onclick="setPdfCfg('template','maritime');renderAdminSection(adminCurrentTab)" style="flex:1">Maritime</button>
       </div>
     </div>
 
@@ -2251,12 +2271,9 @@ function renderPdfStyleSection(){
       <label class="admin-toggle" style="margin-top:8px"><input type="checkbox" ${cfg.showLogo?'checked':''} onchange="setPdfCfg('showLogo',this.checked)"><label>Afficher le logo</label></label>
     </div>
 
-    <div class="admin-sect-title" style="margin-top:14px;font-size:12px">Pied de page</div>
-    <div class="af"><label class="al">Adresse</label><input class="ai" value="${cfg.footerAddress.replace(/"/g,'&quot;')}" placeholder="12 rue de la Mer, Paris" oninput="setPdfCfg('footerAddress',this.value)"></div>
-    <div class="af"><label class="al">Téléphone</label><input class="ai" value="${cfg.footerPhone.replace(/"/g,'&quot;')}" placeholder="01 23 45 67 89" oninput="setPdfCfg('footerPhone',this.value)"></div>
-    <label class="admin-toggle"><input type="checkbox" ${cfg.footerShowDate?'checked':''} onchange="setPdfCfg('footerShowDate',this.checked)"><label>Afficher la date de mise à jour</label></label>
+    <label class="admin-toggle" style="margin-top:14px"><input type="checkbox" ${cfg.footerShowDate!==false?'checked':''} onchange="setPdfCfg('footerShowDate',this.checked)"><label>Afficher les coordonnées en pied de dernière page (adresse & téléphone)</label></label>
 
-    <div class="admin-sect-title" style="margin-top:14px;font-size:12px">Format d'export</div>
+    <div class="admin-sect-title" style="margin-top:20px;font-size:12px">Format d'export</div>
     <div class="af">
       <div style="display:flex;gap:8px">
         <button class="pdf-tpl-btn${cfg.format==='a4'?' active':''}" onclick="setPdfCfg('format','a4');renderAdminSection(adminCurrentTab)" style="flex:1">A4 (impression)</button>
@@ -2415,15 +2432,17 @@ function restaurantSettingHtml(){
     <div class="af"><label class="al">Nom de l'établissement</label>
       <input class="ai" value="${name}" placeholder="Nom du restaurant" oninput="setRestaurantName(this.value);document.getElementById('logoText').textContent=this.value||'Mon Restaurant'">
     </div>
-    <div class="af"><label class="al">Logo de la marque (utilisé dans le PDF et les templates)</label>
-      <input class="ai" value="${logo}" placeholder="https://... .png ou .svg" oninput="setRestaurantLogo(this.value.trim())">
-      <div style="font-size:11px;color:var(--text3);font-family:Jost,sans-serif;margin-top:4px">Laissez vide pour afficher le nom en texte.</div>
-    </div>
     <div class="af"><label class="al">Sous-titre</label>
       <input class="ai" value="${DATA.hero?t(DATA.hero):''}" placeholder="Ex : Fruits de mer · Bretagne · Paris" oninput="if(!DATA.hero)DATA.hero={};DATA.hero[adminLang]=this.value;renderAll()">
     </div>
-    <label class="admin-toggle" style="margin-top:8px"><input type="checkbox" ${DATA.showHeaderLogo!==false?'checked':''} onchange="DATA.showHeaderLogo=this.checked;applyRestaurantBranding();renderAll()"><label>Afficher le logo dans le bandeau</label></label>
-    <div class="af"><label class="al" style="font-size:13px;font-weight:600;margin-top:10px;display:block;border-top:1px solid var(--border);padding-top:10px">Adresse & contact</label></div>
+    <div class="af"><label class="al" style="font-weight:600">Uploadez votre logo</label>
+      ${logo?`<div style="display:flex;align-items:center;gap:10px;margin-bottom:8px"><img src="${logo}" style="max-height:40px;max-width:140px;object-fit:contain;border:1px solid var(--border);border-radius:6px;padding:4px;background:#fff" onerror="this.style.display='none'"><button class="adel" onclick="setRestaurantLogo('');applyRestaurantBranding()" title="Supprimer">✕</button></div>`:''}
+      <label class="aadd" style="display:block;width:100%;text-align:center;padding:9px;cursor:pointer;margin-bottom:8px">📁 Uploader un logo (PNG, SVG, WEBP…)<input type="file" accept="image/*" style="display:none" onchange="(function(e){const r=new FileReader();r.onload=ev=>{setRestaurantLogo(ev.target.result);applyRestaurantBranding();};r.readAsDataURL(e.target.files[0])})(event)"></label>
+      <input class="ai" value="${logo}" placeholder="ou coller une URL https://..." oninput="setRestaurantLogo(this.value.trim());applyRestaurantBranding()">
+      <div style="font-size:10px;color:var(--text3);font-family:Jost,sans-serif;margin-top:4px">Format recommandé : PNG transparent, largeur max ~280px.</div>
+    </div>
+    <label class="admin-toggle" style="margin-top:4px"><input type="checkbox" ${DATA.showHeaderLogo!==false?'checked':''} onchange="DATA.showHeaderLogo=this.checked;applyRestaurantBranding();renderAll()"><label>Afficher le logo dans le bandeau à la place du nom de votre établissement</label></label>
+    <div class="af"><label class="al" style="font-size:12px;font-weight:600;margin-top:12px;display:block;border-top:1px solid var(--border);padding-top:12px">Adresse & contact</label></div>
     <div class="af"><label class="al">Rue</label>
       <input class="ai" value="${DATA.address&&DATA.address.street||''}" placeholder="12 rue de la Mer" oninput="if(!DATA.address)DATA.address={};DATA.address.street=this.value;renderAll()">
     </div>
@@ -2437,6 +2456,9 @@ function restaurantSettingHtml(){
     </div>
     <div class="af"><label class="al">Téléphone</label>
       <input class="ai" value="${DATA.address&&DATA.address.phone||''}" placeholder="01 23 45 67 89" inputmode="tel" oninput="if(!DATA.address)DATA.address={};DATA.address.phone=this.value;renderAll()">
+    </div>
+    <div class="af"><label class="al">Lien Google Maps</label>
+      <input class="ai" value="${DATA.address&&DATA.address.mapsUrl||''}" placeholder="https://maps.google.com/..." oninput="if(!DATA.address)DATA.address={};DATA.address.mapsUrl=this.value;renderAll()">
     </div>
   </div></div>`;
 }
@@ -2459,7 +2481,7 @@ function fetchCityFromZip(zip){
 
 function renderSocialAdminSection(){
   const soc=DATA.social||{};
-  return `<div class="admin-section collapsible collapsed"><div class="admin-sect-title" onclick="toggleAdminSection(this)">Réseaux sociaux</div><div class="admin-sect-body">
+  return `<div class="admin-section collapsible collapsed"><div class="admin-sect-title" onclick="toggleAdminSection(this)">Réseaux sociaux</div><div class="admin-sect-body" style="padding:14px 16px">
     <div class="af"><label class="al">Instagram</label>
       <div style="display:flex;align-items:center;gap:6px">
         <span style="font-size:13px;color:var(--text3)">@</span>
@@ -2503,7 +2525,7 @@ function ghSectionHtml(){
 
 // Patch renderAdminGlobal to prepend GH section
 const _origGlobal=renderAdminGlobal;
-renderAdminGlobal=function(){ return ghSectionHtml()+restaurantSettingHtml()+renderSocialAdminSection()+_origGlobal(); };
+renderAdminGlobal=function(){ return ghSectionHtml()+restaurantSettingHtml()+renderScheduleAdmin()+renderSocialAdminSection()+_origGlobal(); };
 
 // ═══════════════════════════════════════════
 // ADMIN COLLAPSE
