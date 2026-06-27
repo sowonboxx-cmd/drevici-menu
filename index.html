@@ -866,9 +866,15 @@ function renderInfoBanner(ib){
   },{passive:true});
 
   document.addEventListener('touchend',e=>{
-    if(!isDragging){ isDragging=false; return; }
+    const wasDragging=isDragging;
     isDragging=false;
     dragLocked=false;
+    // Pure tap — reset any stray transform and let click fire normally
+    if(!wasDragging){
+      const wrap=document.querySelector('.cards-stack');
+      if(wrap&&wrap.style.transform){ wrap.style.transition=''; wrap.style.transform=''; }
+      return;
+    }
     if(document.getElementById('adminPanel')?.classList.contains('open')) return;
     const dx=e.changedTouches[0].clientX-tsX;
     const W=window.innerWidth;
@@ -876,7 +882,6 @@ function renderInfoBanner(ib){
     const idx=vis.findIndex(tb=>tb.id===currentTabId);
     const wrap=document.querySelector('.cards-stack');
     if(Math.abs(dx)>W*THRESHOLD){
-      // Commit: animate out then switch tab
       const dir=dx<0?1:-1;
       const newIdx=idx+dir;
       if(newIdx>=0&&newIdx<vis.length){
@@ -887,12 +892,10 @@ function renderInfoBanner(ib){
           renderAll();
         },200);
       } else {
-        // No next tab: spring back
         if(wrap){ wrap.style.transition='transform .2s ease'; wrap.style.transform=''; }
-        setTimeout(()=>{ if(wrap) wrap.style.transform=''; },220);
+        setTimeout(()=>{ if(wrap){ wrap.style.transition=''; wrap.style.transform=''; } },220);
       }
     } else {
-      // Spring back
       if(wrap){ wrap.style.transition='transform .2s ease'; wrap.style.transform=''; }
       setTimeout(()=>{ if(wrap){ wrap.style.transition=''; wrap.style.transform=''; } },220);
     }
