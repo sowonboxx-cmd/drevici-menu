@@ -145,14 +145,14 @@
       "dishIdx": 1
     },
     {
-      "tabId": "tab_1782264697487",
-      "cardIdx": 0,
-      "dishIdx": 1
-    },
-    {
       "tabId": "mer",
       "cardIdx": 0,
       "dishIdx": 3
+    },
+    {
+      "tabId": "tab_1782264697487",
+      "cardIdx": 0,
+      "dishIdx": 1
     },
     {
       "tabId": "huitres",
@@ -173,8 +173,7 @@
         "kr": "홈",
         "jp": "ホーム"
       },
-      "cards": [],
-      "isHome": true
+      "cards": []
     },
     {
       "id": "huitres",
@@ -1112,5 +1111,6 @@
       ],
       "visible": false
     }
-  ]
+  ],
+  "pdfStyle": {}
 }
