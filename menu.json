@@ -243,7 +243,11 @@
               "qty1": "6",
               "p1": "14",
               "qty2": "12",
-              "p2": "26"
+              "p2": "26",
+              "gallery": [
+                "https://domainerosalina.com/wp-content/uploads/2026/06/kokoya-01.webp",
+                "https://domainerosalina.com/wp-content/uploads/2026/06/kokoya-02.webp"
+              ]
             },
             {
               "name": {
