@@ -1,7 +1,7 @@
 {
   "heroActive": true,
   "hero": {
-    "fr": "bar à huîtres - Paris",
+    "fr": "Bar à huîtres - Paris",
     "en": "Seafood · Brittany · Paris",
     "es": "Mariscos · Bretaña · París",
     "it": "Frutti di mare · Bretagna · Parigi",
@@ -1166,5 +1166,12 @@
       "visible": false
     }
   ],
-  "pdfStyle": {}
+  "pdfStyle": {},
+  "address": {
+    "street": "8 rue Biot",
+    "zip": "75017",
+    "city": "Paris",
+    "phone": "09 74 64 05 87",
+    "mapsUrl": "https://maps.app.goo.gl/d2GgKQj9Xhz1U3xb6"
+  }
 }
