@@ -1,0 +1,603 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Tensai Agency — Outil d'onboarding</title>
+<link href="https://fonts.googleapis.com/css2?family=Jost:wght@300;400;500;600;700&family=Cormorant+Garamond:wght@400;600;700&display=swap" rel="stylesheet">
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --navy:#10285E;--gold:#C6A24A;--bg:#F7F5F0;--white:#fff;
+  --border:#e2ddd5;--text:#1a1a1a;--text2:#555;--text3:#999;
+  --red:#c0392b;--green:#27ae60;--r:10px;--rs:6px;
+}
+body{font-family:'Jost',sans-serif;background:var(--bg);color:var(--text);min-height:100vh}
+
+/* LAYOUT */
+.app{display:grid;grid-template-rows:56px 1fr;min-height:100vh}
+.topbar{background:var(--navy);display:flex;align-items:center;justify-content:space-between;padding:0 24px;position:sticky;top:0;z-index:100}
+.topbar-logo{font-family:'Cormorant Garamond',serif;font-size:20px;font-weight:700;color:#fff;letter-spacing:.04em}
+.topbar-badge{font-size:10px;font-weight:600;color:var(--gold);letter-spacing:.12em;text-transform:uppercase;border:1px solid var(--gold);padding:2px 8px;border-radius:20px}
+.main{display:grid;grid-template-columns:320px 1fr;gap:0;height:calc(100vh - 56px);overflow:hidden}
+
+/* SIDEBAR */
+.sidebar{background:#fff;border-right:1px solid var(--border);overflow-y:auto;padding:20px}
+.sidebar-section{margin-bottom:24px}
+.sidebar-title{font-size:11px;font-weight:600;letter-spacing:.1em;text-transform:uppercase;color:var(--text3);margin-bottom:12px}
+.field{margin-bottom:12px}
+.field label{display:block;font-size:11px;font-weight:600;color:var(--text2);margin-bottom:4px}
+.field input,.field select,.field textarea{width:100%;padding:8px 10px;border:1px solid var(--border);border-radius:var(--rs);font-size:13px;font-family:'Jost',sans-serif;color:var(--text);background:#fff;outline:none}
+.field textarea{resize:vertical;min-height:60px}
+.field-row{display:flex;gap:8px}
+.field-row .field{flex:1}
+.color-field{display:flex;align-items:center;gap:8px}
+.color-field input[type=color]{width:38px;height:34px;border:1px solid var(--border);border-radius:var(--rs);padding:2px;cursor:pointer}
+.color-field input[type=text]{flex:1}
+
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:6px;padding:10px 16px;border:none;border-radius:var(--rs);font-family:'Jost',sans-serif;font-size:13px;font-weight:600;cursor:pointer;transition:all .15s;white-space:nowrap}
+.btn-primary{background:var(--navy);color:#fff}
+.btn-primary:hover{background:#0d1f4a}
+.btn-gold{background:var(--gold);color:#fff}
+.btn-gold:hover{opacity:.9}
+.btn-sm{padding:6px 12px;font-size:11px}
+.btn-outline{background:#fff;border:1px solid var(--border);color:var(--text2)}
+.btn-outline:hover{border-color:var(--navy);color:var(--navy)}
+.btn-danger{background:var(--red);color:#fff}
+.btn-block{width:100%}
+.btn:disabled{opacity:.45;cursor:not-allowed}
+
+.upload-zone{border:2px dashed var(--border);border-radius:var(--r);padding:24px;text-align:center;cursor:pointer;transition:all .2s;position:relative}
+.upload-zone:hover,.upload-zone.drag{border-color:var(--navy);background:#f0f3fa}
+.upload-zone input{position:absolute;inset:0;opacity:0;cursor:pointer;width:100%;height:100%}
+.upload-zone-ico{font-size:32px;margin-bottom:8px}
+.upload-zone-label{font-size:12px;color:var(--text2);line-height:1.5}
+.upload-preview{width:100%;border-radius:8px;margin-top:10px;max-height:200px;object-fit:cover}
+
+/* CONTENT */
+.content{overflow-y:auto;padding:24px;display:flex;flex-direction:column;gap:20px}
+.card{background:#fff;border-radius:var(--r);border:1px solid var(--border);overflow:hidden}
+.card-hdr{padding:14px 18px;border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between}
+.card-hdr-title{font-size:13px;font-weight:600;color:var(--navy)}
+.card-body{padding:18px}
+
+/* STEP INDICATOR */
+.steps{display:flex;gap:0;margin-bottom:4px}
+.step{flex:1;text-align:center;padding:10px 4px;font-size:10px;font-weight:600;letter-spacing:.06em;text-transform:uppercase;color:var(--text3);border-bottom:2px solid var(--border);cursor:pointer;transition:all .15s}
+.step.active{color:var(--navy);border-color:var(--navy)}
+.step.done{color:var(--green);border-color:var(--green)}
+
+/* TABLE */
+.menu-table{width:100%;border-collapse:collapse;font-size:12px}
+.menu-table th{background:#f7f5f0;padding:8px 10px;text-align:left;font-size:10px;font-weight:600;letter-spacing:.06em;text-transform:uppercase;color:var(--text3);border-bottom:1px solid var(--border)}
+.menu-table td{padding:7px 8px;border-bottom:1px solid #f0ece6;vertical-align:middle}
+.menu-table tr:hover td{background:#fafaf7}
+.menu-table input{width:100%;border:none;background:transparent;font-size:12px;font-family:'Jost',sans-serif;color:var(--text);padding:2px 4px;border-radius:4px}
+.menu-table input:focus{background:#f0f3fa;outline:none}
+.menu-table select{border:none;background:transparent;font-size:12px;font-family:'Jost',sans-serif;color:var(--text);cursor:pointer}
+.tab-label{display:inline-block;padding:2px 8px;border-radius:20px;font-size:10px;font-weight:600;background:var(--navy);color:#fff}
+.badge-section{display:inline-block;padding:2px 7px;border-radius:4px;font-size:10px;font-weight:600;background:#f0ece6;color:var(--text2)}
+
+/* EXTRACTION STATUS */
+.extract-status{padding:12px 16px;border-radius:var(--rs);font-size:12px;display:flex;align-items:center;gap:8px}
+.extract-status.loading{background:#eff6ff;color:#1d4ed8}
+.extract-status.success{background:#f0fdf4;color:#166534}
+.extract-status.error{background:#fef2f2;color:#991b1b}
+.spinner{width:16px;height:16px;border:2px solid currentColor;border-top-color:transparent;border-radius:50%;animation:spin .7s linear infinite;flex:none}
+@keyframes spin{to{transform:rotate(360deg)}}
+
+/* PREVIEW */
+.preview-mini{background:var(--previewBg,#F7F5F0);border-radius:8px;padding:16px;font-family:'Jost',sans-serif;min-height:120px}
+.preview-header{text-align:center;padding:12px;border-radius:6px;margin-bottom:12px}
+.preview-resto-name{font-size:22px;font-weight:700;font-family:'Cormorant Garamond',serif}
+.preview-section{font-size:10px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;padding:8px 0 4px;border-bottom:2px solid;margin-bottom:8px;margin-top:14px}
+.preview-dish{display:flex;justify-content:space-between;font-size:12px;padding:4px 0;border-bottom:1px dotted rgba(0,0,0,.12)}
+.preview-dish-name{font-weight:500;flex:1}
+.preview-dish-price{font-weight:700;flex:none;padding-left:8px}
+
+/* JSON output */
+.json-box{background:#1a1a2e;color:#a8ff78;padding:16px;border-radius:8px;font-family:monospace;font-size:11px;overflow-x:auto;max-height:300px;white-space:pre-wrap;word-break:break-all}
+
+/* Toasts */
+#toast{position:fixed;bottom:24px;left:50%;transform:translateX(-50%);background:var(--navy);color:#fff;padding:10px 20px;border-radius:20px;font-size:13px;font-family:'Jost',sans-serif;opacity:0;transition:opacity .2s;pointer-events:none;z-index:9999}
+#toast.show{opacity:1}
+
+@media(max-width:768px){
+  .main{grid-template-columns:1fr;grid-template-rows:auto 1fr}
+  .sidebar{height:auto;overflow:visible}
+}
+</style>
+</head>
+<body>
+
+<div class="app">
+  <div class="topbar">
+    <div class="topbar-logo">Tensai Agency</div>
+    <div class="topbar-badge">Outil Onboarding Interne</div>
+  </div>
+  <div class="main">
+    <!-- SIDEBAR -->
+    <div class="sidebar">
+      <div class="steps" id="steps">
+        <div class="step active" onclick="goStep(0)">1 · Photo</div>
+        <div class="step" onclick="goStep(1)">2 · Données</div>
+        <div class="step" onclick="goStep(2)">3 · Charte</div>
+        <div class="step" onclick="goStep(3)">4 · Export</div>
+      </div>
+
+      <!-- STEP 0: Upload -->
+      <div class="sidebar-section" id="step-0">
+        <div class="sidebar-title">Photo du menu</div>
+        <div class="upload-zone" id="dropzone">
+          <input type="file" accept="image/*" onchange="handleImg(this)">
+          <div class="upload-zone-ico">📷</div>
+          <div class="upload-zone-label">Glissez une photo du menu<br>ou cliquez pour uploader</div>
+        </div>
+        <img id="imgPreview" class="upload-preview" style="display:none">
+        <div id="extractStatus" style="display:none;margin-top:10px"></div>
+        <button class="btn btn-primary btn-block" style="margin-top:12px" id="extractBtn" onclick="extractMenu()" disabled>
+          ✨ Extraire le menu
+        </button>
+      </div>
+
+      <!-- STEP 1: Manual entry toggle -->
+      <div class="sidebar-section" id="step-1" style="display:none">
+        <div class="sidebar-title">Infos restaurant</div>
+        <div class="field">
+          <label>Nom de l'établissement</label>
+          <input type="text" id="restoName" placeholder="Bouillon du Maine" oninput="updatePreview()">
+        </div>
+        <div class="field">
+          <label>Sous-titre</label>
+          <input type="text" id="restoHero" placeholder="Cuisine française · Paris" oninput="updatePreview()">
+        </div>
+        <button class="btn btn-gold btn-block" onclick="goStep(2)">Définir la charte →</button>
+      </div>
+
+      <!-- STEP 2: Branding -->
+      <div class="sidebar-section" id="step-2" style="display:none">
+        <div class="sidebar-title">Charte visuelle</div>
+        <div class="field">
+          <label>Couleur principale</label>
+          <div class="color-field">
+            <input type="color" id="color1" value="#8B1A1A" oninput="syncColor('color1','color1hex');updatePreview()">
+            <input type="text" id="color1hex" value="#8B1A1A" oninput="syncHex('color1','color1hex');updatePreview()" placeholder="#8B1A1A">
+          </div>
+        </div>
+        <div class="field">
+          <label>Couleur accent (prix, titres secondaires)</label>
+          <div class="color-field">
+            <input type="color" id="color2" value="#C6A24A" oninput="syncColor('color2','color2hex');updatePreview()">
+            <input type="text" id="color2hex" value="#C6A24A" oninput="syncHex('color2','color2hex');updatePreview()" placeholder="#C6A24A">
+          </div>
+        </div>
+        <div class="field">
+          <label>Fond de page</label>
+          <div class="color-field">
+            <input type="color" id="colorBg" value="#FFFDF8" oninput="syncColor('colorBg','colorBghex');updatePreview()">
+            <input type="text" id="colorBghex" value="#FFFDF8" oninput="syncHex('colorBg','colorBghex');updatePreview()" placeholder="#FFFDF8">
+          </div>
+        </div>
+        <div class="field">
+          <label>Template PDF par défaut</label>
+          <select id="pdfTemplate">
+            <option value="maritime">Customisé (avec déco)</option>
+            <option value="classic">Épuré</option>
+          </select>
+        </div>
+        <button class="btn btn-primary btn-block" onclick="goStep(3)">Générer l'export →</button>
+      </div>
+
+      <!-- STEP 3: Export -->
+      <div class="sidebar-section" id="step-3" style="display:none">
+        <div class="sidebar-title">Export</div>
+        <button class="btn btn-primary btn-block" onclick="generateJSON()" style="margin-bottom:8px">📋 Copier le DATA JSON</button>
+        <button class="btn btn-gold btn-block" onclick="downloadJSON()" style="margin-bottom:8px">⬇ Télécharger menu.json</button>
+        <button class="btn btn-outline btn-block" onclick="generateCSV()">⬇ Télécharger CSV</button>
+        <div style="font-size:10px;color:var(--text3);margin-top:12px;line-height:1.6">
+          Le JSON peut être collé directement dans le champ DATA de l'app menu.<br><br>
+          Le CSV peut être utilisé pour vérification ou archivage.
+        </div>
+      </div>
+    </div>
+
+    <!-- CONTENT -->
+    <div class="content" id="mainContent">
+      <div class="card">
+        <div class="card-hdr">
+          <div class="card-hdr-title">📋 Table des plats extraits</div>
+          <div style="display:flex;gap:8px">
+            <button class="btn btn-sm btn-outline" onclick="addRow()">+ Ajouter un plat</button>
+            <button class="btn btn-sm btn-outline" onclick="addSection()">+ Section</button>
+          </div>
+        </div>
+        <div class="card-body" style="padding:0;overflow-x:auto">
+          <table class="menu-table">
+            <thead>
+              <tr>
+                <th style="width:32px">#</th>
+                <th style="min-width:110px">Tab (catégorie)</th>
+                <th style="min-width:110px">Section</th>
+                <th style="min-width:180px">Nom du plat</th>
+                <th style="min-width:200px">Description</th>
+                <th style="width:80px">Prix</th>
+                <th style="width:40px"></th>
+              </tr>
+            </thead>
+            <tbody id="menuBody">
+              <tr><td colspan="7" style="text-align:center;padding:40px;color:var(--text3)">Uploadez une photo du menu pour extraire automatiquement les plats</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <div class="card" id="previewCard">
+        <div class="card-hdr">
+          <div class="card-hdr-title">👁 Aperçu menu (style client)</div>
+          <button class="btn btn-sm btn-outline" onclick="togglePreview()">Afficher/masquer</button>
+        </div>
+        <div class="card-body" id="previewBody">
+          <div class="preview-mini" id="menuPreview">
+            <div class="preview-header" id="prevHeader">
+              <div class="preview-resto-name" id="prevName">Nom du restaurant</div>
+              <div style="font-size:11px;margin-top:4px;opacity:.6" id="prevHero"></div>
+            </div>
+            <div id="prevDishes"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div id="toast"></div>
+
+<script>
+// ─── STATE ───
+let menuRows = [];
+let imgBase64 = '';
+let currentStep = 0;
+
+// ─── STEP NAV ───
+function goStep(n){
+  currentStep = n;
+  document.querySelectorAll('.step').forEach((el,i)=>{
+    el.classList.toggle('active', i===n);
+    el.classList.toggle('done', i<n);
+  });
+  ['step-0','step-1','step-2','step-3'].forEach((id,i)=>{
+    const el=document.getElementById(id);
+    if(el) el.style.display = i<=n ? 'block' : 'none';
+  });
+}
+
+// ─── IMAGE UPLOAD ───
+function handleImg(input){
+  const file = input.files[0];
+  if(!file) return;
+  const reader = new FileReader();
+  reader.onload = e => {
+    imgBase64 = e.target.result.split(',')[1];
+    const prev = document.getElementById('imgPreview');
+    prev.src = e.target.result;
+    prev.style.display = 'block';
+    document.getElementById('extractBtn').disabled = false;
+    showStatus('Image chargée — cliquez sur "Extraire le menu"', 'success');
+  };
+  reader.readAsDataURL(file);
+}
+
+// Drag & drop
+const dz = document.getElementById('dropzone');
+dz.addEventListener('dragover', e=>{ e.preventDefault(); dz.classList.add('drag'); });
+dz.addEventListener('dragleave', ()=>dz.classList.remove('drag'));
+dz.addEventListener('drop', e=>{ e.preventDefault(); dz.classList.remove('drag'); const dt=e.dataTransfer; if(dt.files[0]){ const inp=dz.querySelector('input'); const transfer=new DataTransfer(); transfer.items.add(dt.files[0]); inp.files=transfer.files; handleImg(inp); } });
+
+// ─── EXTRACT WITH CLAUDE API ───
+async function extractMenu(){
+  if(!imgBase64){ showToast('Uploadez une image d\'abord'); return; }
+  showStatus('Extraction en cours…', 'loading');
+  document.getElementById('extractBtn').disabled = true;
+
+  const prompt = `Tu es un expert en extraction de données de menus de restaurant.
+Analyse cette image de menu et extrait TOUS les plats, sections et prix.
+
+Réponds UNIQUEMENT avec un JSON valide, sans aucun texte avant ou après, sans backticks.
+Format exact :
+{
+  "restaurant": "Nom du restaurant si visible",
+  "hero": "Sous-titre ou slogan si visible",
+  "tabs": [
+    {
+      "label": "Nom de la catégorie principale (ex: Entrées, Plats, Desserts, Boissons)",
+      "cards": [
+        {
+          "label": "Nom de la section (même que tab si une seule section)",
+          "dishes": [
+            {
+              "name": "Nom du plat",
+              "desc": "Description si disponible, sinon chaîne vide",
+              "price": "Prix avec € (ex: 12.90€)"
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}
+
+Règles importantes:
+- Garde le français exact du menu
+- Si plusieurs sections dans une catégorie (ex: Garnitures, Sauces), crée des cards séparées
+- Inclus TOUS les plats même les petits items
+- Prix: garde le format exact du menu`;
+
+  try {
+    const response = await fetch('https://api.anthropic.com/v1/messages', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        model: 'claude-sonnet-4-6',
+        max_tokens: 4000,
+        messages: [{
+          role: 'user',
+          content: [
+            { type: 'image', source: { type: 'base64', media_type: 'image/jpeg', data: imgBase64 } },
+            { type: 'text', text: prompt }
+          ]
+        }]
+      })
+    });
+
+    const data = await response.json();
+    const text = data.content?.find(b=>b.type==='text')?.text || '';
+    
+    // Clean and parse JSON
+    const clean = text.replace(/```json|```/g,'').trim();
+    const parsed = JSON.parse(clean);
+    
+    // Populate restaurant name
+    if(parsed.restaurant){
+      document.getElementById('restoName').value = parsed.restaurant;
+    }
+    if(parsed.hero){
+      document.getElementById('restoHero').value = parsed.hero;
+    }
+
+    // Flatten into rows for table
+    menuRows = [];
+    (parsed.tabs||[]).forEach(tab => {
+      (tab.cards||[]).forEach(card => {
+        (card.dishes||[]).forEach(dish => {
+          menuRows.push({
+            tab: tab.label || '',
+            section: card.label || tab.label || '',
+            name: dish.name || '',
+            desc: dish.desc || '',
+            price: dish.price || '',
+          });
+        });
+      });
+    });
+
+    renderTable();
+    showStatus(`✓ ${menuRows.length} plats extraits avec succès`, 'success');
+    updatePreview();
+    goStep(1);
+
+  } catch(e) {
+    console.error(e);
+    showStatus('Erreur d\'extraction — vérifiez la console', 'error');
+  }
+  document.getElementById('extractBtn').disabled = false;
+}
+
+// ─── TABLE ───
+function renderTable(){
+  const body = document.getElementById('menuBody');
+  if(!menuRows.length){
+    body.innerHTML = '<tr><td colspan="7" style="text-align:center;padding:40px;color:var(--text3)">Aucun plat — ajoutez-en manuellement ou importez une image</td></tr>';
+    return;
+  }
+
+  // Get unique tabs for color coding
+  const tabs = [...new Set(menuRows.map(r=>r.tab))];
+  const tabColors = ['#10285E','#8B1A1A','#1a5e3a','#5a3a8b','#8b5a1a'];
+
+  body.innerHTML = menuRows.map((row,i)=>{
+    const tabIdx = tabs.indexOf(row.tab);
+    const tc = tabColors[tabIdx % tabColors.length];
+    return `<tr>
+      <td style="color:var(--text3);font-size:11px">${i+1}</td>
+      <td><span class="tab-label" style="background:${tc}">${row.tab}</span></td>
+      <td><span class="badge-section">${row.section}</span></td>
+      <td><input value="${esc(row.name)}" oninput="menuRows[${i}].name=this.value;updatePreview()" placeholder="Nom du plat"></td>
+      <td><input value="${esc(row.desc)}" oninput="menuRows[${i}].desc=this.value" placeholder="Description (optionnel)"></td>
+      <td><input value="${esc(row.price)}" oninput="menuRows[${i}].price=this.value;updatePreview()" style="font-weight:600;color:var(--gold)" placeholder="0.00€"></td>
+      <td><button onclick="deleteRow(${i})" style="border:none;background:none;color:#ccc;cursor:pointer;font-size:14px;padding:2px 6px" title="Supprimer">✕</button></td>
+    </tr>`;
+  }).join('');
+}
+
+function esc(s){ return (s||'').replace(/"/g,'&quot;').replace(/</g,'&lt;'); }
+
+function deleteRow(i){ menuRows.splice(i,1); renderTable(); updatePreview(); }
+
+function addRow(){
+  menuRows.push({tab: menuRows.length ? menuRows[menuRows.length-1].tab : 'Plats', section:'', name:'', desc:'', price:''});
+  renderTable();
+}
+
+function addSection(){
+  const name = prompt('Nom de la section ?');
+  if(name) menuRows.push({tab: name, section: name, name:'', desc:'', price:''});
+  renderTable();
+}
+
+// ─── COLOR SYNC ───
+function syncColor(colorId, hexId){
+  document.getElementById(hexId).value = document.getElementById(colorId).value;
+}
+function syncHex(colorId, hexId){
+  const v = document.getElementById(hexId).value;
+  if(/^#[0-9a-fA-F]{6}$/.test(v)) document.getElementById(colorId).value = v;
+}
+
+// ─── PREVIEW ───
+function updatePreview(){
+  const name = document.getElementById('restoName').value || 'Nom du restaurant';
+  const hero = document.getElementById('restoHero').value || '';
+  const c1 = document.getElementById('color1hex').value || '#8B1A1A';
+  const c2 = document.getElementById('color2hex').value || '#C6A24A';
+  const bg = document.getElementById('colorBghex').value || '#FFFDF8';
+
+  const preview = document.getElementById('menuPreview');
+  preview.style.setProperty('--previewBg', bg);
+  preview.style.background = bg;
+
+  document.getElementById('prevName').textContent = name;
+  document.getElementById('prevName').style.color = c1;
+  document.getElementById('prevHero').textContent = hero;
+  document.getElementById('prevHeader').style.borderBottom = `3px solid ${c2}`;
+  document.getElementById('prevHeader').style.paddingBottom = '12px';
+  document.getElementById('prevHeader').style.marginBottom = '12px';
+
+  // Group by tab+section
+  const groups = {};
+  menuRows.forEach(r=>{
+    if(!r.name) return;
+    const key = `${r.tab}|||${r.section||r.tab}`;
+    if(!groups[key]) groups[key] = {tab:r.tab, section:r.section||r.tab, dishes:[]};
+    groups[key].dishes.push(r);
+  });
+
+  let html = '';
+  let lastTab = null;
+  Object.values(groups).forEach(g=>{
+    if(g.tab !== lastTab){
+      html += `<div class="preview-section" style="color:${c1};border-color:${c2}">${g.tab}</div>`;
+      lastTab = g.tab;
+    }
+    g.dishes.forEach(d=>{
+      html += `<div class="preview-dish">
+        <span class="preview-dish-name">${d.name}</span>
+        <span class="preview-dish-price" style="color:${c2}">${d.price}</span>
+      </div>`;
+    });
+  });
+
+  document.getElementById('prevDishes').innerHTML = html || '<div style="color:var(--text3);font-size:12px;text-align:center;padding:20px">Aucun plat encore</div>';
+}
+
+function togglePreview(){
+  const body = document.getElementById('previewBody');
+  body.style.display = body.style.display === 'none' ? 'block' : 'none';
+}
+
+// ─── GENERATE DATA ───
+function buildDataJSON(){
+  const c1 = document.getElementById('color1hex').value || '#8B1A1A';
+  const c2 = document.getElementById('color2hex').value || '#C6A24A';
+  const bg = document.getElementById('colorBghex').value || '#FFFDF8';
+  const pdfTpl = document.getElementById('pdfTemplate').value;
+  const restoName = document.getElementById('restoName').value || 'Restaurant';
+  const hero = document.getElementById('restoHero').value || '';
+
+  // Group rows into tabs > cards > dishes
+  const tabMap = {};
+  menuRows.forEach(r=>{
+    if(!r.name) return;
+    if(!tabMap[r.tab]) tabMap[r.tab] = {};
+    const secKey = r.section || r.tab;
+    if(!tabMap[r.tab][secKey]) tabMap[r.tab][secKey] = [];
+    tabMap[r.tab][secKey].push({
+      name:{fr: r.name, en:''},
+      desc:{fr: r.desc||'', en:''},
+      price: r.price||'',
+      img:'', hidden:false, spicy:false, vegan:false, gallery:[], caption:''
+    });
+  });
+
+  const tabs = Object.entries(tabMap).map(([tabLabel, sections], ti)=>{
+    const cards = Object.entries(sections).map(([secLabel, dishes])=>({
+      label:{fr: secLabel, en:''},
+      dishes
+    }));
+    return {
+      id: `tab_${ti+1}`,
+      label:{fr: tabLabel, en:''},
+      visible:true,
+      cards
+    };
+  });
+
+  return {
+    restoName,
+    hero: {fr: hero, en:''},
+    tabs,
+    pdfStyle: {
+      template: pdfTpl,
+      titleColor: c1,
+      accentColor: c2,
+    },
+    social:{instagram:'',tiktok:'',facebook:''},
+    address:{street:'',zip:'',city:'',phone:''},
+    pinnedDishes:[],
+    pinnedShowHome:true,
+    showHeaderLogo:true,
+    specials:[],
+    intro:{active:false,text:{fr:'',en:''}},
+    infoBanner:{active:false}
+  };
+}
+
+function generateJSON(){
+  const data = buildDataJSON();
+  const json = JSON.stringify(data, null, 2);
+  navigator.clipboard.writeText(json)
+    .then(()=>showToast('✓ DATA JSON copié ! Colle-le dans l\'app.'))
+    .catch(()=>{ document.getElementById('jsonOut').textContent = json; });
+  updatePreview();
+}
+
+function downloadJSON(){
+  const data = buildDataJSON();
+  const blob = new Blob([JSON.stringify(data, null, 2)], {type:'application/json'});
+  const a = document.createElement('a');
+  a.href = URL.createObjectURL(blob);
+  a.download = (document.getElementById('restoName').value || 'restaurant').replace(/\s+/g,'-').toLowerCase() + '-menu.json';
+  a.click();
+  showToast('✓ menu.json téléchargé');
+}
+
+function generateCSV(){
+  const rows = [['Tab','Section','Nom','Description','Prix']];
+  menuRows.forEach(r=>{ if(r.name) rows.push([r.tab,r.section,r.name,r.desc,r.price]); });
+  const csv = rows.map(r=>r.map(c=>`"${(c||'').replace(/"/g,'""')}"`).join(',')).join('\n');
+  const blob = new Blob(['\ufeff'+csv], {type:'text/csv;charset=utf-8'});
+  const a = document.createElement('a');
+  a.href = URL.createObjectURL(blob);
+  a.download = (document.getElementById('restoName').value||'restaurant').replace(/\s+/g,'-').toLowerCase()+'-menu.csv';
+  a.click();
+  showToast('✓ CSV téléchargé');
+}
+
+// ─── UTILS ───
+function showStatus(msg, type){
+  const el = document.getElementById('extractStatus');
+  el.style.display = 'flex';
+  el.className = `extract-status ${type}`;
+  el.innerHTML = type==='loading' ? `<div class="spinner"></div>${msg}` : msg;
+}
+
+function showToast(msg){
+  const t = document.getElementById('toast');
+  t.textContent = msg; t.classList.add('show');
+  setTimeout(()=>t.classList.remove('show'), 2800);
+}
+
+// Init
+updatePreview();
+</script>
+</body>
+</html>
