@@ -136,14 +136,14 @@ body{font-family:'Jost',sans-serif;background:var(--bg);color:var(--text);min-he
         <img id="imgPreview" class="upload-preview" style="display:none">
         <div id="extractStatus" style="display:none;margin-top:10px"></div>
         <div class="field" style="margin-top:10px">
-          <label>Clé API Google Gemini (gratuite)</label>
-          <input type="password" id="apiKey" placeholder="AIza..." oninput="localStorage.setItem('tensai_apikey',this.value)" style="font-family:monospace;font-size:11px">
+          <label>Clé API OpenRouter (gratuite)</label>
+          <input type="password" id="apiKey" placeholder="sk-or-v1-..." oninput="localStorage.setItem('tensai_apikey',this.value)" style="font-family:monospace;font-size:11px">
           <div style="font-size:10px;color:var(--text3);margin-top:3px">
-  Gratuite → <a href="https://aistudio.google.com/app/apikey" target="_blank" style="color:var(--navy)">aistudio.google.com</a> · Get API key. Sauvegardée localement.
+  Gratuite → <a href="https://openrouter.ai/keys" target="_blank" style="color:var(--navy)">openrouter.ai/keys</a> · Créer un compte, générer une clé. Utilise Gemini Flash gratuitement. Sauvegardée localement.
 </div>
         </div>
         <button class="btn btn-primary btn-block" style="margin-top:8px" id="extractBtn" onclick="extractMenu()" disabled>
-          ✨ Extraire le menu avec Gemini
+          ✨ Extraire le menu (Gemini Flash)
         </button>
       </div>
 
@@ -341,28 +341,32 @@ Règles importantes:
 
   try {
     const apiKey = document.getElementById('apiKey').value || localStorage.getItem('tensai_apikey') || '';
-    if(!apiKey){ showStatus('Entrez votre clé API Gemini (gratuite sur aistudio.google.com)', 'error'); return; }
+    if(!apiKey){ showStatus('Entrez votre clé API OpenRouter (gratuite sur openrouter.ai/keys)', 'error'); return; }
 
-    const response = await fetch(
-      `https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${apiKey}`,
-      {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          contents: [{
-            parts: [
-              { inline_data: { mime_type: 'image/jpeg', data: imgBase64 } },
-              { text: prompt }
-            ]
-          }],
-          generationConfig: { temperature: 0.1, maxOutputTokens: 4000 }
-        })
-      }
-    );
+    const response = await fetch('https://openrouter.ai/api/v1/chat/completions', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${apiKey}`,
+        'HTTP-Referer': 'https://tensaiagency.com',
+        'X-Title': 'Tensai Onboarding Tool',
+      },
+      body: JSON.stringify({
+        model: 'google/gemini-flash-1.5',
+        max_tokens: 4000,
+        messages: [{
+          role: 'user',
+          content: [
+            { type: 'image_url', image_url: { url: `data:image/jpeg;base64,${imgBase64}` } },
+            { type: 'text', text: prompt }
+          ]
+        }]
+      })
+    });
 
     const data = await response.json();
-    if(data.error){ throw new Error(data.error.message); }
-    const text = data.candidates?.[0]?.content?.parts?.[0]?.text || '';
+    if(data.error){ throw new Error(data.error.message || JSON.stringify(data.error)); }
+    const text = data.choices?.[0]?.message?.content || '';
     
     // Clean and parse JSON
     const clean = text.replace(/```json|```/g,'').trim();
