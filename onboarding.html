@@ -135,8 +135,15 @@ body{font-family:'Jost',sans-serif;background:var(--bg);color:var(--text);min-he
         </div>
         <img id="imgPreview" class="upload-preview" style="display:none">
         <div id="extractStatus" style="display:none;margin-top:10px"></div>
-        <button class="btn btn-primary btn-block" style="margin-top:12px" id="extractBtn" onclick="extractMenu()" disabled>
-          ✨ Extraire le menu
+        <div class="field" style="margin-top:10px">
+          <label>Clé API Google Gemini (gratuite)</label>
+          <input type="password" id="apiKey" placeholder="AIza..." oninput="localStorage.setItem('tensai_apikey',this.value)" style="font-family:monospace;font-size:11px">
+          <div style="font-size:10px;color:var(--text3);margin-top:3px">
+  Gratuite → <a href="https://aistudio.google.com/app/apikey" target="_blank" style="color:var(--navy)">aistudio.google.com</a> · Get API key. Sauvegardée localement.
+</div>
+        </div>
+        <button class="btn btn-primary btn-block" style="margin-top:8px" id="extractBtn" onclick="extractMenu()" disabled>
+          ✨ Extraire le menu avec Gemini
         </button>
       </div>
 
@@ -333,24 +340,29 @@ Règles importantes:
 - Prix: garde le format exact du menu`;
 
   try {
-    const response = await fetch('https://api.anthropic.com/v1/messages', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({
-        model: 'claude-sonnet-4-6',
-        max_tokens: 4000,
-        messages: [{
-          role: 'user',
-          content: [
-            { type: 'image', source: { type: 'base64', media_type: 'image/jpeg', data: imgBase64 } },
-            { type: 'text', text: prompt }
-          ]
-        }]
-      })
-    });
+    const apiKey = document.getElementById('apiKey').value || localStorage.getItem('tensai_apikey') || '';
+    if(!apiKey){ showStatus('Entrez votre clé API Gemini (gratuite sur aistudio.google.com)', 'error'); return; }
+
+    const response = await fetch(
+      `https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${apiKey}`,
+      {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          contents: [{
+            parts: [
+              { inline_data: { mime_type: 'image/jpeg', data: imgBase64 } },
+              { text: prompt }
+            ]
+          }],
+          generationConfig: { temperature: 0.1, maxOutputTokens: 4000 }
+        })
+      }
+    );
 
     const data = await response.json();
-    const text = data.content?.find(b=>b.type==='text')?.text || '';
+    if(data.error){ throw new Error(data.error.message); }
+    const text = data.candidates?.[0]?.content?.parts?.[0]?.text || '';
     
     // Clean and parse JSON
     const clean = text.replace(/```json|```/g,'').trim();
@@ -598,6 +610,8 @@ function showToast(msg){
 
 // Init
 updatePreview();
+const savedKey = localStorage.getItem('tensai_apikey');
+if(savedKey){ const el=document.getElementById('apiKey'); if(el) el.value=savedKey; }
 </script>
 </body>
 </html>
