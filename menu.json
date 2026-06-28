@@ -109,15 +109,15 @@
         "en": "Today's menu"
       },
       "title": {
-        "fr": "Les plats incontournables",
+        "fr": "Tartare de bœuf de race Normande",
         "en": "Today's menu"
       },
       "desc": {
-        "fr": "Huîtres gratinées • Duo Champagne • Rillettes à la truite de Bretagne",
+        "fr": "Jambon cuit de la Maison Dubernet, parmesan, crème de champignons à la truffe d'été*",
         "en": ""
       },
-      "price": "",
-      "showHome": false,
+      "price": "22,5",
+      "showHome": true,
       "showFirst": false
     }
   ],
